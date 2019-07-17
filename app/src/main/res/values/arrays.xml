@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="arr_scale_types">
+        <item>center</item>
+        <item>centerCrop</item>
+        <item>centerInside</item>
+        <item>fitCenter</item>
+        <item>fitEnd</item>
+        <item>fitStart</item>
+        <item>fitXY</item>
+    </string-array>
+</resources>

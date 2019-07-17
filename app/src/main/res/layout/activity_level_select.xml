@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LevelSelectActivity">
+
+    <!-- layout for selecting difficulties -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dim_general_margin"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtv_label_for_skb_difficulties_select"
+            android:text="@string/str_difficulty"
+            android:layout_marginEnd="@dimen/dim_general_margin"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <SeekBar
+            android:id="@+id/skb_difficulties_select"
+            android:min="3"
+            android:max="10"
+            android:progress="3"
+            android:layout_marginEnd="@dimen/dim_general_margin"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txtv_selected_difficulty"
+            android:text="@string/str_3x3"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- layout for selecting image -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dim_general_margin"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtv_label_for_btn_get_img_source"
+            android:text="@string/str_image_source"
+            android:layout_marginEnd="@dimen/dim_general_margin"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_get_img_source"
+            android:text="@string/str_load_image"
+            android:textAllCaps="false"
+            android:layout_marginEnd="@dimen/dim_general_margin"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txtv_selected_image_filename"
+            android:text="@string/str_no_source"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- image-view for showing selected image -->
+    <ImageView
+        android:id="@+id/imgv_preview_selected_image"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/dim_general_margin"
+        android:layout_width="@dimen/dim_preview_selected_image_size"
+        android:layout_height="@dimen/dim_preview_selected_image_size" />
+
+
+    <!-- layout for selecting scale types of image -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dim_general_margin"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtv_label_for_spn_select_scale_type"
+            android:text="@string/str_scale_type"
+            android:layout_marginEnd="@dimen/dim_general_margin"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/spn_select_scale_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:layout_marginEnd="@dimen/dim_general_margin"
+            android:layout_weight="1"
+            android:entries="@array/arr_scale_types">
+        </Spinner>
+    </LinearLayout>
+</LinearLayout>

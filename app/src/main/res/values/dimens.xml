@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dim_general_margin">8dp</dimen>
+    <dimen name="dim_start_at_menu_text_size">70sp</dimen>
+    <dimen name="dim_preview_selected_image_size">200dp</dimen>
+</resources>
