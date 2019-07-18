@@ -96,8 +96,8 @@ public class LevelSelectActivity extends AppCompatActivity {
         imgvPreviewSelectedImage = findViewById(R.id.imgv_preview_selected_image);
         spnSelectScaleType = findViewById(R.id.spn_select_scale_type);
 
-        // initial scale type for preview-selected-image which is CENTER
-        imgvPreviewSelectedImage.setScaleType(ImageView.ScaleType.CENTER);
+        // initial scale type for preview-selected-image which is FIT_CENTER
+        imgvPreviewSelectedImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         // on-seek-bar-change-listener for selecting difficulties
         skbDifficultiesSelect.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -130,6 +130,7 @@ public class LevelSelectActivity extends AppCompatActivity {
         });
 
         // on-item-selected-listener for selecting scale types
+        spnSelectScaleType.setSelection(3);
         spnSelectScaleType.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             Map<String, ImageView.ScaleType> scaleTypesDict = new HashMap<>();
 
