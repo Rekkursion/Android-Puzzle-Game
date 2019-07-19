@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -71,7 +72,28 @@ public class GameActivity extends AppCompatActivity {
                 newImgView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.e("img block idx", String.valueOf((int) view.getTag()));
+                        int viewIdx = (int) view.getTag();
+
+                        if (viewIdx == GameManager.getInstance().getIdxOfAbandonedBitmap())
+                            return;
+
+                        int upIdx = viewIdx - GameManager.getInstance().difficulty;
+                        int rightIdx = viewIdx + 1;
+                        int downIdx = viewIdx + GameManager.getInstance().difficulty;
+                        int leftIdx = viewIdx - 1;
+
+                        if (upIdx == GameManager.getInstance().getIdxOfAbandonedBitmap()) {
+                            GameManager.getInstance().exchangeBlocks(viewIdx, upIdx);
+
+                            int rowIdx_up = upIdx / GameManager.getInstance().difficulty;
+                            int colIdx_up = upIdx % GameManager.getInstance().difficulty;
+                            int rowIdx_view = viewIdx / GameManager.getInstance().difficulty;
+                            int colIdx_view = viewIdx % GameManager.getInstance().difficulty;
+
+                            Bitmap tmp = ((BitmapDrawable) imgvsSplittedBitmapsArray[rowIdx_up][colIdx_up].getDrawable()).getBitmap();
+                            imgvsSplittedBitmapsArray[rowIdx_up][colIdx_up].setImageBitmap(((BitmapDrawable) imgvsSplittedBitmapsArray[rowIdx_view][colIdx_view].getDrawable()).getBitmap());
+                            imgvsSplittedBitmapsArray[rowIdx_view][colIdx_view].setImageBitmap(tmp);
+                        }
                     }
                 });
 

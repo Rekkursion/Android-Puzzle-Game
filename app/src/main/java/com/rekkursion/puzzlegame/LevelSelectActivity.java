@@ -171,6 +171,7 @@ public class LevelSelectActivity extends AppCompatActivity {
 
                 GameManager.getInstance().originalImageBitmap = origImageBitmap;
                 GameManager.getInstance().difficulty = selectedDifficulty;
+                GameManager.getInstance().numOfSplittedBitmaps = selectedDifficulty * selectedDifficulty;
                 GameManager.getInstance().gamingMode = gamingMode;
 
                 Intent intentToGameActivity = new Intent(LevelSelectActivity.this, GameActivity.class);

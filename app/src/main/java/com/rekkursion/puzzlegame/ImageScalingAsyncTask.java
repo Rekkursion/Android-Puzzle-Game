@@ -35,6 +35,7 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
         progressBar.setVisibility(View.VISIBLE);
         txtvProgressBarInformation.setVisibility(View.VISIBLE);
     }
@@ -46,11 +47,15 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
         progressBar.setVisibility(View.GONE);
         txtvProgressBarInformation.setVisibility(View.GONE);
 
-        Bitmap[][] splittedBitmapsArray = ImageProcessFactory.divideImage(bitmap, GameManager.getInstance().difficulty, GameManager.getInstance().difficulty);
-        for (int r = 0; r < splittedBitmapsArray.length; ++r) {
-            for (int c = 0; c < splittedBitmapsArray[r].length; ++c)
-                imageViews[r][c].setImageBitmap(splittedBitmapsArray[r][c]);
-        }
+        GameManager.getInstance().scaledImageBitmap = bitmap;
+        GameManager.getInstance().splittedBitmapsArray = ImageProcessFactory.divideImage(bitmap, GameManager.getInstance().difficulty, GameManager.getInstance().difficulty);
+        GameManager.getInstance().lastSplittedBitmap =GameManager.getInstance().splittedBitmapsArray[GameManager.getInstance().difficulty - 1][GameManager.getInstance().difficulty - 1];
+
+        Bitmap[][] shuffled = GameManager.getInstance().abandonTheLastBitmapAndShuffle();
+
+        for (int r = 0; r < GameManager.getInstance().splittedBitmapsArray.length; ++r)
+            for (int c = 0; c < GameManager.getInstance().splittedBitmapsArray[r].length; ++c)
+                imageViews[r][c].setImageBitmap(shuffled[r][c]);
     }
 
     @Override

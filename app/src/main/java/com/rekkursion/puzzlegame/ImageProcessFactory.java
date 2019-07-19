@@ -1,6 +1,7 @@
 package com.rekkursion.puzzlegame;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 
 public class ImageProcessFactory {
     public static Bitmap scaleImage_fitCenter(Bitmap origBitmap, int fittingSize) {
@@ -10,12 +11,7 @@ public class ImageProcessFactory {
 
         // step 1: fill in with black pixels
         int[] pixels = new int[fittingSize * fittingSize];
-        for (int r = 0; r < fittingSize; ++r) {
-            for (int c = 0; c < fittingSize; ++c) {
-                int idx = r * fittingSize + c;
-                pixels[idx] = 0xff000000;
-            }
-        }
+        getSolidColorPixelsArray(pixels, fittingSize, fittingSize, 0, 0, 0, 255);
 
         // step 2: scale the original bitmap (current method is fit-center)
         int startRowIdx = fittingSize == imageHeight ? 0 : (fittingSize - imageHeight) / 2;
@@ -28,6 +24,8 @@ public class ImageProcessFactory {
         }
 
         scaledBitmap.setPixels(pixels, 0, fittingSize, 0, 0, fittingSize, fittingSize);
+        pixels = null;
+
         return scaledBitmap;
     }
 
@@ -42,5 +40,15 @@ public class ImageProcessFactory {
         }
 
         return splittedBitmapsArray;
+    }
+
+    public static void getSolidColorPixelsArray(int[] retPixels, int rowNum, int colNum, int red, int green, int blue, int alpha) {
+        int color = Color.argb(alpha, red, green, blue);
+        for (int r = 0; r < rowNum; ++r) {
+            for (int c = 0; c < colNum; ++c) {
+                int idx = r * colNum + c;
+                retPixels[idx] = color;
+            }
+        }
     }
 }
