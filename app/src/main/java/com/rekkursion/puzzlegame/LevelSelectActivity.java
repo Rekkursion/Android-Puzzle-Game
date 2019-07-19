@@ -79,6 +79,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                     imgvPreviewSelectedImage.setBackgroundResource(android.R.color.background_dark);
                     txtvSelectedImageFilename.setText(imgFilename);
 
+                    btnStartAtLevelSelect.setEnabled(true);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Error happened when getting the file.", Toast.LENGTH_SHORT).show();
@@ -100,6 +101,9 @@ public class LevelSelectActivity extends AppCompatActivity {
         rdbSelectGamingModeSlidingPuzzle = findViewById(R.id.rdb_select_gaming_mode_sliding_puzzle);
         rdbSelectGamingModeTraditionalPuzzle = findViewById(R.id.rdb_select_gaming_mode_traditional_puzzle);
         btnStartAtLevelSelect = findViewById(R.id.btn_start_at_level_select);
+
+        // haven't selected image, cannot click start button
+        btnStartAtLevelSelect.setEnabled(false);
 
         // initial scale type for preview-selected-image which is FIT_CENTER
         imgvPreviewSelectedImage.setScaleType(ImageView.ScaleType.FIT_CENTER);

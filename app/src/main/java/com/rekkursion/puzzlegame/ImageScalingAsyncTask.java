@@ -35,8 +35,11 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
         progressBar.setVisibility(View.VISIBLE);
         txtvProgressBarInformation.setVisibility(View.VISIBLE);
+
+        GameManager.getInstance().clearTagAndIdDict();
     }
 
     @Override
@@ -59,13 +62,13 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
                 imageViews[r][c].setTag(idx);
                 imageViews[r][c].setImageBitmap(splittedBitmapsArray[_r][_c]);
                 if (idx == GameManager.getInstance().difficulty * GameManager.getInstance().difficulty - 1)
-                    imageViews[r][c].setImageAlpha(0);
+                    imageViews[r][c].setAlpha(0.0f);
+
+                int newImageViewId = View.generateViewId();
+                imageViews[r][c].setId(newImageViewId);
+                GameManager.getInstance().addTagAndIdEntry(idx, newImageViewId);
             }
         }
-//        for (int r = 0; r < splittedBitmapsArray.length; ++r) {
-//            for (int c = 0; c < splittedBitmapsArray[r].length; ++c)
-//                imageViews[r][c].setImageBitmap(splittedBitmapsArray[r][c]);
-//        }
     }
 
     @Override
