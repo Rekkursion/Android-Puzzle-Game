@@ -41,6 +41,8 @@ public class LevelSelectActivity extends AppCompatActivity {
     private final int REQ_CODE_GET_IMAGE_FROM_EXTERNAL_STORAGE = 10037;
     private final int REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE = 63;
 
+    private final int PROGRESS_AND_REAL_DIFFICULTY_OFFSET = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,8 +115,8 @@ public class LevelSelectActivity extends AppCompatActivity {
         skbDifficultiesSelect.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean isFromUser) {
-                String progressString = String.valueOf(progress);
-                txtvSelectedDifficulty.setText(progressString + " x " + progressString);
+                String valueString = String.valueOf(progress + PROGRESS_AND_REAL_DIFFICULTY_OFFSET);
+                txtvSelectedDifficulty.setText(valueString + " x " + valueString);
             }
 
             @Override
@@ -170,7 +172,7 @@ public class LevelSelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bitmap origImageBitmap = ((BitmapDrawable)imgvPreviewSelectedImage.getDrawable()).getBitmap();
-                int selectedDifficulty = skbDifficultiesSelect.getProgress();
+                int selectedDifficulty = skbDifficultiesSelect.getProgress() + PROGRESS_AND_REAL_DIFFICULTY_OFFSET;
                 GamingModeEnum gamingMode = rdbSelectGamingModeSlidingPuzzle.isChecked() ? GamingModeEnum.SLIDING_MODE : GamingModeEnum.TRADITIONAL_MODE;
 
                 GameManager.getInstance().originalImageBitmap = origImageBitmap;

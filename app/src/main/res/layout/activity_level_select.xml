@@ -24,9 +24,8 @@
             android:layout_height="wrap_content" />
         <SeekBar
             android:id="@+id/skb_difficulties_select"
-            android:min="3"
-            android:max="7"
-            android:progress="3"
+            android:max="4"
+            android:progress="0"
             android:layout_marginEnd="@dimen/dim_general_margin"
             android:layout_weight="1"
             android:layout_width="match_parent"
