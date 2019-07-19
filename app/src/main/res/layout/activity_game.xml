@@ -19,6 +19,17 @@
             android:layout_width="@dimen/dim_gaming_image_size"
             android:layout_height="@dimen/dim_gaming_image_size" />
 
+        <!-- grid-layout as a container for holding splitted image-views -->
+        <GridLayout
+            android:id="@+id/gly_splitted_image_views_container"
+            android:columnCount="3"
+            android:rowCount="3"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </GridLayout>
+
+        <!-- linear-layout for showing that it's progressing -->
         <LinearLayout
             android:orientation="vertical"
             android:gravity="center"

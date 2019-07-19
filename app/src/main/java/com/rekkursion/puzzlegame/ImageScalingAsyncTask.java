@@ -15,20 +15,20 @@ import android.widget.TextView;
 public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
     private ProgressBar progressBar;
     private TextView txtvProgressBarInformation;
-    private ImageView imageView;
+    private ImageView[][] imageViews;
 
     private int viewHeight, viewWidth;
     private Bitmap orginalBitmap;
     private int imageHeight, imageWidth;
 
-    public void execute(Bitmap imageBitmap, ImageView imageView, ProgressBar progressBar, TextView textView) {
+    public void execute(Bitmap imageBitmap, ImageView[][] imageViews, ProgressBar progressBar, TextView textView) {
         orginalBitmap = imageBitmap;
         imageWidth = imageBitmap.getWidth();
         imageHeight = imageBitmap.getHeight();
 
-        this.imageView = imageView;
-        viewWidth = imageView.getWidth();
-        viewHeight = imageView.getHeight();
+        this.imageViews = imageViews;
+        viewWidth = imageViews[0][0].getWidth();
+        viewHeight = imageViews[0][0].getHeight();
 
         this.progressBar = progressBar;
         txtvProgressBarInformation = textView;
@@ -50,8 +50,11 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
         progressBar.setVisibility(View.GONE);
         txtvProgressBarInformation.setVisibility(View.GONE);
 
-        imageView.setImageBitmap(bitmap);
-        Log.e("tag", "async task end");
+        Bitmap[][] splittedBitmapsArray = ImageProcessFactory.divideImage(bitmap, GameActivity.selectedDifficulty, GameActivity.selectedDifficulty);
+        for (int r = 0; r < splittedBitmapsArray.length; ++r) {
+            for (int c = 0; c < splittedBitmapsArray[r].length; ++c)
+                imageViews[r][c].setImageBitmap(splittedBitmapsArray[r][c]);
+        }
     }
 
     @Override
@@ -62,28 +65,6 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
     @Override
     protected Bitmap doInBackground(Context... contexts) {
         int biggerSize = imageHeight > imageWidth ? imageHeight : imageWidth;
-        Bitmap scaledBitmap = Bitmap.createBitmap(biggerSize, biggerSize, Bitmap.Config.ARGB_8888);
-
-        // step 1: fill in with black pixels
-        int[] pixels = new int[biggerSize * biggerSize];
-        for (int r = 0; r < biggerSize; ++r) {
-            for (int c = 0; c < biggerSize; ++c) {
-                int idx = r * biggerSize + c;
-                pixels[idx] = 0xff000000;
-            }
-        }
-
-        // step 2: scale the original bitmap (current method is fit-center)
-        int startRowIdx = biggerSize == imageHeight ? 0 : (biggerSize - imageHeight) / 2;
-        int startColIdx = biggerSize == imageWidth ? 0 : (biggerSize - imageWidth) / 2;
-        for (int r = startRowIdx; r < startRowIdx + imageHeight; ++r) {
-            for (int c = startColIdx; c < startColIdx + imageWidth; ++c) {
-                int idx = r * biggerSize + c;
-                pixels[idx] = orginalBitmap.getPixel(c - startColIdx, r - startRowIdx);
-            }
-        }
-
-        scaledBitmap.setPixels(pixels, 0, biggerSize, 0, 0, biggerSize, biggerSize);
-        return scaledBitmap;
+        return ImageProcessFactory.scaleImage_fitCenter(orginalBitmap, biggerSize);
     }
 }

@@ -10,16 +10,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,12 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class LevelSelectActivity extends AppCompatActivity {
     private SeekBar skbDifficultiesSelect;
@@ -49,7 +39,7 @@ public class LevelSelectActivity extends AppCompatActivity {
     private Button btnStartAtLevelSelect;
 
     private final int REQ_CODE_GET_IMAGE_FROM_EXTERNAL_STORAGE = 10037;
-    private final int REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STOARGE = 63;
+    private final int REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE = 63;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +53,7 @@ public class LevelSelectActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STOARGE:
+            case REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     getImageFromExternalStorage();
                 else
@@ -141,7 +131,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
                     getImageFromExternalStorage();
                 else
-                    requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STOARGE);
+                    requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE);
             }
         });
 
