@@ -65,13 +65,31 @@ public class GameActivity extends AppCompatActivity {
                 param.columnSpec = GridLayout.spec(c);
 
                 newImgView.setLayoutParams(param);
-                newImgView.setTag(r * selectedDifficulty + c);
+                // newImgView.setTag(r * selectedDifficulty + c);
                 // newImgView.setImageResource(R.drawable.ic_launcher_background);
 
                 newImgView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        int viewTag = (int) view.getTag();
+                        int sideNum = GameManager.getInstance().difficulty;
+
                         Log.e("img block idx", String.valueOf((int) view.getTag()));
+
+                        if (GameManager.getInstance().isAbandonedTagNumber(viewTag))
+                            return;
+
+                        int upTag = GameManager.getInstance().getTagAroundTheCertainTag(viewTag, GameManager.Direction.UP);
+                        int rightTag = GameManager.getInstance().getTagAroundTheCertainTag(viewTag, GameManager.Direction.RIGHT);
+                        int downTag = GameManager.getInstance().getTagAroundTheCertainTag(viewTag, GameManager.Direction.DOWN);
+                        int leftTag = GameManager.getInstance().getTagAroundTheCertainTag(viewTag, GameManager.Direction.LEFT);
+
+                        Log.e("up", String.valueOf(upTag));
+                        Log.e("right", String.valueOf(rightTag));
+                        Log.e("down", String.valueOf(downTag));
+                        Log.e("left", String.valueOf(leftTag));
+
+                        // TODO: move image-views
                     }
                 });
 
