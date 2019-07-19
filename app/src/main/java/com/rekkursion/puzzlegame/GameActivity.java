@@ -7,16 +7,13 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class GameActivity extends AppCompatActivity {
-    public static Bitmap origImageBitmap;
-    public static int selectedDifficulty;
-    public static GamingModeEnum gamingMode;
-
     private final int TOTAL_GAMING_IMAGE_VIEW_SIZE = 1000;
 
     private ImageView imgvScaledImage;
@@ -34,7 +31,7 @@ public class GameActivity extends AppCompatActivity {
         createImageViewsForGaming();
 
         ImageScalingAsyncTask imageScalingAsyncTask = new ImageScalingAsyncTask();
-        imageScalingAsyncTask.execute(origImageBitmap, imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing);
+        imageScalingAsyncTask.execute(imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing);
     }
 
     private void initViews() {
@@ -45,6 +42,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void createImageViewsForGaming() {
+        int selectedDifficulty = GameManager.getInstance().difficulty;
+
         glySplittedImageViewsContainer.setRowCount(selectedDifficulty);
         glySplittedImageViewsContainer.setColumnCount(selectedDifficulty);
         imgvsSplittedBitmapsArray = new ImageView[selectedDifficulty][selectedDifficulty];
@@ -66,7 +65,15 @@ public class GameActivity extends AppCompatActivity {
                 param.columnSpec = GridLayout.spec(c);
 
                 newImgView.setLayoutParams(param);
+                newImgView.setTag(r * selectedDifficulty + c);
                 // newImgView.setImageResource(R.drawable.ic_launcher_background);
+
+                newImgView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.e("img block idx", String.valueOf((int) view.getTag()));
+                    }
+                });
 
                 glySplittedImageViewsContainer.addView(newImgView);
                 imgvsSplittedBitmapsArray[r][c] = newImgView;

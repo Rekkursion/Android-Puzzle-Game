@@ -169,9 +169,9 @@ public class LevelSelectActivity extends AppCompatActivity {
                 int selectedDifficulty = skbDifficultiesSelect.getProgress();
                 GamingModeEnum gamingMode = rdbSelectGamingModeSlidingPuzzle.isChecked() ? GamingModeEnum.SLIDING_MODE : GamingModeEnum.TRADITIONAL_MODE;
 
-                GameActivity.origImageBitmap = origImageBitmap;
-                GameActivity.selectedDifficulty = selectedDifficulty;
-                GameActivity.gamingMode = gamingMode;
+                GameManager.getInstance().originalImageBitmap = origImageBitmap;
+                GameManager.getInstance().difficulty = selectedDifficulty;
+                GameManager.getInstance().gamingMode = gamingMode;
 
                 Intent intentToGameActivity = new Intent(LevelSelectActivity.this, GameActivity.class);
                 startActivity(intentToGameActivity);
