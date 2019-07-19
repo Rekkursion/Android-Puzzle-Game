@@ -10,6 +10,12 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,13 +24,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -35,6 +44,9 @@ public class LevelSelectActivity extends AppCompatActivity {
     private TextView txtvSelectedImageFilename;
     private ImageView imgvPreviewSelectedImage;
     private Spinner spnSelectScaleType;
+    private RadioButton rdbSelectGamingModeSlidingPuzzle;
+    private RadioButton rdbSelectGamingModeTraditionalPuzzle;
+    private Button btnStartAtLevelSelect;
 
     private final int REQ_CODE_GET_IMAGE_FROM_EXTERNAL_STORAGE = 10037;
     private final int REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STOARGE = 63;
@@ -95,9 +107,13 @@ public class LevelSelectActivity extends AppCompatActivity {
         txtvSelectedImageFilename = findViewById(R.id.txtv_selected_image_filename);
         imgvPreviewSelectedImage = findViewById(R.id.imgv_preview_selected_image);
         spnSelectScaleType = findViewById(R.id.spn_select_scale_type);
+        rdbSelectGamingModeSlidingPuzzle = findViewById(R.id.rdb_select_gaming_mode_sliding_puzzle);
+        rdbSelectGamingModeTraditionalPuzzle = findViewById(R.id.rdb_select_gaming_mode_traditional_puzzle);
+        btnStartAtLevelSelect = findViewById(R.id.btn_start_at_level_select);
 
         // initial scale type for preview-selected-image which is FIT_CENTER
         imgvPreviewSelectedImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        spnSelectScaleType.setSelection(3);
 
         // on-seek-bar-change-listener for selecting difficulties
         skbDifficultiesSelect.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -130,7 +146,6 @@ public class LevelSelectActivity extends AppCompatActivity {
         });
 
         // on-item-selected-listener for selecting scale types
-        spnSelectScaleType.setSelection(3);
         spnSelectScaleType.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             Map<String, ImageView.ScaleType> scaleTypesDict = new HashMap<>();
 
@@ -153,6 +168,23 @@ public class LevelSelectActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        // on-click-listener for starting the game
+        btnStartAtLevelSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bitmap origImageBitmap = ((BitmapDrawable)imgvPreviewSelectedImage.getDrawable()).getBitmap();
+                int selectedDifficulty = skbDifficultiesSelect.getProgress();
+                GamingModeEnum gamingMode = rdbSelectGamingModeSlidingPuzzle.isChecked() ? GamingModeEnum.SLIDING_MODE : GamingModeEnum.TRADITIONAL_MODE;
+
+                GameActivity.origImageBitmap = origImageBitmap;
+                GameActivity.selectedDifficulty = selectedDifficulty;
+                GameActivity.gamingMode = gamingMode;
+
+                Intent intentToGameActivity = new Intent(LevelSelectActivity.this, GameActivity.class);
+                startActivity(intentToGameActivity);
             }
         });
     }

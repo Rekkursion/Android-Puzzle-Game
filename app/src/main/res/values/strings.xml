@@ -7,4 +7,7 @@
     <string name="str_load_image">Load image</string>
     <string name="str_no_source">&lt;No source&gt;</string>
     <string name="str_scale_type">Scale type</string>
+    <string name="str_sliding_puzzle">Sliding puzzle</string>
+    <string name="str_traditional_puzzle">Traditional puzzle</string>
+    <string name="str_image_processing_please_wait">Image processing, please wait&#8230;</string>
 </resources>

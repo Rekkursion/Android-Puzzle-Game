@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameActivity">
+
+    <!-- frame-layout for stacking image-view and progress information -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- image-view for showing scaled image -->
+        <ImageView
+            android:id="@+id/imgv_scaled_image"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/dim_gaming_image_size"
+            android:layout_height="@dimen/dim_gaming_image_size" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:id="@+id/pgb_wait_for_image_processing"
+                android:layout_gravity="center"
+                android:min="0"
+                android:max="100"
+                android:progress="0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtv_wait_for_image_processing"
+                android:gravity="center"
+                android:layout_margin="@dimen/dim_general_margin"
+                android:text="@string/str_image_processing_please_wait"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+</LinearLayout>

@@ -70,14 +70,19 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <!-- image-view for showing selected image -->
-    <ImageView
-        android:id="@+id/imgv_preview_selected_image"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/dim_general_margin"
-        android:layout_width="@dimen/dim_preview_selected_image_size"
-        android:layout_height="@dimen/dim_preview_selected_image_size" />
-
+    <!-- frame-layout for showing selected image -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imgv_preview_selected_image"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/dim_general_margin"
+            android:layout_width="@dimen/dim_preview_selected_image_size"
+            android:layout_height="@dimen/dim_preview_selected_image_size" />
+    </FrameLayout>
 
     <!-- layout for selecting scale types of image -->
     <LinearLayout
@@ -105,4 +110,37 @@
             android:entries="@array/arr_scale_types">
         </Spinner>
     </LinearLayout>
+
+    <!-- radio-group for selecting gaming mode: sliding or traditional puzzle -->
+    <RadioGroup
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dim_general_margin"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/rdb_select_gaming_mode_sliding_puzzle"
+            android:text="@string/str_sliding_puzzle"
+            android:checked="true"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/rdb_select_gaming_mode_traditional_puzzle"
+            android:text="@string/str_traditional_puzzle"
+            android:checked="false"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
+
+    <!-- start button -->
+    <Button
+        android:id="@+id/btn_start_at_level_select"
+        android:text="@string/str_start"
+        android:textAllCaps="false"
+        android:layout_marginEnd="@dimen/dim_general_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
