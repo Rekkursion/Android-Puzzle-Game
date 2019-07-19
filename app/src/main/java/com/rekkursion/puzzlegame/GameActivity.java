@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -41,9 +40,10 @@ public class GameActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
-        if (screenWidth - marginOnBlocks * 2 < TOTAL_GAMING_IMAGE_VIEW_SIZE)
-            TOTAL_GAMING_IMAGE_VIEW_SIZE = screenWidth - marginOnBlocks * 2;
-        int calculatedLeftSideMargin = (screenWidth - marginOnBlocks * 2 - TOTAL_GAMING_IMAGE_VIEW_SIZE) / 2;
+        int numOfGap = GameManager.getInstance().difficulty - 1;
+        if (screenWidth - marginOnBlocks * numOfGap < TOTAL_GAMING_IMAGE_VIEW_SIZE)
+            TOTAL_GAMING_IMAGE_VIEW_SIZE = screenWidth - marginOnBlocks * numOfGap;
+        int calculatedLeftSideMargin = (screenWidth - marginOnBlocks * numOfGap - TOTAL_GAMING_IMAGE_VIEW_SIZE) / 2;
         if (calculatedLeftSideMargin > 0)
             marginOnLeftSideBlocks = calculatedLeftSideMargin;
 
@@ -62,6 +62,10 @@ public class GameActivity extends AppCompatActivity {
         imgvShowOriginalScaledBitmap = findViewById(R.id.imgv_show_original_scaled_bitmap);
         llyForShowingOriginalScaledImageAndItsUI = findViewById(R.id.lly_for_showing_original_scaled_image_and_its_ui);
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_turn_back_to_gaming_when_showing_original_scaled_bitmap);
+
+        // adjust size of image-view which is used to showing original scaled bitmap
+        imgvShowOriginalScaledBitmap.getLayoutParams().width = TOTAL_GAMING_IMAGE_VIEW_SIZE;
+        imgvShowOriginalScaledBitmap.getLayoutParams().height = TOTAL_GAMING_IMAGE_VIEW_SIZE;
 
         // initially image-view for showing original scaled image and its button are visually gone
         llyForShowingOriginalScaledImageAndItsUI.setVisibility(View.GONE);

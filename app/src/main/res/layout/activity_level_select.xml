@@ -69,19 +69,26 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <!-- frame-layout for showing selected image -->
-    <FrameLayout
-        android:layout_width="wrap_content"
+    <!-- linear-layout for showing selected image -->
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dim_general_margin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/imgv_preview_selected_image"
-            android:adjustViewBounds="true"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/dim_general_margin"
             android:layout_width="@dimen/dim_preview_selected_image_size"
             android:layout_height="@dimen/dim_preview_selected_image_size" />
-    </FrameLayout>
+        <TextView
+            android:id="@+id/txtv_show_size_of_original_selected_image"
+            android:gravity="center"
+            android:text=""
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <!-- layout for selecting scale types of image -->
     <LinearLayout

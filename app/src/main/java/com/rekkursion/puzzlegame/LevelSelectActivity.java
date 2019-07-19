@@ -37,6 +37,7 @@ public class LevelSelectActivity extends AppCompatActivity {
     private RadioButton rdbSelectGamingModeSlidingPuzzle;
     private RadioButton rdbSelectGamingModeTraditionalPuzzle;
     private Button btnStartAtLevelSelect;
+    private TextView txtvShowSizeOfOriginalSelectedImage;
 
     private final int REQ_CODE_GET_IMAGE_FROM_EXTERNAL_STORAGE = 10037;
     private final int REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE = 63;
@@ -80,6 +81,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                     imgvPreviewSelectedImage.setImageBitmap(imgBitmap);
                     imgvPreviewSelectedImage.setBackgroundResource(android.R.color.background_dark);
                     txtvSelectedImageFilename.setText(imgFilename);
+                    txtvShowSizeOfOriginalSelectedImage.setText(String.valueOf(imgBitmap.getWidth()) + " x " + String.valueOf(imgBitmap.getHeight()));
 
                     btnStartAtLevelSelect.setEnabled(true);
                 } catch (NullPointerException e) {
@@ -103,6 +105,7 @@ public class LevelSelectActivity extends AppCompatActivity {
         rdbSelectGamingModeSlidingPuzzle = findViewById(R.id.rdb_select_gaming_mode_sliding_puzzle);
         rdbSelectGamingModeTraditionalPuzzle = findViewById(R.id.rdb_select_gaming_mode_traditional_puzzle);
         btnStartAtLevelSelect = findViewById(R.id.btn_start_at_level_select);
+        txtvShowSizeOfOriginalSelectedImage = findViewById(R.id.txtv_show_size_of_original_selected_image);
 
         // haven't selected image, cannot click start button
         btnStartAtLevelSelect.setEnabled(false);
