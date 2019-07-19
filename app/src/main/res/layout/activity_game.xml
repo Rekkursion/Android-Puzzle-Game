@@ -7,10 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
-    <!-- frame-layout for stacking image-views and progress information -->
+    <!-- frame-layout for stacking objects -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <!-- relative-layout for putting image-button -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/imgbtn_help_check_original_scaled_bitmap"
+                android:src="@drawable/ic_info_outline_orange_24dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/str_check_original_image"
+                android:layout_margin="@dimen/dim_general_margin"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
 
         <!-- grid-layout as a container for holding splitted image-views -->
         <GridLayout
@@ -41,6 +56,36 @@
                 android:gravity="center"
                 android:layout_margin="@dimen/dim_general_margin"
                 android:text="@string/str_image_processing_please_wait"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- linear-layout for showing original scaled image -->
+        <LinearLayout
+            android:id="@+id/lly_for_showing_original_scaled_image_and_its_ui"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="@string/str_original_image"
+                android:textAllCaps="true"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/dim_general_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/imgv_show_original_scaled_bitmap"
+                android:layout_marginBottom="@dimen/dim_general_margin"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/dim_preview_selected_image_size"
+                android:layout_height="@dimen/dim_preview_selected_image_size" />
+            <Button
+                android:id="@+id/btn_turn_back_to_gaming_when_showing_original_scaled_bitmap"
+                android:layout_marginBottom="@dimen/dim_general_margin"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/str_resume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

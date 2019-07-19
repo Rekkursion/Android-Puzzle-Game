@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -62,7 +63,7 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
                 imageViews[r][c].setTag(idx);
                 imageViews[r][c].setImageBitmap(splittedBitmapsArray[_r][_c]);
                 if (idx == GameManager.getInstance().difficulty * GameManager.getInstance().difficulty - 1)
-                    imageViews[r][c].setAlpha(0.0f);
+                    imageViews[r][c].setVisibility(View.INVISIBLE);
 
                 int newImageViewId = View.generateViewId();
                 imageViews[r][c].setId(newImageViewId);

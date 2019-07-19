@@ -2,6 +2,9 @@ package com.rekkursion.puzzlegame;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import java.util.HashMap;
@@ -37,6 +40,10 @@ public class GameManager {
         return tagAndIdDict.getOrDefault(tag, -1);
     }
 
+    public int getAbandonedTagNumber() {
+        return difficulty * difficulty - 1;
+    }
+
     public void shuffle() {
         tagNumbersMap = new int[difficulty][difficulty];
         for (int r = 0; r < difficulty; ++r) {
@@ -44,22 +51,27 @@ public class GameManager {
                 tagNumbersMap[r][c] = r * difficulty + c;
         }
 
-        for (int r = 0; r < difficulty; ++r) {
-            for (int c = 0; c < difficulty; ++c) {
-                int _r = (int) Math.floor(Math.random() * difficulty);
-                int _c = (int) Math.floor(Math.random() * difficulty);
+        int tmpNum = tagNumbersMap[1][2];
+        tagNumbersMap[1][2] = tagNumbersMap[2][2];
+        tagNumbersMap[2][2] = tmpNum;
+        return;
 
-                if (_r >= difficulty) _r = difficulty - 1;
-                if (_c >= difficulty) _c = difficulty - 1;
-
-                int tmp = tagNumbersMap[r][c];
-                tagNumbersMap[r][c] = tagNumbersMap[_r][_c];
-                tagNumbersMap[_r][_c] = tmp;
-            }
-        }
+//        for (int r = 0; r < difficulty; ++r) {
+//            for (int c = 0; c < difficulty; ++c) {
+//                int _r = (int) Math.floor(Math.random() * difficulty);
+//                int _c = (int) Math.floor(Math.random() * difficulty);
+//
+//                if (_r >= difficulty) _r = difficulty - 1;
+//                if (_c >= difficulty) _c = difficulty - 1;
+//
+//                int tmp = tagNumbersMap[r][c];
+//                tagNumbersMap[r][c] = tagNumbersMap[_r][_c];
+//                tagNumbersMap[_r][_c] = tmp;
+//            }
+//        }
     }
 
-    public void swapImageViews(ImageView view_a, ImageView view_b) {
+    public boolean swapImageViews(ImageView view_a, ImageView view_b) {
         int tag_a = (int) view_a.getTag(), tag_b = (int) view_b.getTag();
         int id_a = view_a.getId(), id_b = view_b.getId();
         Bitmap bitmap_a = ((BitmapDrawable) view_a.getDrawable()).getBitmap(), bitmap_b = ((BitmapDrawable) view_b.getDrawable()).getBitmap();
@@ -67,18 +79,28 @@ public class GameManager {
         view_a.setTag(tag_b); view_a.setId(id_b); view_a.setImageBitmap(bitmap_b);
         view_b.setTag(tag_a); view_b.setId(id_a); view_b.setImageBitmap(bitmap_a);
 
-        int alpha_a = (int) Math.floor((double) view_a.getAlpha() * 255.0d);
-        int alpha_b = (int) Math.floor((double) view_b.getAlpha() * 255.0d);
-
-        if (alpha_a == 0) {
-            view_a.setAlpha(1.0f);
-            view_b.setAlpha(0.0f);
-        } else if (alpha_b == 0) {
-            view_a.setAlpha(0.0f);
-            view_b.setAlpha(1.0f);
+        if (view_a.getVisibility() == View.INVISIBLE) {
+            view_a.setVisibility(View.VISIBLE);
+            view_b.setVisibility(View.INVISIBLE);
+        } else if (view_b.getVisibility() == View.INVISIBLE) {
+            view_a.setVisibility(View.INVISIBLE);
+            view_b.setVisibility(View.VISIBLE);
         }
 
         swapTagNumbers(tag_a, tag_b);
+
+        return hasFinished();
+    }
+
+    public boolean hasFinished() {
+        for (int r = 0; r < difficulty; ++r) {
+            for (int c = 0; c < difficulty; ++c) {
+                int tag = r * difficulty + c;
+                if (tagNumbersMap[r][c] != tag)
+                    return false;
+            }
+        }
+        return true;
     }
 
     public boolean isAbandonedTagNumber(int tag) {
