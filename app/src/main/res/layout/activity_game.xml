@@ -12,19 +12,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- relative-layout for putting image-button -->
+        <!-- relative-layout for putting UIs -->
         <RelativeLayout
+            android:layout_margin="@dimen/dim_general_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/imgbtn_help_check_original_scaled_bitmap"
-                android:src="@drawable/ic_info_outline_orange_24dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="@string/str_check_original_image"
-                android:layout_margin="@dimen/dim_general_margin"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
+            <!-- relative-layout for small UIs -->
+            <RelativeLayout
+                android:id="@+id/rly_small_uis_bar"
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/imgbtn_help_check_original_scaled_bitmap"
+                    android:src="@drawable/ic_info_outline_orange_24dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/str_check_original_image"
+                    android:layout_margin="@dimen/dim_general_margin"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <!-- relative-layout for timer and tap-counter -->
+            <RelativeLayout
+                android:layout_alignBottom="@id/rly_small_uis_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtv_tap_counter"
+                    android:text="@string/str_tapped_0"
+                    android:textSize="35sp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <!-- grid-layout as a container for holding splitted image-views -->

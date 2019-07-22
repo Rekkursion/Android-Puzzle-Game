@@ -13,4 +13,5 @@
     <string name="str_check_original_image">Check original image</string>
     <string name="str_resume">Resume</string>
     <string name="str_original_image">Original image</string>
+    <string name="str_tapped_0">Moved: 0</string>
 </resources>

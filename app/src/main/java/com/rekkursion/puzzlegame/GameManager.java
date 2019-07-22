@@ -2,12 +2,15 @@ package com.rekkursion.puzzlegame;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.transition.Visibility;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameManager {
@@ -24,6 +27,22 @@ public class GameManager {
     public int[][] tagNumbersMap;
     public String selectedScaleTypeString;
     private Map<Integer, Integer> tagAndIdDict;
+    private List<Object> UIList;
+    public int tappedCount;
+
+    public void addUIWhichShouldBeDiscoveredWhenProcessingImage(Object obj) {
+        if (UIList == null)
+            UIList = new ArrayList<>();
+        UIList.add(obj);
+    }
+
+    public void setVisibilitiesOfUIs(int visibility) {
+        for (Object obj : UIList) {
+            try {
+                ((View) obj).setVisibility(visibility);
+            } catch (Exception e) {}
+        }
+    }
 
     public void addTagAndIdEntry(int newTag, int newId) {
         if (tagAndIdDict == null)

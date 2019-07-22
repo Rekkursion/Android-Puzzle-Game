@@ -49,6 +49,8 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
 
         GameManager.getInstance().scaledImageBitmap = bitmap;
         GameManager.getInstance().shuffle();
+        GameManager.getInstance().tappedCount = 0;
+        GameManager.getInstance().setVisibilitiesOfUIs(View.VISIBLE);
 
         progressBar.setVisibility(View.GONE);
         txtvProgressBarInformation.setVisibility(View.GONE);

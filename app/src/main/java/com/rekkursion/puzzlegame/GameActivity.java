@@ -15,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameActivity extends AppCompatActivity {
     private int TOTAL_GAMING_IMAGE_VIEW_SIZE = 1000;
     private int screenWidth, screenHeight;
@@ -28,6 +31,7 @@ public class GameActivity extends AppCompatActivity {
     private ImageView imgvShowOriginalScaledBitmap;
     private LinearLayout llyForShowingOriginalScaledImageAndItsUI;
     private Button btnTurnBackToGamingWhenShowingOriginalScaledBitmap;
+    private TextView txtvTapCounter;
 
     private ImageView[][] imgvsSplittedBitmapsArray;
 
@@ -62,6 +66,7 @@ public class GameActivity extends AppCompatActivity {
         imgvShowOriginalScaledBitmap = findViewById(R.id.imgv_show_original_scaled_bitmap);
         llyForShowingOriginalScaledImageAndItsUI = findViewById(R.id.lly_for_showing_original_scaled_image_and_its_ui);
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_turn_back_to_gaming_when_showing_original_scaled_bitmap);
+        txtvTapCounter = findViewById(R.id.txtv_tap_counter);
 
         // adjust size of image-view which is used to showing original scaled bitmap
         imgvShowOriginalScaledBitmap.getLayoutParams().width = TOTAL_GAMING_IMAGE_VIEW_SIZE;
@@ -69,6 +74,9 @@ public class GameActivity extends AppCompatActivity {
 
         // initially image-view for showing original scaled image and its button are visually gone
         llyForShowingOriginalScaledImageAndItsUI.setVisibility(View.GONE);
+
+        // discover UIs when the image is processing
+        discoverUIsWhenProcessingImage();
 
         imgbtnHelpCheckOriginalScaledBitmap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +94,11 @@ public class GameActivity extends AppCompatActivity {
                 glySplittedImageViewsContainer.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void discoverUIsWhenProcessingImage() {
+        imgbtnHelpCheckOriginalScaledBitmap.setVisibility(View.GONE);
+        GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(imgbtnHelpCheckOriginalScaledBitmap);
     }
 
     private void createImageViewsForGaming() {
@@ -129,18 +142,30 @@ public class GameActivity extends AppCompatActivity {
 
                         // exchange image-views
                         boolean hasFinished = false;
+                        boolean moved = false;
                         if (GameManager.getInstance().isAbandonedTagNumber(upTag)) {
                             ImageView upView = findViewById(GameManager.getInstance().getImageViewIdByTag(upTag));
                             hasFinished = GameManager.getInstance().swapImageViews((ImageView) view, upView);
+                            moved = true;
                         } else if (GameManager.getInstance().isAbandonedTagNumber(rightTag)) {
                             ImageView rightView = findViewById(GameManager.getInstance().getImageViewIdByTag(rightTag));
                             hasFinished = GameManager.getInstance().swapImageViews((ImageView) view, rightView);
+                            moved = true;
                         } else if (GameManager.getInstance().isAbandonedTagNumber(downTag)) {
                             ImageView downView = findViewById(GameManager.getInstance().getImageViewIdByTag(downTag));
                             hasFinished = GameManager.getInstance().swapImageViews((ImageView) view, downView);
+                            moved = true;
                         } else if (GameManager.getInstance().isAbandonedTagNumber(leftTag)) {
                             ImageView leftView = findViewById(GameManager.getInstance().getImageViewIdByTag(leftTag));
                             hasFinished = GameManager.getInstance().swapImageViews((ImageView) view, leftView);
+                            moved = true;
+                        }
+
+                        if (moved) {
+                            int newTappedCount = ++GameManager.getInstance().tappedCount;
+                            String tapped_0 = getString(R.string.str_tapped_0);
+                            String tapped = tapped_0.substring(0, tapped_0.indexOf(" "));
+                            txtvTapCounter.setText(tapped + " " + String.valueOf(newTappedCount));
                         }
 
                         if (hasFinished) {
