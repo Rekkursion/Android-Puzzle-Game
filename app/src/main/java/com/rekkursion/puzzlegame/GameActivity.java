@@ -161,6 +161,7 @@ public class GameActivity extends AppCompatActivity {
                             moved = true;
                         }
 
+                        // if moved successfully, plus one into the counter
                         if (moved) {
                             int newTappedCount = ++GameManager.getInstance().tappedCount;
                             String tapped_0 = getString(R.string.str_tapped_0);
