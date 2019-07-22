@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -112,7 +113,7 @@ public class LevelSelectActivity extends AppCompatActivity {
 
         // initial scale type for preview-selected-image which is FIT_CENTER
         imgvPreviewSelectedImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        spnSelectScaleType.setSelection(3);
+        spnSelectScaleType.setSelection(0);
 
         // on-seek-bar-change-listener for selecting difficulties
         skbDifficultiesSelect.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -181,6 +182,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                 GameManager.getInstance().originalImageBitmap = origImageBitmap;
                 GameManager.getInstance().difficulty = selectedDifficulty;
                 GameManager.getInstance().gamingMode = gamingMode;
+                GameManager.getInstance().selectedScaleTypeString = spnSelectScaleType.getSelectedItem().toString();
 
                 Intent intentToGameActivity = new Intent(LevelSelectActivity.this, GameActivity.class);
                 startActivity(intentToGameActivity);

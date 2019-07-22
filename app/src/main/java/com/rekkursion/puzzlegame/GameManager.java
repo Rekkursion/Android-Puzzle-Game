@@ -22,6 +22,7 @@ public class GameManager {
     public int difficulty;
     public GamingModeEnum gamingMode;
     public int[][] tagNumbersMap;
+    public String selectedScaleTypeString;
     private Map<Integer, Integer> tagAndIdDict;
 
     public void addTagAndIdEntry(int newTag, int newId) {
@@ -51,24 +52,24 @@ public class GameManager {
                 tagNumbersMap[r][c] = r * difficulty + c;
         }
 
-        int tmpNum = tagNumbersMap[1][2];
-        tagNumbersMap[1][2] = tagNumbersMap[2][2];
-        tagNumbersMap[2][2] = tmpNum;
-        return;
+//        int tmpNum = tagNumbersMap[1][2];
+//        tagNumbersMap[1][2] = tagNumbersMap[2][2];
+//        tagNumbersMap[2][2] = tmpNum;
+//        return;
 
-//        for (int r = 0; r < difficulty; ++r) {
-//            for (int c = 0; c < difficulty; ++c) {
-//                int _r = (int) Math.floor(Math.random() * difficulty);
-//                int _c = (int) Math.floor(Math.random() * difficulty);
-//
-//                if (_r >= difficulty) _r = difficulty - 1;
-//                if (_c >= difficulty) _c = difficulty - 1;
-//
-//                int tmp = tagNumbersMap[r][c];
-//                tagNumbersMap[r][c] = tagNumbersMap[_r][_c];
-//                tagNumbersMap[_r][_c] = tmp;
-//            }
-//        }
+        for (int r = 0; r < difficulty; ++r) {
+            for (int c = 0; c < difficulty; ++c) {
+                int _r = (int) Math.floor(Math.random() * difficulty);
+                int _c = (int) Math.floor(Math.random() * difficulty);
+
+                if (_r >= difficulty) _r = difficulty - 1;
+                if (_c >= difficulty) _c = difficulty - 1;
+
+                int tmp = tagNumbersMap[r][c];
+                tagNumbersMap[r][c] = tagNumbersMap[_r][_c];
+                tagNumbersMap[_r][_c] = tmp;
+            }
+        }
     }
 
     public boolean swapImageViews(ImageView view_a, ImageView view_b) {

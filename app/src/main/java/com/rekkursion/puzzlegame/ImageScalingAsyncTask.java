@@ -79,7 +79,17 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(Context... contexts) {
-        int biggerSize = imageHeight > imageWidth ? imageHeight : imageWidth;
-        return ImageProcessFactory.scaleImage_fitCenter(originalBitmap, biggerSize);
+        String scaleTypeStr = GameManager.getInstance().selectedScaleTypeString;
+
+        if (scaleTypeStr.equals("fitCenter"))
+            return ImageProcessFactory.scaleImage_fitCenter(originalBitmap);
+        else if (scaleTypeStr.equals("fitXY"))
+            return ImageProcessFactory.scaleImage_fitXY(originalBitmap);
+        else if (scaleTypeStr.equals("fitStart"))
+            return ImageProcessFactory.scaleImage_fitStart(originalBitmap);
+        else if (scaleTypeStr.equals("fitEnd"))
+            return ImageProcessFactory.scaleImage_fitEnd(originalBitmap);
+        else
+            return ImageProcessFactory.scaleImage_fitCenter(originalBitmap);
     }
 }

@@ -4,10 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 
 public class ImageProcessFactory {
-    public static Bitmap scaleImage_fitCenter(Bitmap origBitmap, int fittingSize) {
-        Bitmap scaledBitmap = Bitmap.createBitmap(fittingSize, fittingSize, Bitmap.Config.ARGB_8888);
+    public static Bitmap scaleImage_fitCenter(Bitmap origBitmap) {
         int imageWidth = origBitmap.getWidth();
         int imageHeight = origBitmap.getHeight();
+        int fittingSize = imageHeight > imageWidth ? imageHeight : imageWidth;
+        Bitmap scaledBitmap = Bitmap.createBitmap(fittingSize, fittingSize, Bitmap.Config.ARGB_8888);
 
         // step 1: fill in with black pixels
         int[] pixels = new int[fittingSize * fittingSize];
@@ -20,6 +21,78 @@ public class ImageProcessFactory {
             for (int c = startColIdx; c < startColIdx + imageWidth; ++c) {
                 int idx = r * fittingSize + c;
                 pixels[idx] = origBitmap.getPixel(c - startColIdx, r - startRowIdx);
+            }
+        }
+
+        scaledBitmap.setPixels(pixels, 0, fittingSize, 0, 0, fittingSize, fittingSize);
+        return scaledBitmap;
+    }
+
+    public static Bitmap scaleImage_fitXY(Bitmap origBitmap) {
+        int imageWidth = origBitmap.getWidth();
+        int imageHeight = origBitmap.getHeight();
+        int fittingSize = imageHeight > imageWidth ? imageHeight : imageWidth;
+        double widthRatio = (double) imageWidth / (double) fittingSize;
+        double heightRatio = (double) imageHeight / (double) fittingSize;
+        Bitmap scaledBitmap = Bitmap.createBitmap(fittingSize, fittingSize, Bitmap.Config.ARGB_8888);
+
+        int[] pixels = new int[fittingSize * fittingSize];
+        for (int r = 0; r < fittingSize; ++r) {
+            for (int c = 0; c < fittingSize; ++c) {
+                int pixelIdx = r * fittingSize + c;
+                int origImgRowIdx = (int) Math.floor(r * heightRatio);
+                int origImgColIdx = (int) Math.floor(c * widthRatio);
+
+                if (origImgRowIdx >= imageHeight) origImgRowIdx = imageHeight - 1;
+                if (origImgColIdx >= imageWidth) origImgColIdx = imageWidth - 1;
+
+                pixels[pixelIdx] = origBitmap.getPixel(origImgColIdx, origImgRowIdx);
+            }
+        }
+
+        scaledBitmap.setPixels(pixels, 0, fittingSize, 0, 0, fittingSize, fittingSize);
+        return scaledBitmap;
+    }
+
+    public static Bitmap scaleImage_fitStart(Bitmap origBitmap) {
+        int imageWidth = origBitmap.getWidth();
+        int imageHeight = origBitmap.getHeight();
+        int fittingSize = imageHeight > imageWidth ? imageHeight : imageWidth;
+        Bitmap scaledBitmap = Bitmap.createBitmap(fittingSize, fittingSize, Bitmap.Config.ARGB_8888);
+
+        int[] pixels = new int[fittingSize * fittingSize];
+        for (int r = 0; r < fittingSize; ++r) {
+            for (int c = 0; c < fittingSize; ++c) {
+                int pixelIdx = r * fittingSize + c;
+
+                if (r < imageHeight && c < imageWidth)
+                    pixels[pixelIdx] = origBitmap.getPixel(c, r);
+                else
+                    pixels[pixelIdx] = Color.rgb(0, 0, 0);
+            }
+        }
+
+        scaledBitmap.setPixels(pixels, 0, fittingSize, 0, 0, fittingSize, fittingSize);
+        return scaledBitmap;
+    }
+
+    public static Bitmap scaleImage_fitEnd(Bitmap origBitmap) {
+        int imageWidth = origBitmap.getWidth();
+        int imageHeight = origBitmap.getHeight();
+        int fittingSize = imageHeight > imageWidth ? imageHeight : imageWidth;
+        int blackRegionWidth = fittingSize - imageWidth;
+        int blackRegionHeight = fittingSize - imageHeight;
+        Bitmap scaledBitmap = Bitmap.createBitmap(fittingSize, fittingSize, Bitmap.Config.ARGB_8888);
+
+        int[] pixels = new int[fittingSize * fittingSize];
+        for (int r = 0; r < fittingSize; ++r) {
+            for (int c = 0; c < fittingSize; ++c) {
+                int pixelIdx = r * fittingSize + c;
+
+                if (r < blackRegionHeight || c < blackRegionWidth)
+                    pixels[pixelIdx] = Color.rgb(0, 0, 0);
+                else
+                    pixels[pixelIdx] = origBitmap.getPixel(c - blackRegionWidth, r - blackRegionHeight);
             }
         }
 
