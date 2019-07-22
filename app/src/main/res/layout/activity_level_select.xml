@@ -86,7 +86,16 @@
             android:id="@+id/txtv_show_size_of_original_selected_image"
             android:gravity="center"
             android:text=""
+            android:layout_marginBottom="@dimen/dim_general_margin"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txtv_show_image_too_big_warning"
+            android:gravity="center"
+            android:text="@string/str_if_the_image_is_too_large_image_processing_will_take_a_long_time"
+            android:textSize="@dimen/dim_warning_text_size"
+            android:textColor="@android:color/holo_orange_dark"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 

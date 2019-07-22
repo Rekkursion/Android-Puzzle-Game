@@ -22,6 +22,8 @@ public class GameManager {
         PRE, GAMING, POST
     }
 
+    public static final long IMAGE_TOO_BIG_WARNING_THRESHOLD = 1200L * 1200L;
+
     private static final GameManager instance = new GameManager();
 
     public Bitmap originalImageBitmap;

@@ -25,6 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,7 @@ public class LevelSelectActivity extends AppCompatActivity {
     private RadioButton rdbSelectGamingModeTraditionalPuzzle;
     private Button btnStartAtLevelSelect;
     private TextView txtvShowSizeOfOriginalSelectedImage;
+    private TextView txtvShowImageTooBigWarning;
 
     private final int REQ_CODE_GET_IMAGE_FROM_EXTERNAL_STORAGE = 10037;
     private final int REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE = 63;
@@ -84,6 +87,11 @@ public class LevelSelectActivity extends AppCompatActivity {
                     txtvSelectedImageFilename.setText(imgFilename);
                     txtvShowSizeOfOriginalSelectedImage.setText(String.valueOf(imgBitmap.getWidth()) + " x " + String.valueOf(imgBitmap.getHeight()));
 
+                    if ((long) imgBitmap.getWidth() * (long) imgBitmap.getHeight() >= GameManager.IMAGE_TOO_BIG_WARNING_THRESHOLD)
+                        txtvShowImageTooBigWarning.setVisibility(View.VISIBLE);
+                    else
+                        txtvShowImageTooBigWarning.setVisibility(View.GONE);
+
                     btnStartAtLevelSelect.setEnabled(true);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
@@ -107,6 +115,10 @@ public class LevelSelectActivity extends AppCompatActivity {
         rdbSelectGamingModeTraditionalPuzzle = findViewById(R.id.rdb_select_gaming_mode_traditional_puzzle);
         btnStartAtLevelSelect = findViewById(R.id.btn_start_at_level_select);
         txtvShowSizeOfOriginalSelectedImage = findViewById(R.id.txtv_show_size_of_original_selected_image);
+        txtvShowImageTooBigWarning = findViewById(R.id.txtv_show_image_too_big_warning);
+
+        // discover the warnings
+        txtvShowImageTooBigWarning.setVisibility(View.GONE);
 
         // haven't selected image, cannot click start button
         btnStartAtLevelSelect.setEnabled(false);
