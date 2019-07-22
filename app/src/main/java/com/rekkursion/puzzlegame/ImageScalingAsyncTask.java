@@ -11,13 +11,14 @@ import android.widget.TextView;
 public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
     private ProgressBar progressBar;
     private TextView txtvProgressBarInformation;
+    private TextView txtvMillisecondTimer;
     private ImageView[][] imageViews;
 
     private int viewHeight, viewWidth;
     private Bitmap originalBitmap;
     private int imageHeight, imageWidth;
 
-    public void execute(ImageView[][] imageViews, ProgressBar progressBar, TextView textView) {
+    public void execute(ImageView[][] imageViews, ProgressBar progressBar, TextView textView, TextView txtvMillisecondTimer) {
         originalBitmap = GameManager.getInstance().originalImageBitmap;
         imageWidth = originalBitmap.getWidth();
         imageHeight = originalBitmap.getHeight();
@@ -28,6 +29,8 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
 
         this.progressBar = progressBar;
         txtvProgressBarInformation = textView;
+
+        this.txtvMillisecondTimer = txtvMillisecondTimer;
 
         super.execute();
     }
@@ -72,6 +75,8 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
                 GameManager.getInstance().addTagAndIdEntry(idx, newImageViewId);
             }
         }
+
+        GameManager.getInstance().initPuzzlePlayingTimerAndSetTask(txtvMillisecondTimer);
     }
 
     @Override

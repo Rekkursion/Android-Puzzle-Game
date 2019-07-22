@@ -43,10 +43,27 @@
                 <TextView
                     android:id="@+id/txtv_tap_counter"
                     android:text="@string/str_tapped_0"
-                    android:textSize="@dimen/dim_move_counter_text_size"
+                    android:textSize="@dimen/dim_move_counter_and_ms_timer_text_size"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/dim_general_margin"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtv_millisecond_timer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center"
+                    android:text=""
+                    android:textSize="@dimen/dim_move_counter_and_ms_timer_text_size" />
             </RelativeLayout>
         </RelativeLayout>
 

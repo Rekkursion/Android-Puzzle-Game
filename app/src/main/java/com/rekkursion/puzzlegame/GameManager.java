@@ -2,16 +2,21 @@ package com.rekkursion.puzzlegame;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.transition.Visibility;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameManager {
     public enum Direction {
@@ -22,7 +27,11 @@ public class GameManager {
         PRE, GAMING, POST
     }
 
-    public static final long IMAGE_TOO_BIG_WARNING_THRESHOLD = 1200L * 1200L;
+    public enum TimerStatus {
+        RUNNING, PAUSED, STOPPED
+    }
+
+    public static final long IMAGE_TOO_BIG_WARNING_THRESHOLD = 1300L * 1300L;
 
     private static final GameManager instance = new GameManager();
 
@@ -36,6 +45,46 @@ public class GameManager {
     private List<Object> UIList;
     public int movedCount;
     public GameStatus gameStatus;
+
+    private TextView txtvMillisecondTimer;
+    private Timer puzzlePlayingTimer;
+    private long puzzlePlayingCounter_ms;
+    public TimerStatus puzzerPlayingTimerStatus;
+
+    public void initPuzzlePlayingTimerAndSetTask(final TextView txtvMillisecondTimer) {
+        puzzerPlayingTimerStatus = TimerStatus.RUNNING;
+
+        if (this.txtvMillisecondTimer != null)
+            this.txtvMillisecondTimer = null;
+        this.txtvMillisecondTimer = txtvMillisecondTimer;
+
+        if (puzzlePlayingTimer != null) {
+            puzzlePlayingTimer.cancel();
+            puzzlePlayingTimer = null;
+        }
+        puzzlePlayingTimer = new Timer();
+        puzzlePlayingCounter_ms = 0L;
+
+        puzzlePlayingTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (puzzerPlayingTimerStatus == TimerStatus.RUNNING)
+                    puzzlePlayingCounter_ms += 1L;
+                doActionHandler.sendEmptyMessage(1);
+            }
+
+            private Handler doActionHandler = new Handler() {
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+
+                    long beforeDot = puzzlePlayingCounter_ms / 100L;
+                    long afterDot = puzzlePlayingCounter_ms % 100L;
+                    txtvMillisecondTimer.setText(String.format("%d.%02d", beforeDot, afterDot));
+                }
+            };
+        }, 0L, 10L);
+    }
 
     public void addUIWhichShouldBeDiscoveredWhenProcessingImage(Object obj) {
         if (UIList == null)
@@ -63,6 +112,11 @@ public class GameManager {
         tagAndIdDict = null;
     }
 
+    public void clearUIList() {
+        if (UIList != null)
+            UIList.clear();
+    }
+
     public int getImageViewIdByTag(int tag) {
         return tagAndIdDict.getOrDefault(tag, -1);
     }
@@ -72,6 +126,12 @@ public class GameManager {
     }
 
     public void shuffle() {
+        if (tagNumbersMap != null) {
+            for (int r = 0; r < tagNumbersMap.length; ++r)
+                tagNumbersMap[r] = null;
+            tagNumbersMap = null;
+        }
+
         tagNumbersMap = new int[difficulty][difficulty];
         for (int r = 0; r < difficulty; ++r) {
             for (int c = 0; c < difficulty; ++c)

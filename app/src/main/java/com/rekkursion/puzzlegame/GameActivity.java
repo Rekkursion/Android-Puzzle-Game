@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.Timer;
+
 public class GameActivity extends AppCompatActivity {
     private int TOTAL_GAMING_IMAGE_VIEW_SIZE = 1000;
     private int screenWidth, screenHeight;
@@ -29,6 +31,7 @@ public class GameActivity extends AppCompatActivity {
     private LinearLayout llyForShowingOriginalScaledImageAndItsUI;
     private Button btnTurnBackToGamingWhenShowingOriginalScaledBitmap;
     private TextView txtvTapCounter;
+    private TextView txtvMillisecondTimer;
 
     private ImageView[][] imgvsSplittedBitmapsArray;
 
@@ -37,6 +40,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        // readjust the size and the margins of blocks
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenWidth = displayMetrics.widthPixels;
@@ -48,13 +52,22 @@ public class GameActivity extends AppCompatActivity {
         if (calculatedLeftSideMargin > 0)
             marginOnLeftSideBlocks = calculatedLeftSideMargin;
 
+        // init xml views and create image-views for the puzzle
         initViews();
         createImageViewsForGaming();
 
+        // init game status
         GameManager.getInstance().gameStatus = GameManager.GameStatus.PRE;
 
+        // start async task for image scaling
         ImageScalingAsyncTask imageScalingAsyncTask = new ImageScalingAsyncTask();
-        imageScalingAsyncTask.execute(imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing);
+        imageScalingAsyncTask.execute(imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing, txtvMillisecondTimer);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.STOPPED;
     }
 
     private void initViews() {
@@ -66,6 +79,7 @@ public class GameActivity extends AppCompatActivity {
         llyForShowingOriginalScaledImageAndItsUI = findViewById(R.id.lly_for_showing_original_scaled_image_and_its_ui);
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_turn_back_to_gaming_when_showing_original_scaled_bitmap);
         txtvTapCounter = findViewById(R.id.txtv_tap_counter);
+        txtvMillisecondTimer = findViewById(R.id.txtv_millisecond_timer);
 
         // adjust size of image-view which is used to showing original scaled bitmap
         imgvShowOriginalScaledBitmap.getLayoutParams().width = TOTAL_GAMING_IMAGE_VIEW_SIZE;
@@ -85,6 +99,9 @@ public class GameActivity extends AppCompatActivity {
                 imgvShowOriginalScaledBitmap.setImageBitmap(GameManager.getInstance().scaledImageBitmap);
 
                 GameManager.getInstance().setVisibilitiesOfUIs(View.GONE);
+
+                if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.RUNNING)
+                    GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.PAUSED;
             }
         });
 
@@ -95,16 +112,24 @@ public class GameActivity extends AppCompatActivity {
                 glySplittedImageViewsContainer.setVisibility(View.VISIBLE);
 
                 GameManager.getInstance().setVisibilitiesOfUIs(View.VISIBLE);
+
+                if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PAUSED)
+                    GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.RUNNING;
             }
         });
     }
 
     private void discoverUIsWhenProcessingImage() {
+        GameManager.getInstance().clearUIList();
+
         imgbtnHelpCheckOriginalScaledBitmap.setVisibility(View.GONE);
         GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(imgbtnHelpCheckOriginalScaledBitmap);
 
         txtvTapCounter.setVisibility(View.GONE);
         GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(txtvTapCounter);
+
+        txtvMillisecondTimer.setVisibility(View.GONE);
+        GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(txtvMillisecondTimer);
     }
 
     private void createImageViewsForGaming() {
@@ -182,7 +207,9 @@ public class GameActivity extends AppCompatActivity {
                             ImageView abandonedView = findViewById(GameManager.getInstance().getImageViewIdByTag(GameManager.getInstance().getAbandonedTagNumber()));
                             abandonedView.setVisibility(View.VISIBLE);
                             abandonedView.startAnimation(AnimationUtils.loadAnimation(GameActivity.this, R.anim.fade_in));
+
                             GameManager.getInstance().gameStatus = GameManager.GameStatus.POST;
+                            GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.STOPPED;
 
                             // adjust the margins of all blocks without gaps (general margins)
                             int leftSideMarginWithoutGeneralMargins = (screenWidth - TOTAL_GAMING_IMAGE_VIEW_SIZE) / 2;
