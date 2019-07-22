@@ -4,4 +4,5 @@
     <dimen name="dim_start_at_menu_text_size">70sp</dimen>
     <dimen name="dim_preview_selected_image_size">200dp</dimen>
     <dimen name="dim_gaming_image_size">350dp</dimen>
+    <dimen name="dim_move_counter_text_size">30sp</dimen>
 </resources>

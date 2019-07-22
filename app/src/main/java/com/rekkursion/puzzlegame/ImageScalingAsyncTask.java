@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -49,8 +48,9 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
 
         GameManager.getInstance().scaledImageBitmap = bitmap;
         GameManager.getInstance().shuffle();
-        GameManager.getInstance().tappedCount = 0;
+        GameManager.getInstance().movedCount = 0;
         GameManager.getInstance().setVisibilitiesOfUIs(View.VISIBLE);
+        GameManager.getInstance().gameStatus = GameManager.GameStatus.GAMING;
 
         progressBar.setVisibility(View.GONE);
         txtvProgressBarInformation.setVisibility(View.GONE);

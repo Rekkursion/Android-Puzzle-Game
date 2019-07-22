@@ -15,9 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GameActivity extends AppCompatActivity {
     private int TOTAL_GAMING_IMAGE_VIEW_SIZE = 1000;
     private int screenWidth, screenHeight;
@@ -54,6 +51,8 @@ public class GameActivity extends AppCompatActivity {
         initViews();
         createImageViewsForGaming();
 
+        GameManager.getInstance().gameStatus = GameManager.GameStatus.PRE;
+
         ImageScalingAsyncTask imageScalingAsyncTask = new ImageScalingAsyncTask();
         imageScalingAsyncTask.execute(imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing);
     }
@@ -84,6 +83,8 @@ public class GameActivity extends AppCompatActivity {
                 llyForShowingOriginalScaledImageAndItsUI.setVisibility(View.VISIBLE);
                 glySplittedImageViewsContainer.setVisibility(View.INVISIBLE);
                 imgvShowOriginalScaledBitmap.setImageBitmap(GameManager.getInstance().scaledImageBitmap);
+
+                GameManager.getInstance().setVisibilitiesOfUIs(View.GONE);
             }
         });
 
@@ -92,6 +93,8 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 llyForShowingOriginalScaledImageAndItsUI.setVisibility(View.GONE);
                 glySplittedImageViewsContainer.setVisibility(View.VISIBLE);
+
+                GameManager.getInstance().setVisibilitiesOfUIs(View.VISIBLE);
             }
         });
     }
@@ -99,6 +102,9 @@ public class GameActivity extends AppCompatActivity {
     private void discoverUIsWhenProcessingImage() {
         imgbtnHelpCheckOriginalScaledBitmap.setVisibility(View.GONE);
         GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(imgbtnHelpCheckOriginalScaledBitmap);
+
+        txtvTapCounter.setVisibility(View.GONE);
+        GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(txtvTapCounter);
     }
 
     private void createImageViewsForGaming() {
@@ -130,6 +136,9 @@ public class GameActivity extends AppCompatActivity {
                 newImgView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (GameManager.getInstance().gameStatus != GameManager.GameStatus.GAMING)
+                            return;
+
                         int viewTag = (int) view.getTag();
 
                         if (GameManager.getInstance().isAbandonedTagNumber(viewTag))
@@ -163,7 +172,7 @@ public class GameActivity extends AppCompatActivity {
 
                         // if moved successfully, plus one into the counter
                         if (moved) {
-                            int newTappedCount = ++GameManager.getInstance().tappedCount;
+                            int newTappedCount = ++GameManager.getInstance().movedCount;
                             String tapped_0 = getString(R.string.str_tapped_0);
                             String tapped = tapped_0.substring(0, tapped_0.indexOf(" "));
                             txtvTapCounter.setText(tapped + " " + String.valueOf(newTappedCount));
@@ -173,6 +182,7 @@ public class GameActivity extends AppCompatActivity {
                             ImageView abandonedView = findViewById(GameManager.getInstance().getImageViewIdByTag(GameManager.getInstance().getAbandonedTagNumber()));
                             abandonedView.setVisibility(View.VISIBLE);
                             abandonedView.startAnimation(AnimationUtils.loadAnimation(GameActivity.this, R.anim.fade_in));
+                            GameManager.getInstance().gameStatus = GameManager.GameStatus.POST;
 
                             // adjust the margins of all blocks without gaps (general margins)
                             int leftSideMarginWithoutGeneralMargins = (screenWidth - TOTAL_GAMING_IMAGE_VIEW_SIZE) / 2;

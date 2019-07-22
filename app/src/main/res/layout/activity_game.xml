@@ -43,7 +43,7 @@
                 <TextView
                     android:id="@+id/txtv_tap_counter"
                     android:text="@string/str_tapped_0"
-                    android:textSize="35sp"
+                    android:textSize="@dimen/dim_move_counter_text_size"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
