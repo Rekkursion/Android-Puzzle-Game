@@ -33,6 +33,7 @@ public class GameManager {
     }
 
     public static final long IMAGE_TOO_BIG_WARNING_THRESHOLD = 1300L * 1300L;
+    public static final String RECORD_DATE_FORMAT_STRING = "yyyy/MM/dd";
 
     private static final GameManager instance = new GameManager();
 
@@ -51,31 +52,6 @@ public class GameManager {
     private Timer puzzlePlayingTimer;
     private long puzzlePlayingCounter_ms;
     public TimerStatus puzzerPlayingTimerStatus;
-
-    private List<RankingRecordItemModel> rankingRecordItemList;
-
-    public List<RankingRecordItemModel> getRankingRecordItemListFilteredByDifficulty(final int difficulty) {
-        return rankingRecordItemList
-                .stream()
-                .filter(item -> item.getGameDifficulty() == difficulty)
-                .collect(Collectors.toList());
-    }
-
-//    public List<RankingRecordItemModel> getRankingRecordItemList() {
-//        return rankingRecordItemList;
-//    }
-
-    public void clearRankingRecordItemList() {
-        if (rankingRecordItemList != null)
-            rankingRecordItemList.clear();
-        rankingRecordItemList = null;
-    }
-
-    public void addRankingRecordItem(RankingRecordItemModel item) {
-        if (rankingRecordItemList == null)
-            rankingRecordItemList = new ArrayList<>();
-        rankingRecordItemList.add(item);
-    }
 
     public void initPuzzlePlayingTimerAndSetTask(final TextView txtvMillisecondTimer) {
         puzzerPlayingTimerStatus = TimerStatus.RUNNING;

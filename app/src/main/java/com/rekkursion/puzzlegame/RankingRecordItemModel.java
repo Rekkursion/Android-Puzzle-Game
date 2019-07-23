@@ -1,5 +1,6 @@
 package com.rekkursion.puzzlegame;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -23,6 +24,10 @@ public class RankingRecordItemModel implements Comparable<RankingRecordItemModel
 
     public Date getRecordDate() {
         return recordDate;
+    }
+
+    public String getRecordDateStringByFormat(String format) {
+        return new SimpleDateFormat(format).format(recordDate);
     }
 
     public RankingRecordItemModel(int gameDifficulty, int movedCount, int costTime) {

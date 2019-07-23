@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 
 public class GameActivity extends AppCompatActivity {
@@ -227,7 +229,11 @@ public class GameActivity extends AppCompatActivity {
 
                             double costTime_double = Double.valueOf(txtvMillisecondTimer.getText().toString());
                             int costTime_int = (int) (costTime_double * 100.0);
-                            GameManager.getInstance().addRankingRecordItem(new RankingRecordItemModel(GameManager.getInstance().difficulty, GameManager.getInstance().movedCount, costTime_int));
+                            Date now = Calendar.getInstance().getTime();
+
+                            if (RankingActivity.newRankingRecord != null)
+                                RankingActivity.newRankingRecord = null;
+                            RankingActivity.newRankingRecord = new RankingRecordItemModel(GameManager.getInstance().difficulty, GameManager.getInstance().movedCount, costTime_int, now);
 
                             goToRankingActivity();
                         }

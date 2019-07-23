@@ -12,11 +12,16 @@ public class RankingActivity extends AppCompatActivity {
     private TabLayout tblyDifficultiesClassification;
     private ViewPager vpgrDifficultiesClassification;
 
+    private SQLiteDatabaseHelper sqlHelper;
+    public static RankingRecordItemModel newRankingRecord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
 
+        sqlHelper = new SQLiteDatabaseHelper(this);
+        sqlHelper.insertData(newRankingRecord);
         initViews();
     }
 
@@ -26,11 +31,12 @@ public class RankingActivity extends AppCompatActivity {
 
         // set up view-pager with fragments
         RankingBoardPagerAdapter adapter = new RankingBoardPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(3)), "3 × 3");
-        adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(4)), "4 × 4");
-        adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(5)), "5 × 5");
-        adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(6)), "6 × 6");
-        adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(7)), "7 × 7");
+        // adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(3)), "3 × 3");
+        adapter.addFragment(new RankingBoardFragment(sqlHelper.readData(3)), "3 × 3");
+        adapter.addFragment(new RankingBoardFragment(sqlHelper.readData(4)), "4 × 4");
+        adapter.addFragment(new RankingBoardFragment(sqlHelper.readData(5)), "5 × 5");
+        adapter.addFragment(new RankingBoardFragment(sqlHelper.readData(6)), "6 × 6");
+        adapter.addFragment(new RankingBoardFragment(sqlHelper.readData(7)), "7 × 7");
         // adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemList()), "ALL");
         vpgrDifficultiesClassification.setAdapter(adapter);
 
