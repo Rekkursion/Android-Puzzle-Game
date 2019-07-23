@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 public class GameManager {
     public enum Direction {
@@ -50,6 +51,27 @@ public class GameManager {
     private Timer puzzlePlayingTimer;
     private long puzzlePlayingCounter_ms;
     public TimerStatus puzzerPlayingTimerStatus;
+
+    private List<RankingRecordItemModel> rankingRecordItemList;
+
+    public List<RankingRecordItemModel> getRankingRecordItemListFilteredByDifficulty(final int difficulty) {
+        return rankingRecordItemList
+                .stream()
+                .filter(item -> item.getGameDifficulty() == difficulty)
+                .collect(Collectors.toList());
+    }
+
+    public void clearRankingRecordItemList() {
+        if (rankingRecordItemList != null)
+            rankingRecordItemList.clear();
+        rankingRecordItemList = null;
+    }
+
+    public void addRankingRecordItem(RankingRecordItemModel item) {
+        if (rankingRecordItemList == null)
+            rankingRecordItemList = new ArrayList<>();
+        rankingRecordItemList.add(item);
+    }
 
     public void initPuzzlePlayingTimerAndSetTask(final TextView txtvMillisecondTimer) {
         puzzerPlayingTimerStatus = TimerStatus.RUNNING;
@@ -138,9 +160,9 @@ public class GameManager {
                 tagNumbersMap[r][c] = r * difficulty + c;
         }
 
-        int tmpNum = tagNumbersMap[1][2];
-        tagNumbersMap[1][2] = tagNumbersMap[2][2];
-        tagNumbersMap[2][2] = tmpNum;
+        int tmpNum = tagNumbersMap[difficulty - 2][difficulty - 1];
+        tagNumbersMap[difficulty - 2][difficulty - 1] = tagNumbersMap[difficulty - 1][difficulty - 1];
+        tagNumbersMap[difficulty - 1][difficulty - 1] = tmpNum;
         return;
 
 //        for (int r = 0; r < difficulty; ++r) {

@@ -29,9 +29,9 @@ public class RankingActivity extends AppCompatActivity {
 
         // set up view-pager with fragments
         RankingBoardPagerAdapter adapter = new RankingBoardPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new RankingBoardFragment(), "Goodo");
-        adapter.addFragment(new RankingBoardFragment(), "Bado");
-        adapter.addFragment(new RankingBoardFragment(), "malafaka");
+        adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(3)), "3 x 3");
+        adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(4)), "4 x 4");
+        adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(5)), "5 x 5");
         vpgrDifficultiesClassification.setAdapter(adapter);
     }
 }

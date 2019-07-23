@@ -9,6 +9,22 @@ public class RankingRecordItemModel implements Comparable<RankingRecordItemModel
     private int costTime;
     private Date recordDate;
 
+    public int getGameDifficulty() {
+        return gameDifficulty;
+    }
+
+    public int getMovedCount() {
+        return movedCount;
+    }
+
+    public int getCostTime() {
+        return costTime;
+    }
+
+    public Date getRecordDate() {
+        return recordDate;
+    }
+
     public RankingRecordItemModel(int gameDifficulty, int movedCount, int costTime) {
         this(gameDifficulty, movedCount, costTime, null);
     }

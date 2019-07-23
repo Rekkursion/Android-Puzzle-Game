@@ -225,6 +225,10 @@ public class GameActivity extends AppCompatActivity {
                                 }
                             }
 
+                            double costTime_double = Double.valueOf(txtvMillisecondTimer.getText().toString());
+                            int costTime_int = (int) (costTime_double * 100.0);
+                            GameManager.getInstance().addRankingRecordItem(new RankingRecordItemModel(GameManager.getInstance().difficulty, GameManager.getInstance().movedCount, costTime_int));
+
                             goToRankingActivity();
                         }
                     }
