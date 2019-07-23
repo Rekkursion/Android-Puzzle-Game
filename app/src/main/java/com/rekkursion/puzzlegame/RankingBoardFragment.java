@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,10 +37,16 @@ public class RankingBoardFragment extends Fragment {
     private RecyclerView recvRankingBoard;
     private List<RankingRecordItemModel> rankingRecordItemList;
 
+    private LinearLayout llyRankingBoardTitleCostTimeContainer;
+    private LinearLayout llyRankingBoardTitleMovedCountContainer;
+    private LinearLayout llyRankingBoardTitleDateContainer;
+
     private TextView txtvRankingBoardTitlePlace;
     private TextView txtvRankingBoardTitleCostTime;
     private TextView txtvRankingBoardTitleMovedCount;
     private TextView txtvRankingBoardTitleDate;
+
+    private ImageView imgvRankingBoardTitleCostTimeOrderingIcon;
 
     private RankingBoardOrderingStatus orderStatus;
 
@@ -59,6 +66,12 @@ public class RankingBoardFragment extends Fragment {
         txtvRankingBoardTitleCostTime = root.findViewById(R.id.txtv_ranking_board_title_cost_time);
         txtvRankingBoardTitleMovedCount = root.findViewById(R.id.txtv_ranking_board_title_moved_count);
         txtvRankingBoardTitleDate = root.findViewById(R.id.txtv_ranking_board_title_record_done_date);
+
+        imgvRankingBoardTitleCostTimeOrderingIcon = root.findViewById(R.id.imgv_ranking_board_title_cost_time_ordering_icon);
+
+        llyRankingBoardTitleCostTimeContainer = root.findViewById(R.id.lly_ranking_board_title_cost_time_container);
+        llyRankingBoardTitleMovedCountContainer = root.findViewById(R.id.lly_ranking_board_title_moved_count_container);
+        llyRankingBoardTitleDateContainer = root.findViewById(R.id.lly_ranking_board_title_record_done_date_container);
 
         return root;
     }
@@ -83,15 +96,13 @@ public class RankingBoardFragment extends Fragment {
         orderStatus = RankingBoardOrderingStatus.PLACE_ASC;
 
         // set on-click-listener for titles of recycler-view
-        txtvRankingBoardTitlePlace.setOnClickListener(rankingBoardTitlesOnClickListener);
-        txtvRankingBoardTitleCostTime.setOnClickListener(rankingBoardTitlesOnClickListener);
-        txtvRankingBoardTitleMovedCount.setOnClickListener(rankingBoardTitlesOnClickListener);
-        txtvRankingBoardTitleDate.setOnClickListener(rankingBoardTitlesOnClickListener);
+        // txtvRankingBoardTitlePlace.setOnClickListener(rankingBoardTitlesOnClickListener);
+        llyRankingBoardTitleCostTimeContainer.setOnClickListener(rankingBoardTitlesOnClickListener);
+        llyRankingBoardTitleMovedCountContainer.setOnClickListener(rankingBoardTitlesOnClickListener);
+        llyRankingBoardTitleDateContainer.setOnClickListener(rankingBoardTitlesOnClickListener);
 
         // not showing txtv-ranking-board-title-place since i have no idea how to deal with ranking places
         txtvRankingBoardTitlePlace.setVisibility(View.GONE);
-        ViewGroup.LayoutParams param = txtvRankingBoardTitleCostTime.getLayoutParams();
-
     }
 
     // ranking board titles click events: ordering features
@@ -99,6 +110,7 @@ public class RankingBoardFragment extends Fragment {
         RankingBoardOrderingStatus previousStatus = orderStatus;
 
         switch (view.getId()) {
+            // never enter
             case R.id.txtv_ranking_board_title_place:
                 if (orderStatus == RankingBoardOrderingStatus.PLACE_ASC) {
                     this.rankingRecordItemList = this.rankingRecordItemList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
@@ -109,7 +121,7 @@ public class RankingBoardFragment extends Fragment {
                 }
                 break;
 
-            case R.id.txtv_ranking_board_title_cost_time:
+            case R.id.lly_ranking_board_title_cost_time_container:
                 if (orderStatus == RankingBoardOrderingStatus.COST_TIME_ASC) {
                     this.rankingRecordItemList = this.rankingRecordItemList.stream().sorted(Comparator.comparing(RankingRecordItemModel::getCostTime).reversed()).collect(Collectors.toList());
                     orderStatus = RankingBoardOrderingStatus.COST_TIME_DESC;
@@ -119,7 +131,7 @@ public class RankingBoardFragment extends Fragment {
                 }
                 break;
 
-            case R.id.txtv_ranking_board_title_moved_count:
+            case R.id.lly_ranking_board_title_moved_count_container:
                 if (orderStatus == RankingBoardOrderingStatus.MOVED_COUNT_ASC) {
                     this.rankingRecordItemList = this.rankingRecordItemList.stream().sorted(Comparator.comparing(RankingRecordItemModel::getMovedCount).reversed()).collect(Collectors.toList());
                     orderStatus = RankingBoardOrderingStatus.MOVED_COUNT_DESC;
@@ -129,7 +141,7 @@ public class RankingBoardFragment extends Fragment {
                 }
                 break;
 
-            case R.id.txtv_ranking_board_title_record_done_date:
+            case R.id.lly_ranking_board_title_record_done_date_container:
                 if (orderStatus == RankingBoardOrderingStatus.DATE_ASC) {
                     this.rankingRecordItemList = this.rankingRecordItemList
                             .stream()
@@ -165,8 +177,10 @@ public class RankingBoardFragment extends Fragment {
         // unhighlight the previous ordering base-on
         if (previousStatus == RankingBoardOrderingStatus.PLACE_ASC || previousStatus == RankingBoardOrderingStatus.PLACE_DESC)
             txtvRankingBoardTitlePlace.setTextColor(getResources().getColor(R.color.color_general_ranking_board_title_text));
-        else if (previousStatus == RankingBoardOrderingStatus.COST_TIME_ASC || previousStatus == RankingBoardOrderingStatus.COST_TIME_DESC)
+        else if (previousStatus == RankingBoardOrderingStatus.COST_TIME_ASC || previousStatus == RankingBoardOrderingStatus.COST_TIME_DESC) {
             txtvRankingBoardTitleCostTime.setTextColor(getResources().getColor(R.color.color_general_ranking_board_title_text));
+            imgvRankingBoardTitleCostTimeOrderingIcon.setVisibility(View.GONE);
+        }
         else if (previousStatus == RankingBoardOrderingStatus.MOVED_COUNT_ASC || previousStatus == RankingBoardOrderingStatus.MOVED_COUNT_DESC)
             txtvRankingBoardTitleMovedCount.setTextColor(getResources().getColor(R.color.color_general_ranking_board_title_text));
         else
@@ -175,8 +189,11 @@ public class RankingBoardFragment extends Fragment {
         // highlight the current ordering base-on
         if (orderStatus == RankingBoardOrderingStatus.PLACE_ASC || orderStatus == RankingBoardOrderingStatus.PLACE_DESC)
             txtvRankingBoardTitlePlace.setTextColor(getResources().getColor(R.color.color_ordered_ranking_board_title_text));
-        else if (orderStatus == RankingBoardOrderingStatus.COST_TIME_ASC || orderStatus == RankingBoardOrderingStatus.COST_TIME_DESC)
+        else if (orderStatus == RankingBoardOrderingStatus.COST_TIME_ASC || orderStatus == RankingBoardOrderingStatus.COST_TIME_DESC) {
             txtvRankingBoardTitleCostTime.setTextColor(getResources().getColor(R.color.color_ordered_ranking_board_title_text));
+            imgvRankingBoardTitleCostTimeOrderingIcon.setVisibility(View.VISIBLE);
+            imgvRankingBoardTitleCostTimeOrderingIcon.setImageResource(orderStatus == RankingBoardOrderingStatus.COST_TIME_ASC ? R.drawable.ic_arrow_drop_up_orange_24dp : R.drawable.ic_arrow_drop_down_orange_24dp);
+        }
         else if (orderStatus == RankingBoardOrderingStatus.MOVED_COUNT_ASC || orderStatus == RankingBoardOrderingStatus.MOVED_COUNT_DESC)
             txtvRankingBoardTitleMovedCount.setTextColor(getResources().getColor(R.color.color_ordered_ranking_board_title_text));
         else
