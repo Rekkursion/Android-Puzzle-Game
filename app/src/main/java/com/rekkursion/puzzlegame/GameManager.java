@@ -33,7 +33,7 @@ public class GameManager {
     }
 
     public static final long IMAGE_TOO_BIG_WARNING_THRESHOLD = 1300L * 1300L;
-    public static final String RECORD_DATE_FORMAT_STRING = "yyyy/MM/dd";
+    public static final String RECORD_DATE_AND_TIME_FORMAT_STRING = "yyyy/MM/dd HH:mm:ss";
 
     private static final GameManager instance = new GameManager();
 

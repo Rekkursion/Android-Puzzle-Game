@@ -3,4 +3,6 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#F1B97E</color>
+    <color name="color_general_ranking_board_title_text">#F1B97E</color>
+    <color name="color_ordered_ranking_board_title_text">#D16B01</color>
 </resources>

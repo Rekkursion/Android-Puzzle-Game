@@ -3,12 +3,10 @@ package com.rekkursion.puzzlegame;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-import java.lang.reflect.Modifier;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,7 +61,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         cv.put(RANKING_TABLE_COL_DIFFICULTY, rr.getGameDifficulty());
         cv.put(RANKING_TABLE_COL_COST_TIME, rr.getCostTime());
         cv.put(RANKING_TABLE_COL_MOVED_COUNT, rr.getMovedCount());
-        cv.put(RANKING_TABLE_COL_DATE, rr.getRecordDateStringByFormat(GameManager.RECORD_DATE_FORMAT_STRING));
+        cv.put(RANKING_TABLE_COL_DATE, rr.getRecordDateStringByFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING));
         final long result = db.insert(RANKING_TABLE_NAME, null, cv);
 
         if(result == -1L)
@@ -99,7 +97,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
                 Date _date;
                 try {
-                    _date = new SimpleDateFormat(GameManager.RECORD_DATE_FORMAT_STRING).parse(_dateString);
+                    _date = new SimpleDateFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING).parse(_dateString);
                 } catch (ParseException e) {
                     _date = Calendar.getInstance().getTime();
                 }
