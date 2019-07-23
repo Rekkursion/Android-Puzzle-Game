@@ -2,6 +2,7 @@ package com.rekkursion.puzzlegame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -223,6 +224,8 @@ public class GameActivity extends AppCompatActivity {
                                     imageView.setLayoutParams(imageViewParam);
                                 }
                             }
+
+                            goToRankingActivity();
                         }
                     }
                 });
@@ -231,5 +234,10 @@ public class GameActivity extends AppCompatActivity {
                 imgvsSplittedBitmapsArray[r][c] = newImgView;
             }
         }
+    }
+
+    private void goToRankingActivity() {
+        Intent intentToRankingActivity = new Intent(GameActivity.this, RankingActivity.class);
+        startActivity(intentToRankingActivity);
     }
 }
