@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/txtv_ranking_board_title_cost_time"
+                android:layout_marginStart="@dimen/dim_general_margin"
                 android:layout_marginEnd="@dimen/dim_general_margin"
                 android:text="@string/str_ranking_cost_time"
                 android:textSize="@dimen/dim_ranking_record_item_text_size"

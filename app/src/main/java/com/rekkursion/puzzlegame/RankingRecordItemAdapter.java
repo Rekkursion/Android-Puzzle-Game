@@ -35,8 +35,7 @@ public class RankingRecordItemAdapter extends RecyclerView.Adapter<RankingRecord
         int movedCount = rankingRecordItemList.get(position).getMovedCount();
         Date recordDoneDate = rankingRecordItemList.get(position).getRecordDate();
 
-        // TODO: deal with ranking-place
-        holder.setData(1, costTime, movedCount, recordDoneDate);
+        holder.setData(position + 1, costTime, movedCount, recordDoneDate);
     }
 
     @Override
@@ -57,6 +56,9 @@ public class RankingRecordItemAdapter extends RecyclerView.Adapter<RankingRecord
             txtvRRItemCostTime = itemView.findViewById(R.id.txtv_rr_item_cost_time);
             txtvRRItemMovedCount = itemView.findViewById(R.id.txtv_rr_item_moved_count);
             txtvRRItemRecordDoneDate = itemView.findViewById(R.id.txtv_rr_item_record_done_date);
+
+            // not showing txtv-rr-item-ranking-place since i have no idea how to deal with ranking places
+            txtvRRItemRankingPlace.setVisibility(View.GONE);
         }
 
         private void setData(int rankingPlace, int costTime, int movedCount, Date recordDoneDate) {
@@ -66,7 +68,7 @@ public class RankingRecordItemAdapter extends RecyclerView.Adapter<RankingRecord
             txtvRRItemCostTime.setText(costTimeString);
 
             txtvRRItemMovedCount.setText(String.valueOf(movedCount));
-            txtvRRItemRecordDoneDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(recordDoneDate));
+            txtvRRItemRecordDoneDate.setText(new SimpleDateFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING).format(recordDoneDate));
         }
     }
 }

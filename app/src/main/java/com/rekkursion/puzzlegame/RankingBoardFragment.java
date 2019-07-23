@@ -87,6 +87,11 @@ public class RankingBoardFragment extends Fragment {
         txtvRankingBoardTitleCostTime.setOnClickListener(rankingBoardTitlesOnClickListener);
         txtvRankingBoardTitleMovedCount.setOnClickListener(rankingBoardTitlesOnClickListener);
         txtvRankingBoardTitleDate.setOnClickListener(rankingBoardTitlesOnClickListener);
+
+        // not showing txtv-ranking-board-title-place since i have no idea how to deal with ranking places
+        txtvRankingBoardTitlePlace.setVisibility(View.GONE);
+        ViewGroup.LayoutParams param = txtvRankingBoardTitleCostTime.getLayoutParams();
+
     }
 
     // ranking board titles click events: ordering features
