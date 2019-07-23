@@ -22,6 +22,7 @@
                 android:id="@+id/txtv_ranking_board_title_place"
                 android:layout_marginStart="@dimen/dim_general_margin"
                 android:layout_marginEnd="@dimen/dim_general_margin"
+                android:layout_margin="@dimen/dim_ranking_record_item_margin"
                 android:text="@string/str_ranking_place"
                 android:textSize="@dimen/dim_ranking_record_item_text_size"
                 android:textColor="@color/colorAccent"

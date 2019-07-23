@@ -61,9 +61,9 @@ public class GameManager {
                 .collect(Collectors.toList());
     }
 
-    public List<RankingRecordItemModel> getRankingRecordItemList() {
-        return rankingRecordItemList;
-    }
+//    public List<RankingRecordItemModel> getRankingRecordItemList() {
+//        return rankingRecordItemList;
+//    }
 
     public void clearRankingRecordItemList() {
         if (rankingRecordItemList != null)
