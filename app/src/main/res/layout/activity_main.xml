@@ -7,10 +7,16 @@
     android:orientation="vertical"
     android:gravity="center"
     tools:context=".MainActivity">
+    <ImageView
+        android:id="@+id/imgv_puzzle_game_title_at_main_activity"
+        android:src="@mipmap/puzzle_game_title"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
     <FrameLayout
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <Button
             android:id="@+id/btn_start_shadow_at_menu"
             android:layout_margin="@dimen/dim_general_margin"
