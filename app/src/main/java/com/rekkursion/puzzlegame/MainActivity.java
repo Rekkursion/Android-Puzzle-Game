@@ -1,10 +1,14 @@
 package com.rekkursion.puzzlegame;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -15,6 +19,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
+    private final int REQ_CODE_PERMISSION_VIBRATE = 128128;
+
     private Button btnStartAtMenu;
     private Button btnStartShadowAtMenu;
     private ImageView imgvPuzzleGameTitleAtMainActivity;
@@ -27,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // request the usage of vibration
+        Log.e("tag", String.valueOf(checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED));
+        //if (checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED)
+            requestPermissions(new String[] { Manifest.permission.VIBRATE }, REQ_CODE_PERMISSION_VIBRATE);
 
         initAnimations();
         initViews();

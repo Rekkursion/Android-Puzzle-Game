@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -137,6 +139,15 @@ public class RankingBoardFragment extends Fragment {
 
             @Override
             public void onItemLongClick(View view, int position) {
+                // vibrate
+                try {
+                    Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(VibrationEffect.createOneShot(60L, VibrationEffect.DEFAULT_AMPLITUDE));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // show the dialog before the data deletion
                 new AlertDialog.Builder(RankingBoardFragment.this.getContext())
                         .setIcon(R.drawable.ic_warning_orange_24dp)
                         .setMessage(R.string.str_user_check_before_delete_the_record)
