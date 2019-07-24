@@ -52,9 +52,18 @@ public class RankingBoardFragment extends Fragment {
 
     private RankingBoardOrderingStatus orderStatus;
 
+    private RankingRecordItemModel newRecordItemModel;
+
     public RankingBoardFragment(List<RankingRecordItemModel> list) {
         super();
         this.rankingRecordItemList = list;
+        newRecordItemModel = null;
+    }
+
+    public RankingBoardFragment(List<RankingRecordItemModel> list, RankingRecordItemModel newRecordItemModel) {
+        super();
+        this.rankingRecordItemList = list;
+        this.newRecordItemModel = newRecordItemModel;
     }
 
     @Nullable
@@ -95,6 +104,10 @@ public class RankingBoardFragment extends Fragment {
         RankingRecordItemAdapter rrItemAdapter = new RankingRecordItemAdapter(this.rankingRecordItemList);
         recvRankingBoard.setAdapter(rrItemAdapter);
         rrItemAdapter.notifyDataSetChanged();
+
+        // add item-decoration for recycler-view
+        int idxOfNewRecord = newRecordItemModel == null ? -1 : this.rankingRecordItemList.indexOf(newRecordItemModel);
+        recvRankingBoard.addItemDecoration(new RankingRecordItemDecoration(RankingBoardFragment.this.getContext(), idxOfNewRecord));
 
         // set default status of ranking board ordering
         orderStatus = RankingBoardOrderingStatus.PLACE_ASC;
@@ -175,6 +188,11 @@ public class RankingBoardFragment extends Fragment {
         // recvRankingBoard.swapAdapter(rrItemAdapter, true);
         recvRankingBoard.setAdapter(rrItemAdapter);
         rrItemAdapter.notifyDataSetChanged();
+
+        int idxOfNewRecord = newRecordItemModel == null ? -1 : this.rankingRecordItemList.indexOf(newRecordItemModel);
+        for (int k = 0; k < recvRankingBoard.getItemDecorationCount(); ++k)
+            recvRankingBoard.removeItemDecorationAt(k);
+        recvRankingBoard.addItemDecoration(new RankingRecordItemDecoration(RankingBoardFragment.this.getContext(), idxOfNewRecord));
 
         // unhighlight the previous ordering base-on
         if (previousStatus == RankingBoardOrderingStatus.PLACE_ASC || previousStatus == RankingBoardOrderingStatus.PLACE_DESC)

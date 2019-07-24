@@ -51,4 +51,16 @@ public class RankingRecordItemModel implements Comparable<RankingRecordItemModel
             return movedCount - rhs.movedCount;
         return recordDate.compareTo(rhs.recordDate);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof RankingRecordItemModel))
+            return false;
+
+        RankingRecordItemModel rhs = (RankingRecordItemModel) obj;
+        return this.gameDifficulty == rhs.gameDifficulty &&
+                this.costTime == rhs.costTime &&
+                this.movedCount == rhs.movedCount &&
+                this.recordDate.toString().equals(rhs.recordDate.toString());
+    }
 }
