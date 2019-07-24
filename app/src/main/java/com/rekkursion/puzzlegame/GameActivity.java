@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -207,35 +208,41 @@ public class GameActivity extends AppCompatActivity {
                         }
 
                         if (hasFinished) {
+                            // find abandoned view and visualized it
                             ImageView abandonedView = findViewById(GameManager.getInstance().getImageViewIdByTag(GameManager.getInstance().getAbandonedTagNumber()));
                             abandonedView.setVisibility(View.VISIBLE);
-                            abandonedView.startAnimation(AnimationUtils.loadAnimation(GameActivity.this, R.anim.fade_in));
 
-                            GameManager.getInstance().gameStatus = GameManager.GameStatus.POST;
-                            GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.STOPPED;
+                            // set animation
+                            Animation finishAnim = AnimationUtils.loadAnimation(GameActivity.this, R.anim.fade_in);
+                            finishAnim.setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+                                    GameManager.getInstance().gameStatus = GameManager.GameStatus.POST;
+                                    GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.STOPPED;
 
-                            // adjust the margins of all blocks without gaps (general margins)
-                            int leftSideMarginWithoutGeneralMargins = (screenWidth - TOTAL_GAMING_IMAGE_VIEW_SIZE) / 2;
-                            for (int r = 0; r < GameManager.getInstance().difficulty; ++r) {
-                                for (int c = 0; c < GameManager.getInstance().difficulty; ++c) {
-                                    ImageView imageView = findViewById(GameManager.getInstance().getImageViewIdByTag(GameManager.getInstance().tagNumbersMap[r][c]));
+                                    // adjust the margins of all blocks without gaps (general margins)
+                                    int leftSideMarginWithoutGeneralMargins = (screenWidth - TOTAL_GAMING_IMAGE_VIEW_SIZE) / 2;
+                                    for (int r = 0; r < GameManager.getInstance().difficulty; ++r) {
+                                        for (int c = 0; c < GameManager.getInstance().difficulty; ++c) {
+                                            ImageView imageView = findViewById(GameManager.getInstance().getImageViewIdByTag(GameManager.getInstance().tagNumbersMap[r][c]));
 
-                                    GridLayout.LayoutParams imageViewParam = (GridLayout.LayoutParams) imageView.getLayoutParams();
-                                    imageViewParam.topMargin = 0;
-                                    imageViewParam.leftMargin = c == 0 ? leftSideMarginWithoutGeneralMargins : 0;
-                                    imageView.setLayoutParams(imageViewParam);
+                                            GridLayout.LayoutParams imageViewParam = (GridLayout.LayoutParams) imageView.getLayoutParams();
+                                            imageViewParam.topMargin = 0;
+                                            imageViewParam.leftMargin = c == 0 ? leftSideMarginWithoutGeneralMargins : 0;
+                                            imageView.setLayoutParams(imageViewParam);
+                                        }
+                                    }
                                 }
-                            }
 
-                            double costTime_double = Double.valueOf(txtvMillisecondTimer.getText().toString());
-                            int costTime_int = (int) (costTime_double * 100.0);
-                            Date now = Calendar.getInstance().getTime();
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    goToRankingActivity();
+                                }
 
-                            if (RankingActivity.newRankingRecord != null)
-                                RankingActivity.newRankingRecord = null;
-                            RankingActivity.newRankingRecord = new RankingRecordItemModel(GameManager.getInstance().difficulty, GameManager.getInstance().movedCount, costTime_int, now);
-
-                            goToRankingActivity();
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {}
+                            });
+                            abandonedView.startAnimation(finishAnim);
                         }
                     }
                 });
@@ -247,6 +254,17 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void goToRankingActivity() {
+        // get cost time and current date
+        double costTime_double = Double.valueOf(txtvMillisecondTimer.getText().toString());
+        int costTime_int = (int) (costTime_double * 100.0);
+        Date now = Calendar.getInstance().getTime();
+
+        // set new ranking record at ranking-activity
+        if (RankingActivity.newRankingRecord != null)
+            RankingActivity.newRankingRecord = null;
+        RankingActivity.newRankingRecord = new RankingRecordItemModel(GameManager.getInstance().difficulty, GameManager.getInstance().movedCount, costTime_int, now);
+
+        // create intent and go to ranking-activity
         Intent intentToRankingActivity = new Intent(GameActivity.this, RankingActivity.class);
         startActivity(intentToRankingActivity);
     }
