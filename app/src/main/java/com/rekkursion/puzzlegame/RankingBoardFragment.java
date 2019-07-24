@@ -162,8 +162,6 @@ public class RankingBoardFragment extends Fragment {
                             .sorted((lhs, rhs) -> {
                                 Date ld = lhs.getRecordDate();
                                 Date rd = rhs.getRecordDate();
-                                Log.e("ld", ld.toString());
-                                Log.e("rd", rd.toString());
                                 return ld.before(rd) ? -1 : 1;
                             })
                             .collect(Collectors.toList());

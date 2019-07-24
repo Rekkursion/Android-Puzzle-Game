@@ -2,10 +2,19 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- difficulty seek-bar style -->
+    <style name="styleDifficultySeekBar" >
+        <item name="android:maxHeight">12dp</item>
+        <item name="android:minHeight">12dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@color/colorAccent</item>
+        <item name="android:progressDrawable">@drawable/drawable_difficulty_seek_bar</item>
+        <item name="android:thumb">@drawable/ic_square_orange_24dp</item>
     </style>
 
 </resources>
