@@ -47,6 +47,8 @@ public class RankingBoardFragment extends Fragment {
     private TextView txtvRankingBoardTitleDate;
 
     private ImageView imgvRankingBoardTitleCostTimeOrderingIcon;
+    private ImageView imgvRankingBoardTitleMovedCountOrderingIcon;
+    private ImageView imgvRankingBoardTitleDateOrderingIcon;
 
     private RankingBoardOrderingStatus orderStatus;
 
@@ -68,6 +70,8 @@ public class RankingBoardFragment extends Fragment {
         txtvRankingBoardTitleDate = root.findViewById(R.id.txtv_ranking_board_title_record_done_date);
 
         imgvRankingBoardTitleCostTimeOrderingIcon = root.findViewById(R.id.imgv_ranking_board_title_cost_time_ordering_icon);
+        imgvRankingBoardTitleMovedCountOrderingIcon = root.findViewById(R.id.imgv_ranking_board_title_moved_count_ordering_icon);
+        imgvRankingBoardTitleDateOrderingIcon = root.findViewById(R.id.imgv_ranking_board_title_record_done_date_ordering_icon);
 
         llyRankingBoardTitleCostTimeContainer = root.findViewById(R.id.lly_ranking_board_title_cost_time_container);
         llyRankingBoardTitleMovedCountContainer = root.findViewById(R.id.lly_ranking_board_title_moved_count_container);
@@ -180,11 +184,13 @@ public class RankingBoardFragment extends Fragment {
         else if (previousStatus == RankingBoardOrderingStatus.COST_TIME_ASC || previousStatus == RankingBoardOrderingStatus.COST_TIME_DESC) {
             txtvRankingBoardTitleCostTime.setTextColor(getResources().getColor(R.color.color_general_ranking_board_title_text));
             imgvRankingBoardTitleCostTimeOrderingIcon.setVisibility(View.GONE);
-        }
-        else if (previousStatus == RankingBoardOrderingStatus.MOVED_COUNT_ASC || previousStatus == RankingBoardOrderingStatus.MOVED_COUNT_DESC)
+        } else if (previousStatus == RankingBoardOrderingStatus.MOVED_COUNT_ASC || previousStatus == RankingBoardOrderingStatus.MOVED_COUNT_DESC) {
             txtvRankingBoardTitleMovedCount.setTextColor(getResources().getColor(R.color.color_general_ranking_board_title_text));
-        else
+            imgvRankingBoardTitleMovedCountOrderingIcon.setVisibility(View.GONE);
+        } else {
             txtvRankingBoardTitleDate.setTextColor(getResources().getColor(R.color.color_general_ranking_board_title_text));
+            imgvRankingBoardTitleDateOrderingIcon.setVisibility(View.GONE);
+        }
 
         // highlight the current ordering base-on
         if (orderStatus == RankingBoardOrderingStatus.PLACE_ASC || orderStatus == RankingBoardOrderingStatus.PLACE_DESC)
@@ -193,10 +199,14 @@ public class RankingBoardFragment extends Fragment {
             txtvRankingBoardTitleCostTime.setTextColor(getResources().getColor(R.color.color_ordered_ranking_board_title_text));
             imgvRankingBoardTitleCostTimeOrderingIcon.setVisibility(View.VISIBLE);
             imgvRankingBoardTitleCostTimeOrderingIcon.setImageResource(orderStatus == RankingBoardOrderingStatus.COST_TIME_ASC ? R.drawable.ic_arrow_drop_up_orange_24dp : R.drawable.ic_arrow_drop_down_orange_24dp);
-        }
-        else if (orderStatus == RankingBoardOrderingStatus.MOVED_COUNT_ASC || orderStatus == RankingBoardOrderingStatus.MOVED_COUNT_DESC)
+        } else if (orderStatus == RankingBoardOrderingStatus.MOVED_COUNT_ASC || orderStatus == RankingBoardOrderingStatus.MOVED_COUNT_DESC) {
             txtvRankingBoardTitleMovedCount.setTextColor(getResources().getColor(R.color.color_ordered_ranking_board_title_text));
-        else
+            imgvRankingBoardTitleMovedCountOrderingIcon.setVisibility(View.VISIBLE);
+            imgvRankingBoardTitleMovedCountOrderingIcon.setImageResource(orderStatus == RankingBoardOrderingStatus.MOVED_COUNT_ASC ? R.drawable.ic_arrow_drop_up_orange_24dp : R.drawable.ic_arrow_drop_down_orange_24dp);
+        } else {
             txtvRankingBoardTitleDate.setTextColor(getResources().getColor(R.color.color_ordered_ranking_board_title_text));
+            imgvRankingBoardTitleDateOrderingIcon.setVisibility(View.VISIBLE);
+            imgvRankingBoardTitleDateOrderingIcon.setImageResource(orderStatus == RankingBoardOrderingStatus.DATE_ASC ? R.drawable.ic_arrow_drop_up_orange_24dp : R.drawable.ic_arrow_drop_down_orange_24dp);
+        }
     };
 }

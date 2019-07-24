@@ -61,9 +61,8 @@
                     android:src="@drawable/ic_arrow_drop_up_orange_24dp"
                     android:visibility="gone"
                     android:layout_marginStart="-15dp"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -86,6 +85,13 @@
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/imgv_ranking_board_title_moved_count_ordering_icon"
+                    android:src="@drawable/ic_arrow_drop_up_orange_24dp"
+                    android:visibility="gone"
+                    android:layout_marginStart="-15dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -108,6 +114,13 @@
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/imgv_ranking_board_title_record_done_date_ordering_icon"
+                    android:src="@drawable/ic_arrow_drop_up_orange_24dp"
+                    android:visibility="gone"
+                    android:layout_marginStart="-15dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
             </LinearLayout>
         </LinearLayout>
 
