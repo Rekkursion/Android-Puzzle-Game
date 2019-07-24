@@ -35,8 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // request the usage of vibration
-        Log.e("tag", String.valueOf(checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED));
-        //if (checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED)
+        if (checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(new String[] { Manifest.permission.VIBRATE }, REQ_CODE_PERMISSION_VIBRATE);
 
         initAnimations();

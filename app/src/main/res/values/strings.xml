@@ -12,7 +12,7 @@
     <string name="str_image_processing_please_wait">Image processing, please wait&#8230;</string>
     <string name="str_check_original_image">Check original image</string>
     <string name="str_resume">Resume</string>
-    <string name="str_original_image">Original image</string>
+    <string name="str_hint">Hint</string>
     <string name="str_tapped_0">Moved: 0</string>
     <string name="str_if_the_image_is_too_large_image_processing_will_take_a_long_time">If the image is too large, image processing will take a long time.</string>
     <string name="str_ranking_place">#</string>

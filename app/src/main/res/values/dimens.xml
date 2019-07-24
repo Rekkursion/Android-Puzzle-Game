@@ -9,4 +9,5 @@
     <dimen name="dim_warning_text_size">12sp</dimen>
     <dimen name="dim_ranking_record_item_text_size">17sp</dimen>
     <dimen name="dim_ranking_record_item_margin">8sp</dimen>
+    <dimen name="dim_resume_button_text_size">30sp</dimen>
 </resources>
