@@ -1,162 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="25dp"
     tools:context=".LevelSelectActivity">
 
-    <!-- layout for selecting difficulties -->
-    <LinearLayout
-        android:orientation="horizontal"
+    <ScrollView
+        android:layout_alignParentTop="true"
+        android:background="#70707070"
         android:layout_margin="@dimen/dim_general_margin"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/txtv_label_for_skb_difficulties_select"
-            android:text="@string/str_difficulty"
-            android:layout_marginEnd="@dimen/dim_general_margin"
-            android:layout_weight="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <SeekBar
-            android:id="@+id/skb_difficulties_select"
-            android:max="4"
-            android:progress="0"
-            android:layout_marginEnd="@dimen/dim_general_margin"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/styleDifficultySeekBar" />
-        <TextView
-            android:id="@+id/txtv_selected_difficulty"
-            android:text="@string/str_3x3"
-            android:layout_weight="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
-    <!-- layout for selecting image -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dim_general_margin"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/txtv_label_for_btn_get_img_source"
-            android:text="@string/str_image_source"
-            android:layout_marginEnd="@dimen/dim_general_margin"
-            android:layout_weight="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btn_get_img_source"
-            android:text="@string/str_load_image"
-            android:textAllCaps="false"
-            android:layout_marginEnd="@dimen/dim_general_margin"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_weight="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/txtv_selected_image_filename"
-            android:text="@string/str_no_source"
-            android:layout_weight="1"
+        <!-- linear-layout for putting settings UIs -->
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content">
 
-    <!-- linear-layout for showing selected image -->
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/dim_general_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/imgv_preview_selected_image"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/dim_general_margin"
-            android:layout_width="@dimen/dim_preview_selected_image_size"
-            android:layout_height="@dimen/dim_preview_selected_image_size" />
-        <TextView
-            android:id="@+id/txtv_show_size_of_original_selected_image"
-            android:gravity="center"
-            android:text=""
-            android:layout_marginBottom="@dimen/dim_general_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/txtv_show_image_too_big_warning"
-            android:gravity="center"
-            android:text="@string/str_if_the_image_is_too_large_image_processing_will_take_a_long_time"
-            android:textSize="@dimen/dim_warning_text_size"
-            android:textColor="@android:color/holo_orange_dark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <!-- linear-layout for selecting difficulties -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/dim_general_margin"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtv_label_for_skb_difficulties_select"
+                    android:text="@string/str_difficulty"
+                    android:layout_marginEnd="@dimen/dim_general_margin"
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <SeekBar
+                    android:id="@+id/skb_difficulties_select"
+                    android:max="4"
+                    android:progress="0"
+                    android:layout_marginEnd="@dimen/dim_general_margin"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/styleDifficultySeekBar" />
+                <TextView
+                    android:id="@+id/txtv_selected_difficulty"
+                    android:text="@string/str_3x3"
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-    <!-- layout for selecting scale types of image -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dim_general_margin"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/txtv_label_for_spn_select_scale_type"
-            android:text="@string/str_scale_type"
-            android:layout_marginEnd="@dimen/dim_general_margin"
-            android:layout_gravity="center"
-            android:layout_weight="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Spinner
-            android:id="@+id/spn_select_scale_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:layout_marginEnd="@dimen/dim_general_margin"
-            android:layout_weight="1"
-            android:entries="@array/arr_scale_types">
-        </Spinner>
-    </LinearLayout>
+            <!-- linear-layout for selecting image -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/dim_general_margin"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtv_label_for_btn_get_img_source"
+                    android:text="@string/str_image_source"
+                    android:layout_marginEnd="@dimen/dim_general_margin"
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/btn_get_img_source"
+                    android:text="@string/str_load_image"
+                    android:textAllCaps="false"
+                    android:layout_marginEnd="@dimen/dim_general_margin"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txtv_selected_image_filename"
+                    android:text="@string/str_no_source"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-    <!-- radio-group for selecting gaming mode: sliding or traditional puzzle -->
-    <RadioGroup
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/dim_general_margin"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <RadioButton
-            android:id="@+id/rdb_select_gaming_mode_sliding_puzzle"
-            android:text="@string/str_sliding_puzzle"
-            android:checked="true"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <RadioButton
-            android:id="@+id/rdb_select_gaming_mode_traditional_puzzle"
-            android:text="@string/str_traditional_puzzle"
-            android:checked="false"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </RadioGroup>
+            <!-- linear-layout for showing selected image -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dim_general_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgv_preview_selected_image"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/dim_general_margin"
+                    android:layout_width="@dimen/dim_preview_selected_image_size"
+                    android:layout_height="@dimen/dim_preview_selected_image_size" />
+                <TextView
+                    android:id="@+id/txtv_show_size_of_original_selected_image"
+                    android:gravity="center"
+                    android:text=""
+                    android:layout_marginBottom="@dimen/dim_general_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txtv_show_image_too_big_warning"
+                    android:gravity="center"
+                    android:text="@string/str_if_the_image_is_too_large_image_processing_will_take_a_long_time"
+                    android:textSize="@dimen/dim_warning_text_size"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- linear-layout for selecting scale types of image -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/dim_general_margin"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtv_label_for_spn_select_scale_type"
+                    android:text="@string/str_scale_type"
+                    android:layout_marginEnd="@dimen/dim_general_margin"
+                    android:layout_gravity="center"
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Spinner
+                    android:id="@+id/spn_select_scale_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:layout_marginEnd="@dimen/dim_general_margin"
+                    android:layout_weight="1"
+                    android:entries="@array/arr_scale_types">
+                </Spinner>
+            </LinearLayout>
+
+            <!-- radio-group for selecting gaming mode: sliding or traditional puzzle -->
+            <RadioGroup
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dim_general_margin"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/rdb_select_gaming_mode_sliding_puzzle"
+                    android:text="@string/str_sliding_puzzle"
+                    android:checked="true"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/rdb_select_gaming_mode_traditional_puzzle"
+                    android:text="@string/str_traditional_puzzle"
+                    android:checked="false"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RadioGroup>
+        </LinearLayout>
+    </ScrollView>
 
     <!-- start button -->
     <Button
         android:id="@+id/btn_start_at_level_select"
+        android:layout_alignParentBottom="true"
         android:text="@string/str_start"
-        android:textAllCaps="false"
+        android:textSize="@dimen/dim_start_at_level_select_activity_text_size"
         android:layout_marginEnd="@dimen/dim_general_margin"
+        android:layout_marginBottom="@dimen/dim_general_margin"
         android:background="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-</LinearLayout>
+</RelativeLayout>

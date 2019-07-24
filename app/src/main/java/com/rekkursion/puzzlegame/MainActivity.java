@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Animation animScaleLittleWithBouncing;
     private Animation animScaleLargeWithOvershooting;
-    private int imgvAnimationStatus;
+    private int puzzleGameTitleAnimationStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +30,16 @@ public class MainActivity extends AppCompatActivity {
         initAnimations();
         initViews();
 
+        // get shadow animations
         Animation scaleLargeAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale_large_and_turn_init_immediately);
         Animation fadeOutAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out_and_turn_init_immediately);
 
+        // build the animation set
         AnimationSet animSet = new AnimationSet(true);
         animSet.addAnimation(scaleLargeAnim);
         animSet.addAnimation(fadeOutAnim);
 
+        // add the animation set to the button shadow
         btnStartShadowAtMenu.startAnimation(animSet);
     }
 
@@ -52,18 +55,18 @@ public class MainActivity extends AppCompatActivity {
 
         // set on-click-listener for animations
         imgvPuzzleGameTitleAtMainActivity.setOnClickListener(view -> {
-            if (imgvAnimationStatus == 0) {
+            if (puzzleGameTitleAnimationStatus == 0) {
                 imgvPuzzleGameTitleAtMainActivity.startAnimation(animScaleLittleWithBouncing);
-                imgvAnimationStatus = 1;
-            } else if (imgvAnimationStatus == 1) {
+                puzzleGameTitleAnimationStatus = 1;
+            } else if (puzzleGameTitleAnimationStatus == 1) {
                 imgvPuzzleGameTitleAtMainActivity.startAnimation(animScaleLargeWithOvershooting);
-                imgvAnimationStatus = 0;
+                puzzleGameTitleAnimationStatus = 0;
             }
         });
     }
 
     private void initAnimations() {
-        imgvAnimationStatus = 0;
+        puzzleGameTitleAnimationStatus = 0;
 
         animScaleLittleWithBouncing = new ScaleAnimation(1.0F, 0.5F, 1.0F, 0.5F, Animation.RELATIVE_TO_SELF, 0.5F, Animation.RELATIVE_TO_SELF, 0.5F);
         animScaleLittleWithBouncing.setDuration(2000L);
