@@ -1,6 +1,8 @@
 package com.rekkursion.puzzlegame;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,11 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -54,15 +58,19 @@ public class RankingBoardFragment extends Fragment {
 
     private RankingRecordItemModel newRecordItemModel;
 
-    public RankingBoardFragment(List<RankingRecordItemModel> list) {
+    private SQLiteDatabaseHelper sqlHelper;
+
+    public RankingBoardFragment(List<RankingRecordItemModel> list, SQLiteDatabaseHelper sqlHelper) {
         super();
         this.rankingRecordItemList = list;
+        this.sqlHelper = sqlHelper;
         newRecordItemModel = null;
     }
 
-    public RankingBoardFragment(List<RankingRecordItemModel> list, RankingRecordItemModel newRecordItemModel) {
+    public RankingBoardFragment(List<RankingRecordItemModel> list, SQLiteDatabaseHelper sqlHelper, RankingRecordItemModel newRecordItemModel) {
         super();
         this.rankingRecordItemList = list;
+        this.sqlHelper = sqlHelper;
         this.newRecordItemModel = newRecordItemModel;
     }
 
@@ -100,14 +108,12 @@ public class RankingBoardFragment extends Fragment {
         // set layout-manager
         recvRankingBoard.setLayoutManager(llyManager);
 
-        // set adapter for recycler-view
-        RankingRecordItemAdapter rrItemAdapter = new RankingRecordItemAdapter(this.rankingRecordItemList);
-        recvRankingBoard.setAdapter(rrItemAdapter);
-        rrItemAdapter.notifyDataSetChanged();
-
-        // add item-decoration for recycler-view
+        // set adapter and add item-decoration for recycler-view
         int idxOfNewRecord = newRecordItemModel == null ? -1 : this.rankingRecordItemList.indexOf(newRecordItemModel);
-        recvRankingBoard.addItemDecoration(new RankingRecordItemDecoration(RankingBoardFragment.this.getContext(), idxOfNewRecord));
+        setRecvAdapterAndItemDecorationThroughDataList(this.rankingRecordItemList, idxOfNewRecord);
+
+        // set on-touch-listener for recycler-view
+        setRecyclerViewOnItemTouchListener();
 
         // set default status of ranking board ordering
         orderStatus = RankingBoardOrderingStatus.COST_TIME_ASC;
@@ -120,6 +126,36 @@ public class RankingBoardFragment extends Fragment {
 
         // not showing txtv-ranking-board-title-place since i have no idea how to deal with ranking places
         txtvRankingBoardTitlePlace.setVisibility(View.GONE);
+    }
+
+    private void setRecyclerViewOnItemTouchListener() {
+        recvRankingBoard.addOnItemTouchListener(new RecyclerViewOnItemTouchListener(recvRankingBoard, new RecyclerViewOnItemTouchListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // Toast.makeText(RankingBoardFragment.this.getContext(), "click on " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                new AlertDialog.Builder(RankingBoardFragment.this.getContext())
+                        .setIcon(R.drawable.ic_warning_orange_24dp)
+                        .setMessage(R.string.str_user_check_before_delete_the_record)
+                        .setPositiveButton(R.string.str_user_check_yes, (dialogInterface, i) -> {
+                            // delete data at sql
+                            sqlHelper.deleteData(rankingRecordItemList.get(position));
+
+                            // delete data at list
+                            rankingRecordItemList.remove(position);
+                            int idxOfNewRecord = newRecordItemModel == null ? -1 : rankingRecordItemList.indexOf(newRecordItemModel);
+                            setRecvAdapterAndItemDecorationThroughDataList(rankingRecordItemList, idxOfNewRecord);
+
+                            // toast to tell user that the data has already been deleted
+                            Toast.makeText(RankingBoardFragment.this.getContext(), "Deleted successfully.", Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton(R.string.str_user_check_no, null)
+                        .show();
+            }
+        }));
     }
 
     // ranking board titles click events: ordering features
@@ -183,16 +219,9 @@ public class RankingBoardFragment extends Fragment {
                 break;
         }
 
-        // reset item-adapter for recycler-view
-        RankingRecordItemAdapter rrItemAdapter = new RankingRecordItemAdapter(this.rankingRecordItemList);
-        // recvRankingBoard.swapAdapter(rrItemAdapter, true);
-        recvRankingBoard.setAdapter(rrItemAdapter);
-        rrItemAdapter.notifyDataSetChanged();
-
+        // reset adapter and item-decoration
         int idxOfNewRecord = newRecordItemModel == null ? -1 : this.rankingRecordItemList.indexOf(newRecordItemModel);
-        for (int k = 0; k < recvRankingBoard.getItemDecorationCount(); ++k)
-            recvRankingBoard.removeItemDecorationAt(k);
-        recvRankingBoard.addItemDecoration(new RankingRecordItemDecoration(RankingBoardFragment.this.getContext(), idxOfNewRecord));
+        setRecvAdapterAndItemDecorationThroughDataList(this.rankingRecordItemList, idxOfNewRecord);
 
         // unhighlight the previous ordering base-on
         if (previousStatus == RankingBoardOrderingStatus.PLACE_ASC || previousStatus == RankingBoardOrderingStatus.PLACE_DESC)
@@ -225,4 +254,16 @@ public class RankingBoardFragment extends Fragment {
             imgvRankingBoardTitleDateOrderingIcon.setImageResource(orderStatus == RankingBoardOrderingStatus.DATE_ASC ? R.drawable.ic_arrow_drop_up_orange_24dp : R.drawable.ic_arrow_drop_down_orange_24dp);
         }
     };
+
+    private void setRecvAdapterAndItemDecorationThroughDataList(List<RankingRecordItemModel> dataList, int newRecordIndex) {
+        // reset item-adapter for recycler-view
+        RankingRecordItemAdapter rrItemAdapter = new RankingRecordItemAdapter(dataList);
+        // recvRankingBoard.swapAdapter(rrItemAdapter, true);
+        recvRankingBoard.setAdapter(rrItemAdapter);
+        rrItemAdapter.notifyDataSetChanged();
+
+        for (int k = 0; k < recvRankingBoard.getItemDecorationCount(); ++k)
+            recvRankingBoard.removeItemDecorationAt(k);
+        recvRankingBoard.addItemDecoration(new RankingRecordItemDecoration(RankingBoardFragment.this.getContext(), newRecordIndex));
+    }
 }

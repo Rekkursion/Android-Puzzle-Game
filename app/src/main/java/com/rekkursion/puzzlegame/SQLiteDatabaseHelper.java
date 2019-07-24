@@ -49,11 +49,6 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    // insert a list of data
-    public void insertData(List<RankingRecordItemModel> rrList) {
-        rrList.forEach(rr -> insertData(rr));
-    }
-
     // insert
     public void insertData(RankingRecordItemModel rr) {
         final SQLiteDatabase db = getWritableDatabase();
@@ -81,6 +76,13 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
     public List<RankingRecordItemModel> readData(int designatedDifficulty) {
         final String sqlQueryString = "SELECT * FROM " + RANKING_TABLE_NAME + " WHERE " + RANKING_TABLE_COL_DIFFICULTY + " = '" + String.valueOf(designatedDifficulty) + "'";
         return readDataHelper(sqlQueryString);
+    }
+
+    // TODO: no tested
+    // delete
+    public void deleteData(RankingRecordItemModel rr) {
+        final SQLiteDatabase db = getWritableDatabase();
+        db.delete(RANKING_TABLE_NAME, RANKING_TABLE_COL_DATE + "=\"" + rr.getRecordDateStringByFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING) + "\"", null);
     }
 
     // read data through the query string

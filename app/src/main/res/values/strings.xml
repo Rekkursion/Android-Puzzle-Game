@@ -19,4 +19,7 @@
     <string name="str_ranking_cost_time">Time</string>
     <string name="str_ranking_moved_count">Moved</string>
     <string name="str_ranking_date">Date</string>
+    <string name="str_user_check_before_delete_the_record">Are you sure you want to delete this record?</string>
+    <string name="str_user_check_yes">Yes</string>
+    <string name="str_user_check_no">No</string>
 </resources>

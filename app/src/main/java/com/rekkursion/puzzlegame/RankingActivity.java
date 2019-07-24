@@ -43,9 +43,9 @@ public class RankingActivity extends AppCompatActivity {
             String title = String.format("%d × %d", d, d);
             List<RankingRecordItemModel> costTimeAscOrderedRecordList = sqlHelper.readData(d).stream().sorted(Comparator.comparing(RankingRecordItemModel::getCostTime)).collect(Collectors.toList());
             if (d == selectedDifficulty)
-                adapter.addFragment(new RankingBoardFragment(costTimeAscOrderedRecordList, newRankingRecord), title);
+                adapter.addFragment(new RankingBoardFragment(costTimeAscOrderedRecordList, sqlHelper, newRankingRecord), title);
             else
-                adapter.addFragment(new RankingBoardFragment(costTimeAscOrderedRecordList), title);
+                adapter.addFragment(new RankingBoardFragment(costTimeAscOrderedRecordList, sqlHelper), title);
         }
         // adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemList()), "ALL");
         vpgrDifficultiesClassification.setAdapter(adapter);
