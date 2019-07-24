@@ -110,7 +110,7 @@ public class RankingBoardFragment extends Fragment {
         recvRankingBoard.addItemDecoration(new RankingRecordItemDecoration(RankingBoardFragment.this.getContext(), idxOfNewRecord));
 
         // set default status of ranking board ordering
-        orderStatus = RankingBoardOrderingStatus.PLACE_ASC;
+        orderStatus = RankingBoardOrderingStatus.COST_TIME_ASC;
 
         // set on-click-listener for titles of recycler-view
         // txtvRankingBoardTitlePlace.setOnClickListener(rankingBoardTitlesOnClickListener);

@@ -8,7 +8,9 @@ import android.view.View;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RankingActivity extends AppCompatActivity {
     private TabLayout tblyDifficultiesClassification;
@@ -39,10 +41,11 @@ public class RankingActivity extends AppCompatActivity {
         // adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(3)), "3 × 3");
         for (int d = 3; d <= 7; ++d) {
             String title = String.format("%d × %d", d, d);
+            List<RankingRecordItemModel> costTimeAscOrderedRecordList = sqlHelper.readData(d).stream().sorted(Comparator.comparing(RankingRecordItemModel::getCostTime)).collect(Collectors.toList());
             if (d == selectedDifficulty)
-                adapter.addFragment(new RankingBoardFragment(sqlHelper.readData(d), newRankingRecord), title);
+                adapter.addFragment(new RankingBoardFragment(costTimeAscOrderedRecordList, newRankingRecord), title);
             else
-                adapter.addFragment(new RankingBoardFragment(sqlHelper.readData(d)), title);
+                adapter.addFragment(new RankingBoardFragment(costTimeAscOrderedRecordList), title);
         }
         // adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemList()), "ALL");
         vpgrDifficultiesClassification.setAdapter(adapter);
