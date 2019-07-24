@@ -2,6 +2,7 @@ package com.rekkursion.puzzlegame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.Animation;
@@ -30,17 +31,8 @@ public class MainActivity extends AppCompatActivity {
         initAnimations();
         initViews();
 
-        // get shadow animations
-        Animation scaleLargeAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale_large_and_turn_init_immediately);
-        Animation fadeOutAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out_and_turn_init_immediately);
-
-        // build the animation set
-        AnimationSet animSet = new AnimationSet(true);
-        animSet.addAnimation(scaleLargeAnim);
-        animSet.addAnimation(fadeOutAnim);
-
         // add the animation set to the button shadow
-        btnStartShadowAtMenu.startAnimation(animSet);
+        btnStartShadowAtMenu.startAnimation(getShadowEffectAnimationSet(MainActivity.this));
     }
 
     private void initViews() {
@@ -77,5 +69,20 @@ public class MainActivity extends AppCompatActivity {
         animScaleLargeWithOvershooting.setDuration(200L);
         animScaleLargeWithOvershooting.setFillAfter(true);
         animScaleLargeWithOvershooting.setInterpolator(new OvershootInterpolator());
+    }
+
+    public static AnimationSet getShadowEffectAnimationSet(Context context) {
+        // create shadow animation set:
+
+        // get shadow animations
+        Animation scaleLargeAnim = AnimationUtils.loadAnimation(context, R.anim.scale_large_and_turn_init_immediately);
+        Animation fadeOutAnim = AnimationUtils.loadAnimation(context, R.anim.fade_out_and_turn_init_immediately);
+
+        // build the animation set
+        AnimationSet animSetShadowEffect = new AnimationSet(true);
+        animSetShadowEffect.addAnimation(scaleLargeAnim);
+        animSetShadowEffect.addAnimation(fadeOutAnim);
+
+        return animSetShadowEffect;
     }
 }

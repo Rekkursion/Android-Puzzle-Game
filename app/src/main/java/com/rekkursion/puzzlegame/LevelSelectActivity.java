@@ -16,6 +16,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,6 +43,7 @@ public class LevelSelectActivity extends AppCompatActivity {
     private RadioButton rdbSelectGamingModeSlidingPuzzle;
     private RadioButton rdbSelectGamingModeTraditionalPuzzle;
     private Button btnStartAtLevelSelect;
+    private Button btnStartShadowAtLevelSelect;
     private TextView txtvShowSizeOfOriginalSelectedImage;
     private TextView txtvShowImageTooBigWarning;
 
@@ -93,6 +97,11 @@ public class LevelSelectActivity extends AppCompatActivity {
                         txtvShowImageTooBigWarning.setVisibility(View.GONE);
 
                     btnStartAtLevelSelect.setEnabled(true);
+                    btnStartShadowAtLevelSelect.setEnabled(true);
+
+                    // add the animation set to the button shadow
+                    btnStartShadowAtLevelSelect.startAnimation(MainActivity.getShadowEffectAnimationSet(LevelSelectActivity.this));
+
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Error happened when getting the file.", Toast.LENGTH_SHORT).show();
@@ -114,6 +123,7 @@ public class LevelSelectActivity extends AppCompatActivity {
         rdbSelectGamingModeSlidingPuzzle = findViewById(R.id.rdb_select_gaming_mode_sliding_puzzle);
         rdbSelectGamingModeTraditionalPuzzle = findViewById(R.id.rdb_select_gaming_mode_traditional_puzzle);
         btnStartAtLevelSelect = findViewById(R.id.btn_start_at_level_select);
+        btnStartShadowAtLevelSelect = findViewById(R.id.btn_start_shadow_at_level_select);
         txtvShowSizeOfOriginalSelectedImage = findViewById(R.id.txtv_show_size_of_original_selected_image);
         txtvShowImageTooBigWarning = findViewById(R.id.txtv_show_image_too_big_warning);
 
@@ -122,6 +132,7 @@ public class LevelSelectActivity extends AppCompatActivity {
 
         // haven't selected image, cannot click start button
         btnStartAtLevelSelect.setEnabled(false);
+        btnStartShadowAtLevelSelect.setEnabled(false);
 
         // initial scale type for preview-selected-image which is FIT_CENTER
         imgvPreviewSelectedImage.setScaleType(ImageView.ScaleType.FIT_CENTER);

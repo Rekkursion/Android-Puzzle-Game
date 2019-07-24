@@ -22,6 +22,7 @@
             android:layout_margin="@dimen/dim_general_margin"
             android:layout_gravity="center"
             android:clickable="false"
+            android:enabled="false"
             android:text="@string/str_start"
             android:textSize="@dimen/dim_start_at_menu_text_size"
             android:background="?android:attr/selectableItemBackground"
