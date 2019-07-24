@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -99,6 +100,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
                 try {
                     _date = new SimpleDateFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING).parse(_dateString);
                 } catch (ParseException e) {
+                    e.printStackTrace();
                     _date = Calendar.getInstance().getTime();
                 }
 
