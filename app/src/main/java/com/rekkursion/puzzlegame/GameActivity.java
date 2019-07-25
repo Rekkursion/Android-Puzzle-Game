@@ -1,10 +1,12 @@
 package com.rekkursion.puzzlegame;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,9 +21,10 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Timer;
 
 public class GameActivity extends AppCompatActivity {
+    private final int REQ_CODE_TO_RANKING_ACTIVITY = 13;
+
     private int TOTAL_GAMING_IMAGE_VIEW_SIZE = 1000;
     private int screenWidth, screenHeight;
     private final int marginOnBlocks = 5;
@@ -72,6 +75,17 @@ public class GameActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.STOPPED;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_TO_RANKING_ACTIVITY:
+                finish();
+                break;
+        }
     }
 
     private void initViews() {
@@ -266,6 +280,6 @@ public class GameActivity extends AppCompatActivity {
 
         // create intent and go to ranking-activity
         Intent intentToRankingActivity = new Intent(GameActivity.this, RankingActivity.class);
-        startActivity(intentToRankingActivity);
+        startActivityForResult(intentToRankingActivity, REQ_CODE_TO_RANKING_ACTIVITY);
     }
 }

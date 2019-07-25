@@ -3,7 +3,13 @@ package com.rekkursion.puzzlegame;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -15,8 +21,55 @@ public class RankingActivity extends AppCompatActivity {
     private TabLayout tblyDifficultiesClassification;
     private ViewPager vpgrDifficultiesClassification;
 
+    private TextView txtvTryAgain;
+    private TextView txtvBackToMenu;
+
     private SQLiteDatabaseHelper sqlHelper;
     public static RankingRecordItemModel newRankingRecord;
+
+    private View.OnTouchListener textViewsAsButtonsOnTouchListener = (view, motionEvent) -> {
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Animation animOptionPressed = AnimationUtils.loadAnimation(RankingActivity.this, R.anim.scale_animation_view_pressed);
+                animOptionPressed.setFillAfter(true);
+                view.startAnimation(animOptionPressed);
+                return true;
+
+            case MotionEvent.ACTION_UP:
+                Animation animOptionUnpressed = AnimationUtils.loadAnimation(RankingActivity.this, R.anim.scale_animation_view_unpressed);
+                animOptionUnpressed.setFillAfter(true);
+                animOptionUnpressed.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        view.performClick();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+                view.startAnimation(animOptionUnpressed);
+                return true;
+
+            default: return true;
+        }
+    };
+
+    private View.OnClickListener menuOptionsOnClickListener = view -> {
+        switch (view.getId()) {
+            // try again (back to level-select)
+            case R.id.txtv_try_again_at_ranking_activity:
+                finish();
+                break;
+
+            // back to menu
+            case R.id.txtv_back_to_menu_button_at_ranking_activity:
+
+                break;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +85,9 @@ public class RankingActivity extends AppCompatActivity {
     private void initViews() {
         tblyDifficultiesClassification = findViewById(R.id.tbly_difficulties_classification);
         vpgrDifficultiesClassification = findViewById(R.id.vpgr_difficulties_classification);
+
+        txtvTryAgain = findViewById(R.id.txtv_try_again_at_ranking_activity);
+        txtvBackToMenu = findViewById(R.id.txtv_back_to_menu_button_at_ranking_activity);
 
         // get the index of new record from selected difficulty record list
         int selectedDifficulty = newRankingRecord == null ? -1 : newRankingRecord.getGameDifficulty();
@@ -59,5 +115,17 @@ public class RankingActivity extends AppCompatActivity {
         try {
             tblyDifficultiesClassification.getTabAt(selectedDifficulty - 3).select();
         } catch (NullPointerException e) {}
+
+        // set on-touch-listener for text-views as buttons
+        txtvTryAgain.setOnTouchListener(textViewsAsButtonsOnTouchListener);
+        txtvBackToMenu.setOnTouchListener(textViewsAsButtonsOnTouchListener);
+
+        // set on-click-listener for text-views as buttons
+        txtvTryAgain.setOnClickListener(menuOptionsOnClickListener);
+        txtvBackToMenu.setOnClickListener(menuOptionsOnClickListener);
+
+        // if comes from menu-activity, don't show try-again button
+        if (newRankingRecord == null)
+            txtvTryAgain.setVisibility(View.GONE);
     }
 }

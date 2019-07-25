@@ -7,15 +7,44 @@
     android:layout_height="match_parent"
     tools:context=".RankingActivity">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tbly_difficulties_classification"
-        app:tabMode="scrollable"
-        app:tabGravity="fill"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="7"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tbly_difficulties_classification"
+            app:tabMode="scrollable"
+            app:tabGravity="fill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/vpgr_difficulties_classification"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vpgr_difficulties_classification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtv_try_again_at_ranking_activity"
+            android:text="@string/str_try_again"
+            android:textSize="@dimen/dim_general_ui_text_size"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txtv_back_to_menu_button_at_ranking_activity"
+            android:text="@string/str_back_to_menu"
+            android:textSize="@dimen/dim_general_ui_text_size"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_margin="@dimen/dim_general_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>

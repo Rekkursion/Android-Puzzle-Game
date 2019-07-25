@@ -64,8 +64,8 @@ public class RankingRecordItemDecoration extends RecyclerView.ItemDecoration {
             View view = parent.getChildAt(k);
             if(view != null) {
                 if(parent.getChildAdapterPosition(view) == newRecordIdx) {
-                    paint.setColor(context.getResources().getColor(R.color.colorAccent));
-                    paint.setAlpha(70);
+                    paint.setColor(context.getResources().getColor(android.R.color.holo_orange_dark));
+                    paint.setAlpha(90);
                 } else {
                     if((parent.getChildAdapterPosition(view) & 1) == 1)
                         paint.setColor(Color.parseColor("#00000000"));

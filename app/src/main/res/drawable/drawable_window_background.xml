@@ -11,12 +11,12 @@
 
     <gradient
         android:startColor="@color/colorAccent"
-        android:endColor="@android:color/white"
+        android:endColor="@android:color/black"
         android:gradientRadius="400dp"
         android:type="radial" />
 
     <stroke
-        android:width="10dp"
+        android:width="0dp"
         android:color="@android:color/black"
         />
 </shape>

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="dim_general_ui_text_size">30sp</dimen>
     <dimen name="dim_general_margin">8dp</dimen>
     <dimen name="dim_start_at_main_activity_text_size">60sp</dimen>
-    <dimen name="dim_start_at_level_select_activity_text_size">30sp</dimen>
-    <dimen name="dim_options_at_menu_activity_text_size">30sp</dimen>
     <dimen name="dim_preview_selected_image_size">200dp</dimen>
     <dimen name="dim_gaming_image_size">350dp</dimen>
-    <dimen name="dim_move_counter_and_ms_timer_text_size">30sp</dimen>
     <dimen name="dim_warning_text_size">12sp</dimen>
     <dimen name="dim_ranking_record_item_text_size">17sp</dimen>
     <dimen name="dim_ranking_record_item_margin">8sp</dimen>
-    <dimen name="dim_resume_button_text_size">30sp</dimen>
 </resources>

@@ -23,6 +23,8 @@
     <string name="str_user_check_yes">Yes</string>
     <string name="str_user_check_no">No</string>
     <string name="str_play">Start playing</string>
-    <string name="str_ranking">Ranking</string>
+    <string name="str_ranking">Ranking board</string>
     <string name="str_settings">Settings</string>
+    <string name="str_back_to_menu">Back to menu</string>
+    <string name="str_try_again">Try again</string>
 </resources>
