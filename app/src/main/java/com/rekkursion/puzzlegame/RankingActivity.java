@@ -24,7 +24,8 @@ public class RankingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ranking);
 
         sqlHelper = new SQLiteDatabaseHelper(this);
-        sqlHelper.insertData(newRankingRecord);
+        if (newRankingRecord != null)
+            sqlHelper.insertData(newRankingRecord);
         initViews();
     }
 
@@ -33,7 +34,7 @@ public class RankingActivity extends AppCompatActivity {
         vpgrDifficultiesClassification = findViewById(R.id.vpgr_difficulties_classification);
 
         // get the index of new record from selected difficulty record list
-        int selectedDifficulty = newRankingRecord.getGameDifficulty();
+        int selectedDifficulty = newRankingRecord == null ? -1 : newRankingRecord.getGameDifficulty();
 
         // set up view-pager with fragments
         RankingBoardPagerAdapter adapter = new RankingBoardPagerAdapter(getSupportFragmentManager());
