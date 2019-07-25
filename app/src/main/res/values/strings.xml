@@ -22,4 +22,7 @@
     <string name="str_user_check_before_delete_the_record">Are you sure you want to delete this record?</string>
     <string name="str_user_check_yes">Yes</string>
     <string name="str_user_check_no">No</string>
+    <string name="str_play">Start playing</string>
+    <string name="str_ranking">Ranking</string>
+    <string name="str_settings">Settings</string>
 </resources>

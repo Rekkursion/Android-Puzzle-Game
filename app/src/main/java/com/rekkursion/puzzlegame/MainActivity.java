@@ -1,6 +1,5 @@
 package com.rekkursion.puzzlegame;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -8,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -21,8 +19,8 @@ import android.widget.ImageView;
 public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_PERMISSION_VIBRATE = 128128;
 
-    private Button btnStartAtMenu;
-    private Button btnStartShadowAtMenu;
+    private Button btnStartAtMainActivity;
+    private Button btnStartShadowAtMainActivity;
     private ImageView imgvPuzzleGameTitleAtMainActivity;
 
     private Animation animScaleLittleWithBouncing;
@@ -42,17 +40,16 @@ public class MainActivity extends AppCompatActivity {
         initViews();
 
         // add the animation set to the button shadow
-        btnStartShadowAtMenu.startAnimation(getShadowEffectAnimationSet(MainActivity.this));
+        btnStartShadowAtMainActivity.startAnimation(getShadowEffectAnimationSet(MainActivity.this));
     }
 
     private void initViews() {
-        btnStartAtMenu = findViewById(R.id.btn_start_at_menu);
-        btnStartShadowAtMenu = findViewById(R.id.btn_start_shadow_at_menu);
+        btnStartAtMainActivity = findViewById(R.id.btn_start_at_main_activity);
+        btnStartShadowAtMainActivity = findViewById(R.id.btn_start_shadow_at_main_activity);
         imgvPuzzleGameTitleAtMainActivity = findViewById(R.id.imgv_puzzle_game_title_at_main_activity);
 
-        btnStartAtMenu.setOnClickListener(view -> {
-            Intent toLevelSelectActivityIntent = new Intent(MainActivity.this, LevelSelectActivity.class);
-            startActivity(toLevelSelectActivityIntent);
+        btnStartAtMainActivity.setOnClickListener(view -> {
+            goToMenuActivity();
         });
 
         // set on-click-listener for animations
@@ -94,5 +91,12 @@ public class MainActivity extends AppCompatActivity {
         animSetShadowEffect.addAnimation(fadeOutAnim);
 
         return animSetShadowEffect;
+    }
+
+    private void goToMenuActivity() {
+//        Intent toLevelSelectActivityIntent = new Intent(MainActivity.this, LevelSelectActivity.class);
+//        startActivity(toLevelSelectActivityIntent);
+        Intent toMenuActivityIntent = new Intent(MainActivity.this, MenuActivity.class);
+        startActivity(toMenuActivityIntent);
     }
 }

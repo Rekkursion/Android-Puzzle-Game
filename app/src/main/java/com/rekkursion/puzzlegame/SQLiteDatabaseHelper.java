@@ -78,7 +78,6 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         return readDataHelper(sqlQueryString);
     }
 
-    // TODO: no tested
     // delete
     public void deleteData(RankingRecordItemModel rr) {
         final SQLiteDatabase db = getWritableDatabase();

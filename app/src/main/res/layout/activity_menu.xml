@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/dim_general_margin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".MenuActivity">
+    <TextView
+        android:id="@+id/txtv_play_option_at_menu_activity"
+        android:layout_marginBottom="@dimen/dim_general_margin"
+        android:text="@string/str_play"
+        android:textSize="@dimen/dim_options_at_menu_activity_text_size"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/txtv_ranking_option_at_menu_activity"
+        android:layout_marginBottom="@dimen/dim_general_margin"
+        android:text="@string/str_ranking"
+        android:textSize="@dimen/dim_options_at_menu_activity_text_size"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/txtv_settings_option_at_menu_activity"
+        android:text="@string/str_settings"
+        android:textSize="@dimen/dim_options_at_menu_activity_text_size"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
