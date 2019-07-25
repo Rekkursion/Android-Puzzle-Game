@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         puzzleGameTitleAnimationStatus = 0;
 
         animScaleLittleWithBouncing = new ScaleAnimation(1.0F, 0.5F, 1.0F, 0.5F, Animation.RELATIVE_TO_SELF, 0.5F, Animation.RELATIVE_TO_SELF, 0.5F);
-        animScaleLittleWithBouncing.setDuration(2000L);
+        animScaleLittleWithBouncing.setDuration(1500L);
         animScaleLittleWithBouncing.setFillAfter(true);
         animScaleLittleWithBouncing.setInterpolator(new BounceInterpolator());
 

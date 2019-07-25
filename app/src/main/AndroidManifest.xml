@@ -11,8 +11,11 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_info_outline_orange_24dp"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MenuActivity"></activity>
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MenuActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RankingActivity"
             android:screenOrientation="portrait" />
