@@ -95,6 +95,12 @@ public class RankingActivity extends AppCompatActivity {
         txtvBackToMenu.setEnabled(true);
     }
 
+    @Override
+    public void onBackPressed() {
+        setResult(BackToWhere.BACK_TO_LEVEL_SELECT.ordinal());
+        finish();
+    }
+
     private void initViews() {
         tblyDifficultiesClassification = findViewById(R.id.tbly_difficulties_classification);
         vpgrDifficultiesClassification = findViewById(R.id.vpgr_difficulties_classification);

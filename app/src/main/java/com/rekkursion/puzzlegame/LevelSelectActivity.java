@@ -50,6 +50,7 @@ public class LevelSelectActivity extends AppCompatActivity {
     private TextView txtvStartButtonShadowAtLevelSelect;
     private TextView txtvShowSizeOfOriginalSelectedImage;
     private TextView txtvShowImageTooBigWarning;
+    private ImageView imgvBackToMenuFromLevelSelect;
 
     private final int REQ_CODE_GET_IMAGE_FROM_EXTERNAL_STORAGE = 10037;
     private final int REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE = 63;
@@ -174,6 +175,7 @@ public class LevelSelectActivity extends AppCompatActivity {
         txtvStartButtonShadowAtLevelSelect = findViewById(R.id.txtv_start_button_shadow_at_level_select);
         txtvShowSizeOfOriginalSelectedImage = findViewById(R.id.txtv_show_size_of_original_selected_image);
         txtvShowImageTooBigWarning = findViewById(R.id.txtv_show_image_too_big_warning);
+        imgvBackToMenuFromLevelSelect = findViewById(R.id.imgv_back_to_menu_from_level_select);
 
         // discover the warnings
         txtvShowImageTooBigWarning.setVisibility(View.GONE);
@@ -264,6 +266,9 @@ public class LevelSelectActivity extends AppCompatActivity {
                 startActivityForResult(intentToGameActivity, REQ_CODE_TO_GAME_ACTIVITY);
             }
         });
+
+        // back to menu
+        imgvBackToMenuFromLevelSelect.setOnClickListener(view -> finish());
     }
 
     private void getImageFromExternalStorage() {
