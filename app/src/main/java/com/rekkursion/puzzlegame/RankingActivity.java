@@ -36,6 +36,9 @@ public class RankingActivity extends AppCompatActivity {
                 return true;
 
             case MotionEvent.ACTION_UP:
+                txtvTryAgain.setEnabled(false);
+                txtvBackToMenu.setEnabled(false);
+
                 Animation animOptionUnpressed = AnimationUtils.loadAnimation(RankingActivity.this, R.anim.scale_animation_view_unpressed);
                 animOptionUnpressed.setFillAfter(true);
                 animOptionUnpressed.setAnimationListener(new Animation.AnimationListener() {
@@ -82,6 +85,14 @@ public class RankingActivity extends AppCompatActivity {
         if (newRankingRecord != null)
             sqlHelper.insertData(newRankingRecord);
         initViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        txtvTryAgain.setEnabled(true);
+        txtvBackToMenu.setEnabled(true);
     }
 
     private void initViews() {
