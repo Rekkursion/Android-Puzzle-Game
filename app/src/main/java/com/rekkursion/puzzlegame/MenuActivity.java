@@ -89,16 +89,21 @@ public class MenuActivity extends AppCompatActivity {
         initViews();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        txtvPlayOption.setEnabled(true);
+        txtvRankingOption.setEnabled(true);
+        txtvSettingsOption.setEnabled(true);
+    }
+
     private void initViews() {
         llyOptionsAtMenuActivityContainer = findViewById(R.id.lly_options_at_menu_activity_container);
 
         txtvPlayOption = findViewById(R.id.txtv_play_option_at_menu_activity);
         txtvRankingOption = findViewById(R.id.txtv_ranking_option_at_menu_activity);
         txtvSettingsOption = findViewById(R.id.txtv_settings_option_at_menu_activity);
-
-        txtvPlayOption.setEnabled(true);
-        txtvRankingOption.setEnabled(true);
-        txtvSettingsOption.setEnabled(true);
 
         txtvPlayOption.setOnTouchListener(menuOptionsOnTouchListener);
         txtvRankingOption.setOnTouchListener(menuOptionsOnTouchListener);
