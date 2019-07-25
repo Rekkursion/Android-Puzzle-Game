@@ -28,6 +28,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
@@ -104,10 +106,8 @@ public class LevelSelectActivity extends AppCompatActivity {
                     else
                         txtvShowImageTooBigWarning.setVisibility(View.GONE);
 
-                    btnStartAtLevelSelect.setEnabled(true);
-                    btnStartShadowAtLevelSelect.setEnabled(true);
-
                     // add the animation set to the button shadow
+                    btnStartShadowAtLevelSelect.setEnabled(true);
                     btnStartShadowAtLevelSelect.startAnimation(MainActivity.getShadowEffectAnimationSet(LevelSelectActivity.this));
 
                 } catch (NullPointerException e) {
@@ -138,8 +138,7 @@ public class LevelSelectActivity extends AppCompatActivity {
         // discover the warnings
         txtvShowImageTooBigWarning.setVisibility(View.GONE);
 
-        // haven't selected image, cannot click start button
-        btnStartAtLevelSelect.setEnabled(false);
+        // disable shadow at first
         btnStartShadowAtLevelSelect.setEnabled(false);
 
         // initial scale type for preview-selected-image which is FIT_CENTER
@@ -206,7 +205,12 @@ public class LevelSelectActivity extends AppCompatActivity {
         btnStartAtLevelSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bitmap origImageBitmap = ((BitmapDrawable)imgvPreviewSelectedImage.getDrawable()).getBitmap();
+                if (imgvPreviewSelectedImage.getDrawable() == null) {
+                    Snackbar.make(view, R.string.str_please_choose_an_image, Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Bitmap origImageBitmap = ((BitmapDrawable) imgvPreviewSelectedImage.getDrawable()).getBitmap();
                 int selectedDifficulty = skbDifficultiesSelect.getProgress() + PROGRESS_AND_REAL_DIFFICULTY_OFFSET;
                 GamingModeEnum gamingMode = rdbSelectGamingModeSlidingPuzzle.isChecked() ? GamingModeEnum.SLIDING_MODE : GamingModeEnum.TRADITIONAL_MODE;
 
