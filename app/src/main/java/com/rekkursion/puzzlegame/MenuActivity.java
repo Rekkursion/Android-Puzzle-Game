@@ -2,8 +2,6 @@ package com.rekkursion.puzzlegame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,19 +9,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class MenuActivity extends AppCompatActivity {
-    private LinearLayout llyOptionsAtMenuActivityContainer;
-
     private TextView txtvPlayOption;
     private TextView txtvRankingOption;
     private TextView txtvSettingsOption;
+
+    private ImageView imgvBackToMainFromMenu;
 
     private View.OnTouchListener menuOptionsOnTouchListener = (view, motionEvent) -> {
         switch (motionEvent.getAction()) {
@@ -34,9 +29,9 @@ public class MenuActivity extends AppCompatActivity {
                 return true;
 
             case MotionEvent.ACTION_UP:
-                int childrenCount = llyOptionsAtMenuActivityContainer.getChildCount();
-                for (int k = 0; k < childrenCount; ++k)
-                    llyOptionsAtMenuActivityContainer.getChildAt(k).setEnabled(false);
+                txtvPlayOption.setEnabled(false);
+                txtvRankingOption.setEnabled(false);
+                txtvSettingsOption.setEnabled(false);
 
                 Animation animOptionUnpressed = AnimationUtils.loadAnimation(MenuActivity.this, R.anim.scale_animation_view_unpressed);
                 animOptionUnpressed.setFillAfter(true);
@@ -99,8 +94,6 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        llyOptionsAtMenuActivityContainer = findViewById(R.id.lly_options_at_menu_activity_container);
-
         txtvPlayOption = findViewById(R.id.txtv_play_option_at_menu_activity);
         txtvRankingOption = findViewById(R.id.txtv_ranking_option_at_menu_activity);
         txtvSettingsOption = findViewById(R.id.txtv_settings_option_at_menu_activity);
@@ -112,5 +105,9 @@ public class MenuActivity extends AppCompatActivity {
         txtvPlayOption.setOnClickListener(menuOptionsOnClickListener);
         txtvRankingOption.setOnClickListener(menuOptionsOnClickListener);
         txtvSettingsOption.setOnClickListener(menuOptionsOnClickListener);
+
+        imgvBackToMainFromMenu = findViewById(R.id.imgv_back_to_main_from_menu);
+
+        imgvBackToMainFromMenu.setOnClickListener(view -> finish());
     }
 }

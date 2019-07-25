@@ -165,25 +165,29 @@
     </ScrollView>
 
     <!-- start button -->
-    <Button
-        android:id="@+id/btn_start_shadow_at_level_select"
+    <TextView
+        android:id="@+id/txtv_start_button_shadow_at_level_select"
         android:layout_alignParentBottom="true"
         android:clickable="false"
         android:text="@string/str_start"
         android:textSize="@dimen/dim_general_ui_text_size"
+        android:textStyle="bold"
+        android:textAllCaps="true"
         android:layout_marginEnd="@dimen/dim_general_margin"
         android:layout_marginBottom="@dimen/dim_general_margin"
-        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/btn_start_at_level_select"
+    <TextView
+        android:id="@+id/txtv_start_button_at_level_select"
         android:layout_alignParentBottom="true"
         android:text="@string/str_start"
         android:textSize="@dimen/dim_general_ui_text_size"
+        android:textStyle="bold"
+        android:textAllCaps="true"
         android:layout_marginEnd="@dimen/dim_general_margin"
         android:layout_marginBottom="@dimen/dim_general_margin"
-        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </RelativeLayout>

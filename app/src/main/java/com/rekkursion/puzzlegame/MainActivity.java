@@ -18,13 +18,18 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_PERMISSION_VIBRATE = 128128;
+    private boolean firstClicked = false;
 
+    private LinearLayout llyBodyAtMainActivity;
     private TextView txtvStartButtonAtMainActivity;
     private TextView txtvStartButtonShadowAtMainActivity;
     private ImageView imgvPuzzleGameTitleAtMainActivity;
@@ -49,7 +54,24 @@ public class MainActivity extends AppCompatActivity {
         txtvStartButtonShadowAtMainActivity.startAnimation(getShadowEffectAnimationSet(MainActivity.this));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        firstClicked = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!firstClicked) {
+            Snackbar.make(llyBodyAtMainActivity, R.string.str_press_again_to_leave, Snackbar.LENGTH_SHORT).show();
+            firstClicked = true;
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void initViews() {
+        llyBodyAtMainActivity = findViewById(R.id.lly_body_at_main_activity);
         txtvStartButtonAtMainActivity = findViewById(R.id.txtv_start_button_at_main_activity);
         txtvStartButtonShadowAtMainActivity = findViewById(R.id.txtv_start_button_shadow_at_main_activity);
         imgvPuzzleGameTitleAtMainActivity = findViewById(R.id.imgv_puzzle_game_title_at_main_activity);
@@ -74,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
         // set on-click-listener for animations
         imgvPuzzleGameTitleAtMainActivity.setOnClickListener(view -> {
+            firstClicked = false;
+
             if (puzzleGameTitleAnimationStatus == 0) {
                 imgvPuzzleGameTitleAtMainActivity.startAnimation(animScaleLittleWithBouncing);
                 puzzleGameTitleAnimationStatus = 1;

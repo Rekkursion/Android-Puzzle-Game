@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -34,6 +35,7 @@ import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class LevelSelectActivity extends AppCompatActivity {
     private SeekBar skbDifficultiesSelect;
@@ -44,8 +46,8 @@ public class LevelSelectActivity extends AppCompatActivity {
     private Spinner spnSelectScaleType;
     private RadioButton rdbSelectGamingModeSlidingPuzzle;
     private RadioButton rdbSelectGamingModeTraditionalPuzzle;
-    private Button btnStartAtLevelSelect;
-    private Button btnStartShadowAtLevelSelect;
+    private TextView txtvStartButtonAtLevelSelect;
+    private TextView txtvStartButtonShadowAtLevelSelect;
     private TextView txtvShowSizeOfOriginalSelectedImage;
     private TextView txtvShowImageTooBigWarning;
 
@@ -55,12 +57,50 @@ public class LevelSelectActivity extends AppCompatActivity {
 
     private final int PROGRESS_AND_REAL_DIFFICULTY_OFFSET = 3;
 
+    private View.OnTouchListener startTextViewAsButtonOnTouchListener = (view, motionEvent) -> {
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Animation animOptionPressed = AnimationUtils.loadAnimation(LevelSelectActivity.this, R.anim.scale_animation_view_pressed);
+                animOptionPressed.setFillAfter(true);
+                view.startAnimation(animOptionPressed);
+                return true;
+
+            case MotionEvent.ACTION_UP:
+                txtvStartButtonAtLevelSelect.setEnabled(false);
+
+                Animation animOptionUnpressed = AnimationUtils.loadAnimation(LevelSelectActivity.this, R.anim.scale_animation_view_unpressed);
+                animOptionUnpressed.setFillAfter(true);
+                animOptionUnpressed.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        view.performClick();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+                view.startAnimation(animOptionUnpressed);
+                return true;
+
+            default: return true;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_select);
 
         initViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        txtvStartButtonAtLevelSelect.setEnabled(true);
     }
 
     @Override
@@ -107,8 +147,8 @@ public class LevelSelectActivity extends AppCompatActivity {
                         txtvShowImageTooBigWarning.setVisibility(View.GONE);
 
                     // add the animation set to the button shadow
-                    btnStartShadowAtLevelSelect.setEnabled(true);
-                    btnStartShadowAtLevelSelect.startAnimation(MainActivity.getShadowEffectAnimationSet(LevelSelectActivity.this));
+                    txtvStartButtonShadowAtLevelSelect.setEnabled(true);
+                    txtvStartButtonShadowAtLevelSelect.startAnimation(MainActivity.getShadowEffectAnimationSet(LevelSelectActivity.this));
 
                 } catch (NullPointerException e) {
                     e.printStackTrace();
@@ -130,8 +170,8 @@ public class LevelSelectActivity extends AppCompatActivity {
         spnSelectScaleType = findViewById(R.id.spn_select_scale_type);
         rdbSelectGamingModeSlidingPuzzle = findViewById(R.id.rdb_select_gaming_mode_sliding_puzzle);
         rdbSelectGamingModeTraditionalPuzzle = findViewById(R.id.rdb_select_gaming_mode_traditional_puzzle);
-        btnStartAtLevelSelect = findViewById(R.id.btn_start_at_level_select);
-        btnStartShadowAtLevelSelect = findViewById(R.id.btn_start_shadow_at_level_select);
+        txtvStartButtonAtLevelSelect = findViewById(R.id.txtv_start_button_at_level_select);
+        txtvStartButtonShadowAtLevelSelect = findViewById(R.id.txtv_start_button_shadow_at_level_select);
         txtvShowSizeOfOriginalSelectedImage = findViewById(R.id.txtv_show_size_of_original_selected_image);
         txtvShowImageTooBigWarning = findViewById(R.id.txtv_show_image_too_big_warning);
 
@@ -139,7 +179,7 @@ public class LevelSelectActivity extends AppCompatActivity {
         txtvShowImageTooBigWarning.setVisibility(View.GONE);
 
         // disable shadow at first
-        btnStartShadowAtLevelSelect.setEnabled(false);
+        txtvStartButtonShadowAtLevelSelect.setEnabled(false);
 
         // initial scale type for preview-selected-image which is FIT_CENTER
         imgvPreviewSelectedImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -202,7 +242,8 @@ public class LevelSelectActivity extends AppCompatActivity {
         });
 
         // on-click-listener for starting the game
-        btnStartAtLevelSelect.setOnClickListener(new View.OnClickListener() {
+        txtvStartButtonAtLevelSelect.setOnTouchListener(startTextViewAsButtonOnTouchListener);
+        txtvStartButtonAtLevelSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (imgvPreviewSelectedImage.getDrawable() == null) {
