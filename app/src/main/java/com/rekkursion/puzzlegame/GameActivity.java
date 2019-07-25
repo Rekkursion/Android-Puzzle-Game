@@ -83,6 +83,8 @@ public class GameActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case REQ_CODE_TO_RANKING_ACTIVITY:
+                // directly finish whatever back-to-menu or back-to-level-select
+                setResult(resultCode);
                 finish();
                 break;
         }

@@ -61,12 +61,14 @@ public class RankingActivity extends AppCompatActivity {
         switch (view.getId()) {
             // try again (back to level-select)
             case R.id.txtv_try_again_at_ranking_activity:
+                setResult(BackToWhere.BACK_TO_LEVEL_SELECT.ordinal());
                 finish();
                 break;
 
             // back to menu
             case R.id.txtv_back_to_menu_button_at_ranking_activity:
-
+                setResult(BackToWhere.BACK_TO_MENU.ordinal());
+                finish();
                 break;
         }
     };

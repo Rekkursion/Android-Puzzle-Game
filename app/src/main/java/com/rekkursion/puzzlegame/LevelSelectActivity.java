@@ -49,6 +49,7 @@ public class LevelSelectActivity extends AppCompatActivity {
 
     private final int REQ_CODE_GET_IMAGE_FROM_EXTERNAL_STORAGE = 10037;
     private final int REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE = 63;
+    private final int REQ_CODE_TO_GAME_ACTIVITY = 5275;
 
     private final int PROGRESS_AND_REAL_DIFFICULTY_OFFSET = 3;
 
@@ -77,6 +78,13 @@ public class LevelSelectActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
+            // back from game-activity
+            case REQ_CODE_TO_GAME_ACTIVITY:
+                if (resultCode == BackToWhere.BACK_TO_MENU.ordinal())
+                    finish();
+                break;
+
+            // get image from external storage
             case REQ_CODE_GET_IMAGE_FROM_EXTERNAL_STORAGE:
                 Uri imgUri = null;
                 String imgFilename = "";
@@ -208,7 +216,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                 GameManager.getInstance().selectedScaleTypeString = spnSelectScaleType.getSelectedItem().toString();
 
                 Intent intentToGameActivity = new Intent(LevelSelectActivity.this, GameActivity.class);
-                startActivity(intentToGameActivity);
+                startActivityForResult(intentToGameActivity, REQ_CODE_TO_GAME_ACTIVITY);
             }
         });
     }
