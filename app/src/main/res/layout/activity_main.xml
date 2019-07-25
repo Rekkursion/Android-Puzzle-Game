@@ -17,24 +17,26 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/btn_start_shadow_at_main_activity"
+        <TextView
+            android:id="@+id/txtv_start_button_shadow_at_main_activity"
             android:layout_margin="@dimen/dim_general_margin"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:clickable="false"
             android:enabled="false"
             android:text="@string/str_start"
             android:textSize="@dimen/dim_start_at_main_activity_text_size"
-            android:background="?android:attr/selectableItemBackground"
+            android:textAllCaps="true"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btn_start_at_main_activity"
+        <TextView
+            android:id="@+id/txtv_start_button_at_main_activity"
             android:layout_margin="@dimen/dim_general_margin"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/str_start"
             android:textSize="@dimen/dim_start_at_main_activity_text_size"
-            android:background="?android:attr/selectableItemBackground"
+            android:textAllCaps="true"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </FrameLayout>

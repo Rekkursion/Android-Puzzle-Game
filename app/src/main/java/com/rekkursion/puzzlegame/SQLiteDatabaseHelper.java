@@ -51,6 +51,9 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     // insert
     public void insertData(RankingRecordItemModel rr) {
+        if (rr == null)
+            return;
+
         final SQLiteDatabase db = getWritableDatabase();
         final ContentValues cv = new ContentValues();
 
@@ -80,6 +83,9 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     // delete
     public void deleteData(RankingRecordItemModel rr) {
+        if (rr == null)
+            return;
+
         final SQLiteDatabase db = getWritableDatabase();
         db.delete(RANKING_TABLE_NAME, RANKING_TABLE_COL_DATE + "=\"" + rr.getRecordDateStringByFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING) + "\"", null);
     }

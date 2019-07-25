@@ -15,12 +15,15 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_PERMISSION_VIBRATE = 128128;
 
-    private Button btnStartAtMainActivity;
-    private Button btnStartShadowAtMainActivity;
+    private TextView txtvStartButtonAtMainActivity;
+    private TextView txtvStartButtonShadowAtMainActivity;
     private ImageView imgvPuzzleGameTitleAtMainActivity;
 
     private Animation animScaleLittleWithBouncing;
@@ -40,16 +43,30 @@ public class MainActivity extends AppCompatActivity {
         initViews();
 
         // add the animation set to the button shadow
-        btnStartShadowAtMainActivity.startAnimation(getShadowEffectAnimationSet(MainActivity.this));
+        txtvStartButtonShadowAtMainActivity.startAnimation(getShadowEffectAnimationSet(MainActivity.this));
     }
 
     private void initViews() {
-        btnStartAtMainActivity = findViewById(R.id.btn_start_at_main_activity);
-        btnStartShadowAtMainActivity = findViewById(R.id.btn_start_shadow_at_main_activity);
+        txtvStartButtonAtMainActivity = findViewById(R.id.txtv_start_button_at_main_activity);
+        txtvStartButtonShadowAtMainActivity = findViewById(R.id.txtv_start_button_shadow_at_main_activity);
         imgvPuzzleGameTitleAtMainActivity = findViewById(R.id.imgv_puzzle_game_title_at_main_activity);
 
-        btnStartAtMainActivity.setOnClickListener(view -> {
-            goToMenuActivity();
+        txtvStartButtonAtMainActivity.setOnClickListener(view -> {
+            Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale_animation_view_pressed);
+            anim.setFillAfter(false);
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    goToMenuActivity();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
+            txtvStartButtonAtMainActivity.startAnimation(anim);
         });
 
         // set on-click-listener for animations
@@ -94,8 +111,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToMenuActivity() {
-//        Intent toLevelSelectActivityIntent = new Intent(MainActivity.this, LevelSelectActivity.class);
-//        startActivity(toLevelSelectActivityIntent);
         Intent toMenuActivityIntent = new Intent(MainActivity.this, MenuActivity.class);
         startActivity(toMenuActivityIntent);
     }

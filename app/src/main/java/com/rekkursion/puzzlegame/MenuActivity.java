@@ -13,11 +13,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
 public class MenuActivity extends AppCompatActivity {
+    private LinearLayout llyOptionsAtMenuActivityContainer;
+
     private TextView txtvPlayOption;
     private TextView txtvRankingOption;
     private TextView txtvSettingsOption;
@@ -31,6 +34,10 @@ public class MenuActivity extends AppCompatActivity {
                 return true;
 
             case MotionEvent.ACTION_UP:
+                int childrenCount = llyOptionsAtMenuActivityContainer.getChildCount();
+                for (int k = 0; k < childrenCount; ++k)
+                    llyOptionsAtMenuActivityContainer.getChildAt(k).setEnabled(false);
+
                 Animation animOptionUnpressed = AnimationUtils.loadAnimation(MenuActivity.this, R.anim.scale_animation_view_unpressed);
                 animOptionUnpressed.setFillAfter(true);
                 animOptionUnpressed.setAnimationListener(new Animation.AnimationListener() {
@@ -83,9 +90,15 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        llyOptionsAtMenuActivityContainer = findViewById(R.id.lly_options_at_menu_activity_container);
+
         txtvPlayOption = findViewById(R.id.txtv_play_option_at_menu_activity);
         txtvRankingOption = findViewById(R.id.txtv_ranking_option_at_menu_activity);
         txtvSettingsOption = findViewById(R.id.txtv_settings_option_at_menu_activity);
+
+        txtvPlayOption.setEnabled(true);
+        txtvRankingOption.setEnabled(true);
+        txtvSettingsOption.setEnabled(true);
 
         txtvPlayOption.setOnTouchListener(menuOptionsOnTouchListener);
         txtvRankingOption.setOnTouchListener(menuOptionsOnTouchListener);
