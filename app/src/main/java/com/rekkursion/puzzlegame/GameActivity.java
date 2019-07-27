@@ -90,6 +90,18 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.PAUSED;
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        imgbtnHelpCheckOriginalScaledBitmap.performClick();
+        super.onRestart();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.STOPPED;
