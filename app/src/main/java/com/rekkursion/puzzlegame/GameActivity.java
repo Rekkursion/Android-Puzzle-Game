@@ -97,7 +97,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onRestart() {
-        imgbtnHelpCheckOriginalScaledBitmap.performClick();
+        imgbtnHelpCheckOriginalScaledBitmap.callOnClick();
         super.onRestart();
     }
 
@@ -110,9 +110,9 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PAUSED)
-            btnTurnBackToGamingWhenShowingOriginalScaledBitmap.performClick();
+            btnTurnBackToGamingWhenShowingOriginalScaledBitmap.callOnClick();
         else if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.RUNNING)
-            imgbtnHelpCheckOriginalScaledBitmap.performClick();
+            imgbtnHelpCheckOriginalScaledBitmap.callOnClick();
     }
 
     @Override
