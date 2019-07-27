@@ -20,6 +20,7 @@
     <string name="str_ranking_moved_count">Moved</string>
     <string name="str_ranking_date">Date</string>
     <string name="str_user_check_before_delete_the_record">Are you sure you want to delete this record?</string>
+    <string name="str_user_check_before_give_up_the_game">Are you sure you want to give up?</string>
     <string name="str_user_check_yes">Yes</string>
     <string name="str_user_check_no">No</string>
     <string name="str_play">Play</string>
@@ -29,4 +30,5 @@
     <string name="str_try_again">Try again</string>
     <string name="str_please_choose_an_image">Please choose an image.</string>
     <string name="str_press_again_to_leave">Press again to leave.</string>
+    <string name="str_give_up">Give up</string>
 </resources>

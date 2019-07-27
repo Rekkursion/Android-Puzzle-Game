@@ -109,7 +109,7 @@
             android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <TextView
                     android:text="@string/str_hint"
                     android:textSize="@dimen/dim_general_ui_text_size"
@@ -125,17 +125,35 @@
                     android:layout_centerInParent="true"
                     android:layout_width="@dimen/dim_preview_selected_image_size"
                     android:layout_height="@dimen/dim_preview_selected_image_size" />
-                <Button
-                    android:id="@+id/btn_turn_back_to_gaming_when_showing_original_scaled_bitmap"
-                    android:layout_margin="@dimen/dim_general_margin"
-                    android:gravity="center"
-                    android:layout_alignParentBottom="true"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:text="@string/str_resume"
-                    android:textSize="@dimen/dim_general_ui_text_size"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
             </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_give_up_when_showing_original_scaled_bitmap"
+                android:layout_margin="@dimen/dim_general_margin"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/str_give_up"
+                android:textSize="@dimen/dim_general_ui_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/btn_back_to_menu_when_showing_original_scaled_bitmap"
+                android:layout_marginBottom="@dimen/dim_general_margin"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/str_back_to_menu"
+                android:textSize="@dimen/dim_general_ui_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/btn_turn_back_to_gaming_when_showing_original_scaled_bitmap"
+                android:layout_marginBottom="@dimen/dim_general_margin"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/str_resume"
+                android:textSize="@dimen/dim_general_ui_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

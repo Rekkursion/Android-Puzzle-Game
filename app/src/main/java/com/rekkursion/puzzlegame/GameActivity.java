@@ -3,6 +3,7 @@ package com.rekkursion.puzzlegame;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -37,10 +39,26 @@ public class GameActivity extends AppCompatActivity {
     private ImageView imgvShowOriginalScaledBitmap;
     private LinearLayout llyForShowingOriginalScaledImageAndItsUI;
     private Button btnTurnBackToGamingWhenShowingOriginalScaledBitmap;
+    private Button btnGiveUpWhenShowingOriginalScaledBitmap;
+    private Button btnBackToMenuWhenShowingOriginalScaledBitmap;
     private TextView txtvTapCounter;
     private TextView txtvMillisecondTimer;
 
     private ImageView[][] imgvsSplittedBitmapsArray;
+
+    // on-click-listener for giving up or backing to menu
+    private View.OnClickListener giveUpOrBackToMenuButtonOnClickListener = view -> {
+        new AlertDialog.Builder(GameActivity.this)
+                .setIcon(R.drawable.ic_warning_orange_24dp)
+                .setMessage(R.string.str_user_check_before_give_up_the_game)
+                .setPositiveButton(R.string.str_user_check_yes, (dialogInterface, i) -> {
+                    BackToWhere backToWhere = view.getId() == R.id.btn_give_up_when_showing_original_scaled_bitmap ? BackToWhere.BACK_TO_LEVEL_SELECT : BackToWhere.BACK_TO_MENU;
+                    setResult(backToWhere.ordinal());
+                    finish();
+                })
+                .setNegativeButton(R.string.str_user_check_no, null)
+                .show();
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +96,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PAUSED)
+            btnTurnBackToGamingWhenShowingOriginalScaledBitmap.performClick();
+        else if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.RUNNING)
+            imgbtnHelpCheckOriginalScaledBitmap.performClick();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -98,6 +124,8 @@ public class GameActivity extends AppCompatActivity {
         imgvShowOriginalScaledBitmap = findViewById(R.id.imgv_show_original_scaled_bitmap);
         llyForShowingOriginalScaledImageAndItsUI = findViewById(R.id.lly_for_showing_original_scaled_image_and_its_ui);
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_turn_back_to_gaming_when_showing_original_scaled_bitmap);
+        btnGiveUpWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_give_up_when_showing_original_scaled_bitmap);
+        btnBackToMenuWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_back_to_menu_when_showing_original_scaled_bitmap);
         txtvTapCounter = findViewById(R.id.txtv_tap_counter);
         txtvMillisecondTimer = findViewById(R.id.txtv_millisecond_timer);
 
@@ -137,6 +165,9 @@ public class GameActivity extends AppCompatActivity {
                     GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.RUNNING;
             }
         });
+
+        btnGiveUpWhenShowingOriginalScaledBitmap.setOnClickListener(giveUpOrBackToMenuButtonOnClickListener);
+        btnBackToMenuWhenShowingOriginalScaledBitmap.setOnClickListener(giveUpOrBackToMenuButtonOnClickListener);
     }
 
     private void discoverUIsWhenProcessingImage() {
