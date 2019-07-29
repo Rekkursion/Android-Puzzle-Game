@@ -1,5 +1,7 @@
 package com.rekkursion.puzzlegame;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -8,7 +10,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -34,6 +38,7 @@ import java.util.stream.Collectors;
 public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_PERMISSION_VIBRATE = 128128;
     private boolean firstClicked = false;
+    private boolean homing = true;
 
     private LinearLayout llyBodyAtMainActivity;
     private TextView txtvStartButtonAtMainActivity;
@@ -63,8 +68,29 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
         firstClicked = false;
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        if (homing) {
+            Intent intent = new Intent(this, BackgroundMusicPlayerService.class);
+            startService(intent);
+        }
+        homing = true;
+
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        if (homing) {
+            Intent intent = new Intent(this, BackgroundMusicPlayerService.class);
+            stopService(intent);
+        }
+
+        super.onStop();
     }
 
     @Override
@@ -161,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToMenuActivity() {
+        homing = false;
         Intent toMenuActivityIntent = new Intent(MainActivity.this, MenuActivity.class);
         startActivity(toMenuActivityIntent);
     }

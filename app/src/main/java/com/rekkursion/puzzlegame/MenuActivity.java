@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MenuActivity extends AppCompatActivity {
     private TextView txtvPlayOption;
@@ -74,7 +76,6 @@ public class MenuActivity extends AppCompatActivity {
             case R.id.txtv_settings_option_at_menu_activity:
                 break;
         }
-
         SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
     };
 
@@ -88,11 +89,11 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
-
         txtvPlayOption.setEnabled(true);
         txtvRankingOption.setEnabled(true);
         txtvSettingsOption.setEnabled(true);
+
+        super.onResume();
     }
 
     private void initViews() {
