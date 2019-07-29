@@ -193,6 +193,8 @@ public class LevelSelectActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean isFromUser) {
                 String valueString = String.valueOf(progress + PROGRESS_AND_REAL_DIFFICULTY_OFFSET);
                 txtvSelectedDifficulty.setText(valueString + " x " + valueString);
+
+                SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
             }
 
             @Override
@@ -214,12 +216,15 @@ public class LevelSelectActivity extends AppCompatActivity {
                     getImageFromExternalStorage();
                 else
                     requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE);
+
+                SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
             }
         });
 
         // on-item-selected-listener for selecting scale types
         spnSelectScaleType.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             Map<String, ImageView.ScaleType> scaleTypesDict = new HashMap<>();
+            boolean loading = true;
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -235,6 +240,10 @@ public class LevelSelectActivity extends AppCompatActivity {
 
                 String scaleTypeString = adapterView.getSelectedItem().toString();
                 imgvPreviewSelectedImage.setScaleType(scaleTypesDict.getOrDefault(scaleTypeString, ImageView.ScaleType.CENTER));
+
+                if (!loading)
+                    SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
+                loading = false;
             }
 
             @Override
@@ -262,13 +271,18 @@ public class LevelSelectActivity extends AppCompatActivity {
                 GameManager.getInstance().gamingMode = gamingMode;
                 GameManager.getInstance().selectedScaleTypeString = spnSelectScaleType.getSelectedItem().toString();
 
+                SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
+
                 Intent intentToGameActivity = new Intent(LevelSelectActivity.this, GameActivity.class);
                 startActivityForResult(intentToGameActivity, REQ_CODE_TO_GAME_ACTIVITY);
             }
         });
 
         // back to menu
-        imgvBackToMenuFromLevelSelect.setOnClickListener(view -> finish());
+        imgvBackToMenuFromLevelSelect.setOnClickListener(view -> {
+            SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+            finish();
+        });
     }
 
     private void getImageFromExternalStorage() {

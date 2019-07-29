@@ -74,6 +74,8 @@ public class RankingActivity extends AppCompatActivity {
                 finish();
                 break;
         }
+
+        SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
     };
 
     @Override
@@ -129,6 +131,24 @@ public class RankingActivity extends AppCompatActivity {
         tblyDifficultiesClassification.setupWithViewPager(vpgrDifficultiesClassification);
         tblyDifficultiesClassification.setTabGravity(TabLayout.GRAVITY_FILL);
         tblyDifficultiesClassification.setTabMode(TabLayout.MODE_SCROLLABLE);
+
+        // add tab-selected-listener on the tab-layout for sounding
+        tblyDifficultiesClassification.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                SoundPoolManager.getInstance().play("se_maoudamashii_ranking_tab_click.mp3");
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         // open the selected difficulty tab page
         try {

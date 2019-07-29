@@ -74,6 +74,8 @@ public class MenuActivity extends AppCompatActivity {
             case R.id.txtv_settings_option_at_menu_activity:
                 break;
         }
+
+        SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
     };
 
     @Override
@@ -108,6 +110,9 @@ public class MenuActivity extends AppCompatActivity {
 
         imgvBackToMainFromMenu = findViewById(R.id.imgv_back_to_main_from_menu);
 
-        imgvBackToMainFromMenu.setOnClickListener(view -> finish());
+        imgvBackToMainFromMenu.setOnClickListener(view -> {
+            SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+            finish();
+        });
     }
 }

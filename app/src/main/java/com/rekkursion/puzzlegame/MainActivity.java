@@ -20,10 +20,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_PERMISSION_VIBRATE = 128128;
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         initAnimations();
         initViews();
+        initSounds();
 
         // add the animation set to the button shadow
         txtvStartButtonShadowAtMainActivity.startAnimation(getShadowEffectAnimationSet(MainActivity.this));
@@ -67,6 +74,18 @@ public class MainActivity extends AppCompatActivity {
             firstClicked = true;
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void initSounds() {
+        try {
+            List<String> audioList = Arrays.stream(getAssets().list(SoundPoolManager.SOUND_FILES_ROOT_PATH)).collect(Collectors.toList());
+            SoundPoolManager.getInstance().initSoundPool(MainActivity.this, audioList);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(MainActivity.this, "Error happened when getting sound files.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -92,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onAnimationRepeat(Animation animation) {}
             });
             txtvStartButtonAtMainActivity.startAnimation(anim);
+
+            SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
         });
 
         // set on-click-listener for animations
@@ -101,9 +122,11 @@ public class MainActivity extends AppCompatActivity {
             if (puzzleGameTitleAnimationStatus == 0) {
                 imgvPuzzleGameTitleAtMainActivity.startAnimation(animScaleLittleWithBouncing);
                 puzzleGameTitleAnimationStatus = 1;
+                SoundPoolManager.getInstance().play("se_maoudamashii_onepoint31.mp3", 0, 1.2F);
             } else if (puzzleGameTitleAnimationStatus == 1) {
                 imgvPuzzleGameTitleAtMainActivity.startAnimation(animScaleLargeWithOvershooting);
                 puzzleGameTitleAnimationStatus = 0;
+                SoundPoolManager.getInstance().play("se_maoudamashii_onepoint09.mp3", 0, 1.2F);
             }
         });
     }

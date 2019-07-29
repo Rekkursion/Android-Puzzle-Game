@@ -134,7 +134,7 @@ public class RankingBoardFragment extends Fragment {
         recvRankingBoard.addOnItemTouchListener(new RecyclerViewOnItemTouchListener(recvRankingBoard, new RecyclerViewOnItemTouchListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // Toast.makeText(RankingBoardFragment.this.getContext(), "click on " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
             }
 
             @Override
@@ -264,6 +264,8 @@ public class RankingBoardFragment extends Fragment {
             imgvRankingBoardTitleDateOrderingIcon.setVisibility(View.VISIBLE);
             imgvRankingBoardTitleDateOrderingIcon.setImageResource(orderStatus == RankingBoardOrderingStatus.DATE_ASC ? R.drawable.ic_arrow_drop_up_orange_24dp : R.drawable.ic_arrow_drop_down_orange_24dp);
         }
+
+        SoundPoolManager.getInstance().play("se_maoudamashii_ranking_board_reordering.mp3");
     };
 
     private void setRecvAdapterAndItemDecorationThroughDataList(List<RankingRecordItemModel> dataList, int newRecordIndex) {
