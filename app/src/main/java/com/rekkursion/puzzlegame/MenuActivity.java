@@ -70,6 +70,9 @@ public class MenuActivity extends AppCompatActivity {
                 if (RankingActivity.newRankingRecord != null)
                     RankingActivity.newRankingRecord = null;
 
+                BackgroundMusicManager.getInstance(this).stop();
+                BackgroundMusicManager.getInstance(this).play("musics" + File.separator + "game_maoudamashii_ranking_theme.mp3", true);
+
                 // create intent and go to ranking-activity
                 Intent intentToRankingActivity = new Intent(MenuActivity.this, RankingActivity.class);
                 startActivity(intentToRankingActivity);
@@ -78,7 +81,9 @@ public class MenuActivity extends AppCompatActivity {
             case R.id.txtv_settings_option_at_menu_activity:
                 break;
         }
+
         SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
+        BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
     };
 
     @Override
@@ -90,7 +95,19 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).pause();
+
+        super.onPause();
+    }
+
+    @Override
     protected void onResume() {
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).resume();
+        BackgroundMusicManager.shouldStopPlayingWhenLeaving = true;
+
         txtvPlayOption.setEnabled(true);
         txtvRankingOption.setEnabled(true);
         txtvSettingsOption.setEnabled(true);
@@ -114,6 +131,7 @@ public class MenuActivity extends AppCompatActivity {
         imgvBackToMainFromMenu = findViewById(R.id.imgv_back_to_main_from_menu);
 
         imgvBackToMainFromMenu.setOnClickListener(view -> {
+            BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
             SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
             finish();
         });

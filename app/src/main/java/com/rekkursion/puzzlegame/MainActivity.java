@@ -6,10 +6,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.text.method.BaseKeyListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -59,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         txtvStartButtonShadowAtMainActivity.startAnimation(getShadowEffectAnimationSet(MainActivity.this));
 
         // play bgm
-        BackgroundMusicManager.getInstance(this).play("musics/game_maoudamashii_main_theme.mp3", true);
+        BackgroundMusicManager.getInstance(this).play("musics" + File.separator + "game_maoudamashii_main_theme.mp3", true);
     }
 
     @Override
@@ -79,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
         firstClicked = false;
 
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        BackgroundMusicManager.getInstance(this).endAndRelease();
+        super.onDestroy();
     }
 
     @Override
@@ -136,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             if (puzzleGameTitleAnimationStatus == 0) {
                 imgvPuzzleGameTitleAtMainActivity.startAnimation(animScaleLittleWithBouncing);
                 puzzleGameTitleAnimationStatus = 1;
-                SoundPoolManager.getInstance().play("se_maoudamashii_onepoint31.mp3", 0, 1.2F);
+                SoundPoolManager.getInstance().play("se_maoudamashii_element_thunder04.mp3", 0, 1.2F);
             } else if (puzzleGameTitleAnimationStatus == 1) {
                 imgvPuzzleGameTitleAtMainActivity.startAnimation(animScaleLargeWithOvershooting);
                 puzzleGameTitleAnimationStatus = 0;

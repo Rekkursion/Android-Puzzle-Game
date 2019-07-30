@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.File;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,6 +76,10 @@ public class RankingActivity extends AppCompatActivity {
                 break;
         }
 
+        BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
+        BackgroundMusicManager.getInstance(this).stop();
+        BackgroundMusicManager.getInstance(this).play("musics" + File.separator + "game_maoudamashii_main_theme.mp3", true);
+
         SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
     };
 
@@ -90,15 +95,31 @@ public class RankingActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).pause();
+
+        super.onPause();
+    }
+
+    @Override
     protected void onResume() {
-        super.onResume();
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).resume();
+        BackgroundMusicManager.shouldStopPlayingWhenLeaving = true;
 
         txtvTryAgain.setEnabled(true);
         txtvBackToMenu.setEnabled(true);
+
+        super.onResume();
     }
 
     @Override
     public void onBackPressed() {
+        BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
+        BackgroundMusicManager.getInstance(this).stop();
+        BackgroundMusicManager.getInstance(this).play("musics" + File.separator + "game_maoudamashii_main_theme.mp3", true);
+
         setResult(BackToWhere.BACK_TO_LEVEL_SELECT.ordinal());
         finish();
     }

@@ -99,9 +99,22 @@ public class LevelSelectActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).pause();
+
+        super.onPause();
+    }
+
+    @Override
     protected void onResume() {
-        super.onResume();
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).resume();
+        BackgroundMusicManager.shouldStopPlayingWhenLeaving = true;
+
         txtvStartButtonAtLevelSelect.setEnabled(true);
+
+        super.onResume();
     }
 
     @Override
@@ -217,6 +230,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                 else
                     requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, REQ_CODE_PERMISSION_TO_READ_EXTERNAL_STORAGE);
 
+                BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
                 SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
             }
         });
@@ -272,6 +286,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                 GameManager.getInstance().selectedScaleTypeString = spnSelectScaleType.getSelectedItem().toString();
 
                 SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
+                BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
 
                 Intent intentToGameActivity = new Intent(LevelSelectActivity.this, GameActivity.class);
                 startActivityForResult(intentToGameActivity, REQ_CODE_TO_GAME_ACTIVITY);
@@ -280,6 +295,7 @@ public class LevelSelectActivity extends AppCompatActivity {
 
         // back to menu
         imgvBackToMenuFromLevelSelect.setOnClickListener(view -> {
+            BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
             SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
             finish();
         });
