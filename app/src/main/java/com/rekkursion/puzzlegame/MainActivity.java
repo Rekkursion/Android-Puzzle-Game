@@ -1,34 +1,24 @@
 package com.rekkursion.puzzlegame;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -38,7 +28,6 @@ import java.util.stream.Collectors;
 public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_PERMISSION_VIBRATE = 128128;
     private boolean firstClicked = false;
-    private boolean homing = true;
 
     private LinearLayout llyBodyAtMainActivity;
     private TextView txtvStartButtonAtMainActivity;
@@ -67,30 +56,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        firstClicked = false;
-        super.onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        if (homing) {
-            Intent intent = new Intent(this, BackgroundMusicPlayerService.class);
-            startService(intent);
-        }
-        homing = true;
-
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        if (homing) {
+    protected void onPause() {
+        if (BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving) {
             Intent intent = new Intent(this, BackgroundMusicPlayerService.class);
             stopService(intent);
         }
 
-        super.onStop();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        if (BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving) {
+            Intent intent = new Intent(this, BackgroundMusicPlayerService.class);
+            startService(intent);
+        }
+        BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving = true;
+
+        firstClicked = false;
+        super.onResume();
     }
 
     @Override
@@ -187,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToMenuActivity() {
-        homing = false;
+        BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving = false;
         Intent toMenuActivityIntent = new Intent(MainActivity.this, MenuActivity.class);
         startActivity(toMenuActivityIntent);
     }

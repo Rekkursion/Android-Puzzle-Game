@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class MenuActivity extends AppCompatActivity {
     private TextView txtvPlayOption;
     private TextView txtvRankingOption;
@@ -57,6 +59,8 @@ public class MenuActivity extends AppCompatActivity {
     };
 
     private View.OnClickListener menuOptionsOnClickListener = view -> {
+        BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving = false;
+
         switch (view.getId()) {
             case R.id.txtv_play_option_at_menu_activity:
                 Intent toLevelSelectActivityIntent = new Intent(MenuActivity.this, LevelSelectActivity.class);
@@ -88,7 +92,23 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        if (BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving) {
+            Intent intent = new Intent(this, BackgroundMusicPlayerService.class);
+            stopService(intent);
+        }
+
+        super.onPause();
+    }
+
+    @Override
     protected void onResume() {
+        if (BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving) {
+            Intent intent = new Intent(this, BackgroundMusicPlayerService.class);
+            startService(intent);
+        }
+        BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving = true;
+
         txtvPlayOption.setEnabled(true);
         txtvRankingOption.setEnabled(true);
         txtvSettingsOption.setEnabled(true);
@@ -112,6 +132,7 @@ public class MenuActivity extends AppCompatActivity {
         imgvBackToMainFromMenu = findViewById(R.id.imgv_back_to_main_from_menu);
 
         imgvBackToMainFromMenu.setOnClickListener(view -> {
+            BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving = false;
             SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
             finish();
         });

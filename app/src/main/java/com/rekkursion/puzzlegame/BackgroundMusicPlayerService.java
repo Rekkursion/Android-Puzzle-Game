@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class BackgroundMusicPlayerService extends Service {
         // initialize
         prepared = false;
         try {
-            AssetFileDescriptor afd = getAssets().openFd("musics" + File.separator + "game_maoudamashii_5_town26.mp3");
+            AssetFileDescriptor afd = getAssets().openFd("musics" + File.separator + BackgroundMusicManager.getInstance().currentPlayingFilename);
             mp = new MediaPlayer();
             mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             mp.prepareAsync();
