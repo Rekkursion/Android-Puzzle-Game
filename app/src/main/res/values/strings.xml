@@ -2,7 +2,7 @@
     <string name="app_name">Puzzle Game</string>
     <string name="str_start">Start</string>
     <string name="str_difficulty">Difficulty</string>
-    <string name="str_3x3">3 x 3</string>
+    <string name="str_3x3">3 × 3</string>
     <string name="str_image_source">Image source</string>
     <string name="str_load_image">Load image</string>
     <string name="str_no_source">&lt;No source&gt;</string>

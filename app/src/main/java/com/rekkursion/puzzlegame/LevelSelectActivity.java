@@ -206,7 +206,7 @@ public class LevelSelectActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean isFromUser) {
                 String valueString = String.valueOf(progress + PROGRESS_AND_REAL_DIFFICULTY_OFFSET);
-                txtvSelectedDifficulty.setText(valueString + " x " + valueString);
+                txtvSelectedDifficulty.setText(valueString + " × " + valueString);
 
                 SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
             }

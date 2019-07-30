@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
@@ -150,7 +151,12 @@ public class RankingBoardFragment extends Fragment {
                 // show the dialog before the data deletion
                 new AlertDialog.Builder(RankingBoardFragment.this.getContext())
                         .setIcon(R.drawable.ic_warning_orange_24dp)
-                        .setMessage(R.string.str_user_check_before_delete_the_record)
+                        .setMessage(getResources().getString(R.string.str_user_check_before_delete_the_record) + "\n" +
+                                "\n" +
+                                "Difficulty:  " + String.format("%d × %d", rankingRecordItemList.get(position).getGameDifficulty(), rankingRecordItemList.get(position).getGameDifficulty()) + "\n" +
+                                "Time:  " + String.format("%d.%02d", rankingRecordItemList.get(position).getCostTime() / 100, rankingRecordItemList.get(position).getCostTime() % 100) + "\n" +
+                                "Move Count:  " + String.valueOf(rankingRecordItemList.get(position).getMovedCount()) + "\n" +
+                                "Date:  " + rankingRecordItemList.get(position).getRecordDateStringByFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING))
                         .setPositiveButton(R.string.str_user_check_yes, (dialogInterface, i) -> {
                             // delete data at sql
                             sqlHelper.deleteData(rankingRecordItemList.get(position));
