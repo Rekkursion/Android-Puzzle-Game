@@ -127,20 +127,18 @@
                     android:layout_height="@dimen/dim_preview_selected_image_size" />
             </RelativeLayout>
 
-            <Button
-                android:id="@+id/btn_give_up_when_showing_original_scaled_bitmap"
+            <TextView
+                android:id="@+id/txtv_give_up_button_when_showing_original_scaled_bitmap"
                 android:layout_margin="@dimen/dim_general_margin"
                 android:gravity="center"
-                android:background="?android:attr/selectableItemBackground"
                 android:text="@string/str_give_up"
                 android:textSize="@dimen/dim_general_ui_text_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/btn_back_to_menu_when_showing_original_scaled_bitmap"
+            <TextView
+                android:id="@+id/txtv_back_to_menu_button_when_showing_original_scaled_bitmap"
                 android:layout_marginBottom="@dimen/dim_general_margin"
                 android:gravity="center"
-                android:background="?android:attr/selectableItemBackground"
                 android:text="@string/str_back_to_menu"
                 android:textSize="@dimen/dim_general_ui_text_size"
                 android:layout_width="match_parent"

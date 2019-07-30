@@ -38,7 +38,7 @@ public class BackgroundMusicManager {
             int randIdx = (int) Math.floor(Math.random() * (double) fileArr.length);
             if (randIdx >= fileArr.length)
                 randIdx = fileArr.length - 1;
-            return fileArr[randIdx];
+            return directory + File.separator + fileArr[randIdx];
         } catch (Exception e) {
             Log.e(TAG, "error: " + e.getMessage(), e);
             return "musics" + File.separator + "game_maoudamashii_main_theme.mp3";

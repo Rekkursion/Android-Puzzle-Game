@@ -21,6 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,8 +42,8 @@ public class GameActivity extends AppCompatActivity {
     private ImageView imgvShowOriginalScaledBitmap;
     private LinearLayout llyForShowingOriginalScaledImageAndItsUI;
     private Button btnTurnBackToGamingWhenShowingOriginalScaledBitmap;
-    private Button btnGiveUpWhenShowingOriginalScaledBitmap;
-    private Button btnBackToMenuWhenShowingOriginalScaledBitmap;
+    private TextView btnGiveUpWhenShowingOriginalScaledBitmap;
+    private TextView btnBackToMenuWhenShowingOriginalScaledBitmap;
     private TextView txtvTapCounter;
     private TextView txtvMillisecondTimer;
 
@@ -57,7 +59,7 @@ public class GameActivity extends AppCompatActivity {
                     BackgroundMusicManager.getInstance(GameActivity.this).stop();
                     BackgroundMusicManager.getInstance(GameActivity.this).play("musics" + File.separator + "game_maoudamashii_main_theme.mp3", true);
 
-                    BackToWhere backToWhere = view.getId() == R.id.btn_give_up_when_showing_original_scaled_bitmap ? BackToWhere.BACK_TO_LEVEL_SELECT : BackToWhere.BACK_TO_MENU;
+                    BackToWhere backToWhere = view.getId() == R.id.txtv_give_up_button_when_showing_original_scaled_bitmap ? BackToWhere.BACK_TO_LEVEL_SELECT : BackToWhere.BACK_TO_MENU;
                     setResult(backToWhere.ordinal());
                     finish();
                 })
@@ -158,8 +160,8 @@ public class GameActivity extends AppCompatActivity {
         imgvShowOriginalScaledBitmap = findViewById(R.id.imgv_show_original_scaled_bitmap);
         llyForShowingOriginalScaledImageAndItsUI = findViewById(R.id.lly_for_showing_original_scaled_image_and_its_ui);
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_turn_back_to_gaming_when_showing_original_scaled_bitmap);
-        btnGiveUpWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_give_up_when_showing_original_scaled_bitmap);
-        btnBackToMenuWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_back_to_menu_when_showing_original_scaled_bitmap);
+        btnGiveUpWhenShowingOriginalScaledBitmap = findViewById(R.id.txtv_give_up_button_when_showing_original_scaled_bitmap);
+        btnBackToMenuWhenShowingOriginalScaledBitmap = findViewById(R.id.txtv_back_to_menu_button_when_showing_original_scaled_bitmap);
         txtvTapCounter = findViewById(R.id.txtv_tap_counter);
         txtvMillisecondTimer = findViewById(R.id.txtv_millisecond_timer);
 
