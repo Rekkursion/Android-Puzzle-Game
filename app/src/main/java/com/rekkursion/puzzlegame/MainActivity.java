@@ -6,7 +6,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.method.BaseKeyListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -53,27 +57,27 @@ public class MainActivity extends AppCompatActivity {
 
         // add the animation set to the button shadow
         txtvStartButtonShadowAtMainActivity.startAnimation(getShadowEffectAnimationSet(MainActivity.this));
+
+        // play bgm
+        BackgroundMusicManager.getInstance(this).play("musics/game_maoudamashii_main_theme.mp3", true);
     }
 
     @Override
     protected void onPause() {
-        if (BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving) {
-            Intent intent = new Intent(this, BackgroundMusicPlayerService.class);
-            stopService(intent);
-        }
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).pause();
 
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        if (BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving) {
-            Intent intent = new Intent(this, BackgroundMusicPlayerService.class);
-            startService(intent);
-        }
-        BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving = true;
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).resume();
+        BackgroundMusicManager.shouldStopPlayingWhenLeaving = true;
 
         firstClicked = false;
+
         super.onResume();
     }
 
@@ -171,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToMenuActivity() {
-        BackgroundMusicManager.getInstance().shouldStopPlayingWhenLeaving = false;
+        BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
         Intent toMenuActivityIntent = new Intent(MainActivity.this, MenuActivity.class);
         startActivity(toMenuActivityIntent);
     }
