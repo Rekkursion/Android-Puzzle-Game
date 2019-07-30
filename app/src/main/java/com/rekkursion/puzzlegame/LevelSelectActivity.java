@@ -33,6 +33,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -271,7 +272,8 @@ public class LevelSelectActivity extends AppCompatActivity {
         txtvStartButtonAtLevelSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (imgvPreviewSelectedImage.getDrawable() == null) {
+                if (imgvPreviewSelectedImage.getDrawable() == null ||
+                        ((BitmapDrawable) imgvPreviewSelectedImage.getDrawable()).getBitmap() == null) {
                     Snackbar.make(view, R.string.str_please_choose_an_image, Snackbar.LENGTH_SHORT).show();
                     return;
                 }
@@ -286,7 +288,10 @@ public class LevelSelectActivity extends AppCompatActivity {
                 GameManager.getInstance().selectedScaleTypeString = spnSelectScaleType.getSelectedItem().toString();
 
                 SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
+
                 BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
+                BackgroundMusicManager.getInstance(LevelSelectActivity.this).stop();
+                BackgroundMusicManager.getInstance(LevelSelectActivity.this).play(BackgroundMusicManager.getInstance(LevelSelectActivity.this).getAssetsFileByDirectoryRandomly("musics" + File.separator + "gaming_theme"), true);
 
                 Intent intentToGameActivity = new Intent(LevelSelectActivity.this, GameActivity.class);
                 startActivityForResult(intentToGameActivity, REQ_CODE_TO_GAME_ACTIVITY);

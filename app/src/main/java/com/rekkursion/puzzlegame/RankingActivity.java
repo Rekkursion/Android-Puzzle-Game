@@ -150,7 +150,7 @@ public class RankingActivity extends AppCompatActivity {
 
         // bind the view-pager with the tab-layout
         tblyDifficultiesClassification.setupWithViewPager(vpgrDifficultiesClassification);
-        tblyDifficultiesClassification.setTabGravity(TabLayout.GRAVITY_FILL);
+        tblyDifficultiesClassification.setTabGravity(TabLayout.GRAVITY_CENTER);
         tblyDifficultiesClassification.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         // add tab-selected-listener on the tab-layout for sounding

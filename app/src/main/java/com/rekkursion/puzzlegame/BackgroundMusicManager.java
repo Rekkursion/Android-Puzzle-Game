@@ -5,6 +5,8 @@ import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import java.io.File;
+
 // Source: https://blog.csdn.net/yu132563/article/details/77412859
 public class BackgroundMusicManager {
     public static boolean shouldStopPlayingWhenLeaving = true;
@@ -28,6 +30,19 @@ public class BackgroundMusicManager {
         if (backgroundMusicManager == null)
             backgroundMusicManager = new BackgroundMusicManager(context);
         return backgroundMusicManager;
+    }
+
+    public String getAssetsFileByDirectoryRandomly(String directory) {
+        try {
+            String[] fileArr = mContext.getAssets().list(directory);
+            int randIdx = (int) Math.floor(Math.random() * (double) fileArr.length);
+            if (randIdx >= fileArr.length)
+                randIdx = fileArr.length - 1;
+            return fileArr[randIdx];
+        } catch (Exception e) {
+            Log.e(TAG, "error: " + e.getMessage(), e);
+            return "musics" + File.separator + "game_maoudamashii_main_theme.mp3";
+        }
     }
 
     private void initData() {

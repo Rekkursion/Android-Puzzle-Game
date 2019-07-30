@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -52,6 +53,10 @@ public class GameActivity extends AppCompatActivity {
                 .setIcon(R.drawable.ic_warning_orange_24dp)
                 .setMessage(R.string.str_user_check_before_give_up_the_game)
                 .setPositiveButton(R.string.str_user_check_yes, (dialogInterface, i) -> {
+                    BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
+                    BackgroundMusicManager.getInstance(GameActivity.this).stop();
+                    BackgroundMusicManager.getInstance(GameActivity.this).play("musics" + File.separator + "game_maoudamashii_main_theme.mp3", true);
+
                     BackToWhere backToWhere = view.getId() == R.id.btn_give_up_when_showing_original_scaled_bitmap ? BackToWhere.BACK_TO_LEVEL_SELECT : BackToWhere.BACK_TO_MENU;
                     setResult(backToWhere.ordinal());
                     finish();
@@ -87,6 +92,23 @@ public class GameActivity extends AppCompatActivity {
         // start async task for image scaling
         ImageScalingAsyncTask imageScalingAsyncTask = new ImageScalingAsyncTask();
         imageScalingAsyncTask.execute(imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing, txtvMillisecondTimer);
+    }
+
+    @Override
+    protected void onPause() {
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).pause();
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
+            BackgroundMusicManager.getInstance(this).resume();
+        BackgroundMusicManager.shouldStopPlayingWhenLeaving = true;
+
+        super.onResume();
     }
 
     @Override
@@ -267,6 +289,11 @@ public class GameActivity extends AppCompatActivity {
                         }
 
                         if (hasFinished) {
+                            // switch bgm
+                            BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
+                            BackgroundMusicManager.getInstance(GameActivity.this).stop();
+                            BackgroundMusicManager.getInstance(GameActivity.this).play("musics" + File.separator + "game_maoudamashii_ranking_theme.mp3", true);
+
                             // find abandoned view and visualized it
                             ImageView abandonedView = findViewById(GameManager.getInstance().getImageViewIdByTag(GameManager.getInstance().getAbandonedTagNumber()));
                             abandonedView.setVisibility(View.VISIBLE);
