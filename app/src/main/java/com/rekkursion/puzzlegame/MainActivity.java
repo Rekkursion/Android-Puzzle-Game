@@ -1,5 +1,6 @@
 package com.rekkursion.puzzlegame;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -8,10 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.Gravity;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -19,11 +19,17 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
@@ -34,6 +40,7 @@ import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_PERMISSION_VIBRATE = 128128;
+    private final int REQ_CODE_GOOGLE_SIGN_IN = 196;
     private boolean firstClicked = false;
 
     public final static long TRANS_ANIM_DURA = 300L;
@@ -42,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtvStartButtonAtMainActivity;
     private TextView txtvStartButtonShadowAtMainActivity;
     private ImageView imgvPuzzleGameTitleAtMainActivity;
+
+    private SignInButton signInButton;
+    private GoogleSignInClient mGoogleSignInClient;
 
     private Animation animScaleLittleWithBouncing;
     private Animation animScaleLargeWithOvershooting;
@@ -59,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
         // request the usage of vibration
         if (checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(new String[] { Manifest.permission.VIBRATE }, REQ_CODE_PERMISSION_VIBRATE);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         initAnimations();
         initViews();
@@ -106,6 +121,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQ_CODE_GOOGLE_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
     private void initSounds() {
         try {
             List<String> audioList = Arrays.stream(getAssets().list(SoundPoolManager.SOUND_FILES_ROOT_PATH)).collect(Collectors.toList());
@@ -123,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         txtvStartButtonAtMainActivity = findViewById(R.id.txtv_start_button_at_main_activity);
         txtvStartButtonShadowAtMainActivity = findViewById(R.id.txtv_start_button_shadow_at_main_activity);
         imgvPuzzleGameTitleAtMainActivity = findViewById(R.id.imgv_puzzle_game_title_at_main_activity);
+        signInButton = findViewById(R.id.sign_in_button);
 
         txtvStartButtonAtMainActivity.setOnClickListener(view -> {
             Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale_animation_view_pressed);
@@ -158,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 SoundPoolManager.getInstance().play("se_maoudamashii_onepoint09.mp3", 0, 1.2F);
             }
         });
+
+        // google sign in button
+        signInButton.setOnClickListener(view -> googleSignIn());
     }
 
     private void initAnimations() {
@@ -193,5 +222,25 @@ public class MainActivity extends AppCompatActivity {
         BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
         Intent toMenuActivityIntent = new Intent(MainActivity.this, MenuActivity.class);
         startActivity(toMenuActivityIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+
+    private void googleSignIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, REQ_CODE_GOOGLE_SIGN_IN);
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            Toast.makeText(this, "goodo", Toast.LENGTH_SHORT).show();
+            // Signed in successfully, show authenticated UI.
+            //updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("sign-in", "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(this, "Google login failed.", Toast.LENGTH_SHORT).show();
+            //updateUI(null);
+        }
     }
 }
