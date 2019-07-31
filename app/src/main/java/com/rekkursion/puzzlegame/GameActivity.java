@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.transition.TransitionInflater;
@@ -43,6 +47,7 @@ public class GameActivity extends AppCompatActivity {
     private GridLayout glySplittedImageViewsContainer;
     private ImageButton imgbtnHelpCheckOriginalScaledBitmap;
     private ImageView imgvShowOriginalScaledBitmap;
+    private ImageView imgvShowLinesOfOriginalScaledBitmap;
     private LinearLayout llyForShowingOriginalScaledImageAndItsUI;
     private Button btnTurnBackToGamingWhenShowingOriginalScaledBitmap;
     private TextView btnGiveUpWhenShowingOriginalScaledBitmap;
@@ -169,6 +174,7 @@ public class GameActivity extends AppCompatActivity {
         glySplittedImageViewsContainer = findViewById(R.id.gly_splitted_image_views_container);
         imgbtnHelpCheckOriginalScaledBitmap = findViewById(R.id.imgbtn_help_check_original_scaled_bitmap);
         imgvShowOriginalScaledBitmap = findViewById(R.id.imgv_show_original_scaled_bitmap);
+        imgvShowLinesOfOriginalScaledBitmap = findViewById(R.id.imgv_show_lines_of_original_scaled_bitmap);
         llyForShowingOriginalScaledImageAndItsUI = findViewById(R.id.lly_for_showing_original_scaled_image_and_its_ui);
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_turn_back_to_gaming_when_showing_original_scaled_bitmap);
         btnGiveUpWhenShowingOriginalScaledBitmap = findViewById(R.id.txtv_give_up_button_when_showing_original_scaled_bitmap);
@@ -176,15 +182,20 @@ public class GameActivity extends AppCompatActivity {
         txtvTapCounter = findViewById(R.id.txtv_tap_counter);
         txtvMillisecondTimer = findViewById(R.id.txtv_millisecond_timer);
 
-        // adjust size of image-view which is used to showing original scaled bitmap
+        // adjust size of image-view which is used to show the original scaled bitmap
         imgvShowOriginalScaledBitmap.getLayoutParams().width = TOTAL_GAMING_IMAGE_VIEW_SIZE;
         imgvShowOriginalScaledBitmap.getLayoutParams().height = TOTAL_GAMING_IMAGE_VIEW_SIZE;
-
-        // initially image-view for showing original scaled image and its button are visually gone
-        llyForShowingOriginalScaledImageAndItsUI.setVisibility(View.GONE);
+        imgvShowLinesOfOriginalScaledBitmap.getLayoutParams().width = TOTAL_GAMING_IMAGE_VIEW_SIZE;
+        imgvShowLinesOfOriginalScaledBitmap.getLayoutParams().height = TOTAL_GAMING_IMAGE_VIEW_SIZE;
 
         // discover UIs when the image is processing
         discoverUIsWhenProcessingImage();
+
+        // draw lines of original scaled image
+        drawLinesOnOriginalScaledImage();
+
+        // initially image-view for showing original scaled image and its button are visually gone
+        llyForShowingOriginalScaledImageAndItsUI.setVisibility(View.GONE);
 
         imgbtnHelpCheckOriginalScaledBitmap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -350,6 +361,25 @@ public class GameActivity extends AppCompatActivity {
                 imgvsSplittedBitmapsArray[r][c] = newImgView;
             }
         }
+    }
+
+    private void drawLinesOnOriginalScaledImage() {
+        int w = imgvShowOriginalScaledBitmap.getLayoutParams().width;
+        int h = imgvShowOriginalScaledBitmap.getLayoutParams().height;
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888) ;
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.LTGRAY);
+        paint.setStrokeWidth(5.6F);
+        for (int r = 1; r < GameManager.getInstance().difficulty; ++r) {
+            float y = (float) r * ((float) h / (float) GameManager.getInstance().difficulty);
+            canvas.drawLine(0.0F, y, (float) w, y, paint);
+        }
+        for (int c = 1; c < GameManager.getInstance().difficulty; ++c) {
+            float x = (float) c * ((float) w / (float) GameManager.getInstance().difficulty);
+            canvas.drawLine(x, 0.0F, x, (float) h, paint);
+        }
+        imgvShowLinesOfOriginalScaledBitmap.setImageBitmap(bitmap);
     }
 
     private void goToRankingActivity() {
