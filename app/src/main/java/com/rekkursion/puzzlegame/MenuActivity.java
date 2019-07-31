@@ -2,12 +2,16 @@ package com.rekkursion.puzzlegame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -20,6 +24,7 @@ import java.io.File;
 public class MenuActivity extends AppCompatActivity {
     private TextView txtvPlayOption;
     private TextView txtvRankingOption;
+    private TextView txtvCreditOption;
     private TextView txtvSettingsOption;
 
     private ImageView imgvBackToMainFromMenu;
@@ -35,6 +40,7 @@ public class MenuActivity extends AppCompatActivity {
             case MotionEvent.ACTION_UP:
                 txtvPlayOption.setEnabled(false);
                 txtvRankingOption.setEnabled(false);
+                txtvCreditOption.setEnabled(false);
                 txtvSettingsOption.setEnabled(false);
 
                 Animation animOptionUnpressed = AnimationUtils.loadAnimation(MenuActivity.this, R.anim.scale_animation_view_unpressed);
@@ -60,12 +66,13 @@ public class MenuActivity extends AppCompatActivity {
 
     private View.OnClickListener menuOptionsOnClickListener = view -> {
         switch (view.getId()) {
-            case R.id.txtv_play_option_at_menu_activity:
+            case R.id.txtv_play_option_at_menu_activity: {
                 Intent toLevelSelectActivityIntent = new Intent(MenuActivity.this, LevelSelectActivity.class);
-                startActivity(toLevelSelectActivityIntent);
+                startActivity(toLevelSelectActivityIntent, ActivityOptions.makeSceneTransitionAnimation(MenuActivity.this).toBundle());
                 break;
+            }
 
-            case R.id.txtv_ranking_option_at_menu_activity:
+            case R.id.txtv_ranking_option_at_menu_activity: {
                 // set new ranking record at ranking-activity
                 if (RankingActivity.newRankingRecord != null)
                     RankingActivity.newRankingRecord = null;
@@ -75,8 +82,14 @@ public class MenuActivity extends AppCompatActivity {
 
                 // create intent and go to ranking-activity
                 Intent intentToRankingActivity = new Intent(MenuActivity.this, RankingActivity.class);
-                startActivity(intentToRankingActivity);
+                startActivity(intentToRankingActivity, ActivityOptions.makeSceneTransitionAnimation(MenuActivity.this).toBundle());
                 break;
+            }
+
+            case R.id.txtv_credit_option_at_menu_activity: {
+                // TODO: enter credit activity
+                break;
+            }
 
             case R.id.txtv_settings_option_at_menu_activity:
                 break;
@@ -88,6 +101,14 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // set transition animations (entering menu)
+        getWindow().setEnterTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setReturnTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+
+        // set transition animations (returning back)
+        getWindow().setExitTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setReenterTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
@@ -110,6 +131,7 @@ public class MenuActivity extends AppCompatActivity {
 
         txtvPlayOption.setEnabled(true);
         txtvRankingOption.setEnabled(true);
+        txtvCreditOption.setEnabled(true);
         txtvSettingsOption.setEnabled(true);
 
         super.onResume();
@@ -118,14 +140,17 @@ public class MenuActivity extends AppCompatActivity {
     private void initViews() {
         txtvPlayOption = findViewById(R.id.txtv_play_option_at_menu_activity);
         txtvRankingOption = findViewById(R.id.txtv_ranking_option_at_menu_activity);
+        txtvCreditOption = findViewById(R.id.txtv_credit_option_at_menu_activity);
         txtvSettingsOption = findViewById(R.id.txtv_settings_option_at_menu_activity);
 
         txtvPlayOption.setOnTouchListener(menuOptionsOnTouchListener);
         txtvRankingOption.setOnTouchListener(menuOptionsOnTouchListener);
+        txtvCreditOption.setOnTouchListener(menuOptionsOnTouchListener);
         txtvSettingsOption.setOnTouchListener(menuOptionsOnTouchListener);
 
         txtvPlayOption.setOnClickListener(menuOptionsOnClickListener);
         txtvRankingOption.setOnClickListener(menuOptionsOnClickListener);
+        txtvCreditOption.setOnClickListener(menuOptionsOnClickListener);
         txtvSettingsOption.setOnClickListener(menuOptionsOnClickListener);
 
         imgvBackToMainFromMenu = findViewById(R.id.imgv_back_to_main_from_menu);
@@ -133,7 +158,7 @@ public class MenuActivity extends AppCompatActivity {
         imgvBackToMainFromMenu.setOnClickListener(view -> {
             BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
             SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
-            finish();
+            finishAfterTransition();
         });
     }
 }

@@ -3,10 +3,15 @@ package com.rekkursion.puzzlegame;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Slide;
+import android.view.Gravity;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -30,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_PERMISSION_VIBRATE = 128128;
     private boolean firstClicked = false;
 
+    public final static long TRANS_ANIM_DURA = 300L;
+
     private LinearLayout llyBodyAtMainActivity;
     private TextView txtvStartButtonAtMainActivity;
     private TextView txtvStartButtonShadowAtMainActivity;
@@ -41,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // set transition animations (returning back)
+        getWindow().setExitTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setReenterTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -180,6 +191,6 @@ public class MainActivity extends AppCompatActivity {
     private void goToMenuActivity() {
         BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
         Intent toMenuActivityIntent = new Intent(MainActivity.this, MenuActivity.class);
-        startActivity(toMenuActivityIntent);
+        startActivity(toMenuActivityIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 }

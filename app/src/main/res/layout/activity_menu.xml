@@ -23,6 +23,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!-- Play -->
         <TextView
             android:id="@+id/txtv_play_option_at_menu_activity"
             android:layout_marginBottom="@dimen/dim_general_margin"
@@ -32,6 +33,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <!-- Ranking Board -->
         <TextView
             android:id="@+id/txtv_ranking_option_at_menu_activity"
             android:layout_marginBottom="@dimen/dim_general_margin"
@@ -41,6 +43,18 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <!-- Credit -->
+        <TextView
+            android:id="@+id/txtv_credit_option_at_menu_activity"
+            android:layout_marginBottom="@dimen/dim_general_margin"
+            android:text="@string/str_credit"
+            android:textSize="@dimen/dim_general_ui_text_size"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <!-- Settings -->
         <TextView
             android:id="@+id/txtv_settings_option_at_menu_activity"
             android:text="@string/str_settings"

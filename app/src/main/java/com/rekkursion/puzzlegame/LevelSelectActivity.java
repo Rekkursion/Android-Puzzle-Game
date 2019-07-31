@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,7 +15,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -93,6 +96,14 @@ public class LevelSelectActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // set transition animations (entering menu)
+        getWindow().setEnterTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setReturnTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+
+        // set transition animations (returning back)
+        getWindow().setExitTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setReenterTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_select);
 
@@ -294,7 +305,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                 BackgroundMusicManager.getInstance(LevelSelectActivity.this).play(BackgroundMusicManager.getInstance(LevelSelectActivity.this).getAssetsFileByDirectoryRandomly("musics" + File.separator + "gaming_theme"), true);
 
                 Intent intentToGameActivity = new Intent(LevelSelectActivity.this, GameActivity.class);
-                startActivityForResult(intentToGameActivity, REQ_CODE_TO_GAME_ACTIVITY);
+                startActivityForResult(intentToGameActivity, REQ_CODE_TO_GAME_ACTIVITY, ActivityOptions.makeSceneTransitionAnimation(LevelSelectActivity.this).toBundle());
             }
         });
 
@@ -302,7 +313,7 @@ public class LevelSelectActivity extends AppCompatActivity {
         imgvBackToMenuFromLevelSelect.setOnClickListener(view -> {
             BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
             SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
-            finish();
+            finishAfterTransition();
         });
     }
 

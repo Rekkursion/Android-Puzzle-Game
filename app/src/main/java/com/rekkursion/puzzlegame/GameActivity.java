@@ -3,9 +3,11 @@ package com.rekkursion.puzzlegame;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -69,6 +71,14 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // set transition animations (entering ranking)
+        getWindow().setEnterTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setReturnTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+
+        // set transition animations (returning back)
+//        getWindow().setExitTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+//        getWindow().setReenterTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
@@ -354,6 +364,6 @@ public class GameActivity extends AppCompatActivity {
 
         // create intent and go to ranking-activity
         Intent intentToRankingActivity = new Intent(GameActivity.this, RankingActivity.class);
-        startActivityForResult(intentToRankingActivity, REQ_CODE_TO_RANKING_ACTIVITY);
+        startActivityForResult(intentToRankingActivity, REQ_CODE_TO_RANKING_ACTIVITY, ActivityOptions.makeSceneTransitionAnimation(GameActivity.this).toBundle());
     }
 }

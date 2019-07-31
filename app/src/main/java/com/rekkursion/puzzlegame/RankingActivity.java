@@ -5,8 +5,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -16,6 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.io.File;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class RankingActivity extends AppCompatActivity {
@@ -72,7 +76,10 @@ public class RankingActivity extends AppCompatActivity {
             // back to menu
             case R.id.txtv_back_to_menu_button_at_ranking_activity:
                 setResult(BackToWhere.BACK_TO_MENU.ordinal());
-                finish();
+                if (newRankingRecord == null)
+                    finishAfterTransition();
+                else
+                    finish();
                 break;
         }
 
@@ -85,6 +92,10 @@ public class RankingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // set transition animations (entering ranking)
+        getWindow().setEnterTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setReturnTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
 
@@ -121,7 +132,10 @@ public class RankingActivity extends AppCompatActivity {
         BackgroundMusicManager.getInstance(this).play("musics" + File.separator + "game_maoudamashii_main_theme.mp3", true);
 
         setResult(BackToWhere.BACK_TO_LEVEL_SELECT.ordinal());
-        finish();
+        if (newRankingRecord == null)
+            finishAfterTransition();
+        else
+            finish();
     }
 
     private void initViews() {
@@ -138,7 +152,7 @@ public class RankingActivity extends AppCompatActivity {
         RankingBoardPagerAdapter adapter = new RankingBoardPagerAdapter(getSupportFragmentManager());
         // adapter.addFragment(new RankingBoardFragment(GameManager.getInstance().getRankingRecordItemListFilteredByDifficulty(3)), "3 × 3");
         for (int d = 3; d <= 7; ++d) {
-            String title = String.format("%d × %d", d, d);
+            String title = String.format(Locale.CHINA, "%d × %d", d, d);
             List<RankingRecordItemModel> costTimeAscOrderedRecordList = sqlHelper.readData(d).stream().sorted(Comparator.comparing(RankingRecordItemModel::getCostTime)).collect(Collectors.toList());
             if (d == selectedDifficulty)
                 adapter.addFragment(new RankingBoardFragment(costTimeAscOrderedRecordList, sqlHelper, newRankingRecord), title);
