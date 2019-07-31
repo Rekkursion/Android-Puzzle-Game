@@ -4,9 +4,9 @@
         <!--<item>center</item>-->
         <!--<item>centerCrop</item>-->
         <!--<item>centerInside</item>-->
-        <item>fitCenter</item>
-        <item>fitEnd</item>
-        <item>fitStart</item>
-        <item>fitXY</item>
+        <item>Center</item>
+        <item>End</item>
+        <item>Start</item>
+        <item>Scaling</item>
     </string-array>
 </resources>

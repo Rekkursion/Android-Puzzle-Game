@@ -256,13 +256,13 @@ public class LevelSelectActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (scaleTypesDict.isEmpty()) {
-                    scaleTypesDict.put("center", ImageView.ScaleType.CENTER);
-                    scaleTypesDict.put("centerCrop", ImageView.ScaleType.CENTER_CROP);
-                    scaleTypesDict.put("centerInside", ImageView.ScaleType.CENTER_INSIDE);
-                    scaleTypesDict.put("fitCenter", ImageView.ScaleType.FIT_CENTER);
-                    scaleTypesDict.put("fitEnd", ImageView.ScaleType.FIT_END);
-                    scaleTypesDict.put("fitStart", ImageView.ScaleType.FIT_START);
-                    scaleTypesDict.put("fitXY", ImageView.ScaleType.FIT_XY);
+//                    scaleTypesDict.put("center", ImageView.ScaleType.CENTER);
+//                    scaleTypesDict.put("centerCrop", ImageView.ScaleType.CENTER_CROP);
+//                    scaleTypesDict.put("centerInside", ImageView.ScaleType.CENTER_INSIDE);
+                    scaleTypesDict.put("Center", ImageView.ScaleType.FIT_CENTER);
+                    scaleTypesDict.put("End", ImageView.ScaleType.FIT_END);
+                    scaleTypesDict.put("Start", ImageView.ScaleType.FIT_START);
+                    scaleTypesDict.put("Scaling", ImageView.ScaleType.FIT_XY);
                 }
 
                 String scaleTypeString = adapterView.getSelectedItem().toString();
