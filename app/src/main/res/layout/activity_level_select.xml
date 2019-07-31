@@ -158,6 +158,7 @@
                 <RadioGroup
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dim_general_margin"
+                    android:visibility="gone"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">

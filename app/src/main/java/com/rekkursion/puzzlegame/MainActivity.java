@@ -20,6 +20,7 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     public final static long TRANS_ANIM_DURA = 300L;
 
-    private LinearLayout llyBodyAtMainActivity;
+    private RelativeLayout rlyBodyAtMainActivity;
     private TextView txtvStartButtonAtMainActivity;
     private TextView txtvStartButtonShadowAtMainActivity;
     private ImageView imgvPuzzleGameTitleAtMainActivity;
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (!firstClicked) {
-            Snackbar.make(llyBodyAtMainActivity, R.string.str_press_again_to_leave, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(rlyBodyAtMainActivity, R.string.str_press_again_to_leave, Snackbar.LENGTH_SHORT).show();
             firstClicked = true;
         } else {
             super.onBackPressed();
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        llyBodyAtMainActivity = findViewById(R.id.lly_body_at_main_activity);
+        rlyBodyAtMainActivity = findViewById(R.id.rly_body_at_main_activity);
         txtvStartButtonAtMainActivity = findViewById(R.id.txtv_start_button_at_main_activity);
         txtvStartButtonShadowAtMainActivity = findViewById(R.id.txtv_start_button_shadow_at_main_activity);
         imgvPuzzleGameTitleAtMainActivity = findViewById(R.id.imgv_puzzle_game_title_at_main_activity);
