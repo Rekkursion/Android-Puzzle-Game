@@ -237,8 +237,11 @@ public class LevelSelectActivity extends AppCompatActivity {
                 txtvShowScalingRecommendationBecauseOfHighDifiiculty.setVisibility(realDiff >= 5 && imgvPreviewSelectedImage.getScaleType() != ImageView.ScaleType.FIT_XY ? View.VISIBLE : View.GONE);
 
                 // show hint lines on preview image-view
-                Bitmap linesBitmap = ImageProcessFactory.getHintLinesBitmap(imgvPreviewSelectedImage.getLayoutParams().width, imgvPreviewSelectedImage.getLayoutParams().height, realDiff);
-                imgvHintLinesOfPreviewSelectedImage.setImageBitmap(linesBitmap);
+                if (imgvPreviewSelectedImage.getDrawable() != null &&
+                        ((BitmapDrawable) imgvPreviewSelectedImage.getDrawable()).getBitmap() != null) {
+                    Bitmap linesBitmap = ImageProcessFactory.getHintLinesBitmap(imgvPreviewSelectedImage.getLayoutParams().width, imgvPreviewSelectedImage.getLayoutParams().height, realDiff);
+                    imgvHintLinesOfPreviewSelectedImage.setImageBitmap(linesBitmap);
+                }
 
                 SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
             }

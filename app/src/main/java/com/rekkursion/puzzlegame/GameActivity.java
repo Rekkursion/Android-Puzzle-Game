@@ -61,6 +61,8 @@ public class GameActivity extends AppCompatActivity {
 
     // on-click-listener for giving up or backing to menu
     private View.OnClickListener giveUpOrBackToMenuButtonOnClickListener = view -> {
+        SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+
         new AlertDialog.Builder(GameActivity.this)
                 .setIcon(R.drawable.ic_warning_orange_24dp)
                 .setMessage(R.string.str_user_check_before_give_up_the_game)
@@ -151,6 +153,8 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+
         if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PAUSED)
             btnTurnBackToGamingWhenShowingOriginalScaledBitmap.callOnClick();
         else if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.RUNNING)
@@ -203,6 +207,8 @@ public class GameActivity extends AppCompatActivity {
         imgbtnHelpCheckOriginalScaledBitmap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
+
                 llyForShowingOriginalScaledImageAndItsUI.setVisibility(View.VISIBLE);
                 glySplittedImageViewsContainer.setVisibility(View.INVISIBLE);
                 imgvShowOriginalScaledBitmap.setImageBitmap(GameManager.getInstance().scaledImageBitmap);
@@ -221,6 +227,8 @@ public class GameActivity extends AppCompatActivity {
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+
                 llyForShowingOriginalScaledImageAndItsUI.setVisibility(View.GONE);
                 glySplittedImageViewsContainer.setVisibility(View.VISIBLE);
 
@@ -317,7 +325,11 @@ public class GameActivity extends AppCompatActivity {
                             String tapped_0 = getString(R.string.str_tapped_0);
                             String tapped = tapped_0.substring(0, tapped_0.indexOf(" "));
                             txtvTapCounter.setText(tapped + " " + String.valueOf(newTappedCount));
+
+                            SoundPoolManager.getInstance().play("se_maoudamashii_move_piece_successfully.mp3");
                         }
+                        else
+                            SoundPoolManager.getInstance().play("se_maoudamashii_move_piece_failed.mp3");
 
                         if (hasFinished) {
                             // switch bgm
