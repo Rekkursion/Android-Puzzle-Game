@@ -104,12 +104,23 @@
                     android:layout_marginBottom="@dimen/dim_general_margin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <ImageView
-                        android:id="@+id/imgv_preview_selected_image"
+                    <FrameLayout
                         android:layout_gravity="center_horizontal"
-                        android:layout_margin="@dimen/dim_general_margin"
-                        android:layout_width="@dimen/dim_preview_selected_image_size"
-                        android:layout_height="@dimen/dim_preview_selected_image_size" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/imgv_preview_selected_image"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/dim_general_margin"
+                            android:layout_width="@dimen/dim_preview_selected_image_size"
+                            android:layout_height="@dimen/dim_preview_selected_image_size" />
+                        <ImageView
+                            android:id="@+id/imgv_hint_lines_of_preview_selected_image"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/dim_general_margin"
+                            android:layout_width="@dimen/dim_preview_selected_image_size"
+                            android:layout_height="@dimen/dim_preview_selected_image_size" />
+                    </FrameLayout>
                     <TextView
                         android:id="@+id/txtv_show_size_of_original_selected_image"
                         android:gravity="center"

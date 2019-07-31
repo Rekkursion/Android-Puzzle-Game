@@ -1,7 +1,9 @@
 package com.rekkursion.puzzlegame;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 
 public class ImageProcessFactory {
     public static Bitmap scaleImage_fitCenter(Bitmap origBitmap) {
@@ -111,6 +113,26 @@ public class ImageProcessFactory {
         }
 
         return splittedBitmapsArray;
+    }
+
+    public static Bitmap getHintLinesBitmap(int width, int height, int difficulty) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888) ;
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+
+        paint.setColor(Color.WHITE);
+        paint.setStrokeWidth(4.731F);
+
+        for (int r = 1; r < difficulty; ++r) {
+            float y = (float) r * ((float) height / (float) difficulty);
+            canvas.drawLine(0.0F, y, (float) width, y, paint);
+        }
+        for (int c = 1; c < difficulty; ++c) {
+            float x = (float) c * ((float) width / (float) difficulty);
+            canvas.drawLine(x, 0.0F, x, (float) height, paint);
+        }
+
+        return bitmap;
     }
 
     public static void getSolidColorPixelsArray(int[] retPixels, int rowNum, int colNum, int red, int green, int blue, int alpha) {

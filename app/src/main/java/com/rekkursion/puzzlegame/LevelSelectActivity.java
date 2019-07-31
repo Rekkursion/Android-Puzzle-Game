@@ -49,6 +49,7 @@ public class LevelSelectActivity extends AppCompatActivity {
     private Button btnGetImageSource;
     private TextView txtvSelectedImageFilename;
     private ImageView imgvPreviewSelectedImage;
+    private ImageView imgvHintLinesOfPreviewSelectedImage;
     private Spinner spnSelectScaleType;
     private RadioButton rdbSelectGamingModeSlidingPuzzle;
     private RadioButton rdbSelectGamingModeTraditionalPuzzle;
@@ -175,6 +176,11 @@ public class LevelSelectActivity extends AppCompatActivity {
                     else
                         txtvShowImageTooBigWarning.setVisibility(View.GONE);
 
+                    // show hint lines on preview image-view
+                    Bitmap linesBitmap = ImageProcessFactory.getHintLinesBitmap(imgvPreviewSelectedImage.getLayoutParams().width, imgvPreviewSelectedImage.getLayoutParams().height, skbDifficultiesSelect.getProgress() + PROGRESS_AND_REAL_DIFFICULTY_OFFSET);
+                    imgvHintLinesOfPreviewSelectedImage.setVisibility(View.VISIBLE);
+                    imgvHintLinesOfPreviewSelectedImage.setImageBitmap(linesBitmap);
+
                     // add the animation set to the button shadow
                     txtvStartButtonShadowAtLevelSelect.setEnabled(true);
                     txtvStartButtonShadowAtLevelSelect.startAnimation(MainActivity.getShadowEffectAnimationSet(LevelSelectActivity.this));
@@ -196,6 +202,7 @@ public class LevelSelectActivity extends AppCompatActivity {
         btnGetImageSource = findViewById(R.id.btn_get_img_source);
         txtvSelectedImageFilename = findViewById(R.id.txtv_selected_image_filename);
         imgvPreviewSelectedImage = findViewById(R.id.imgv_preview_selected_image);
+        imgvHintLinesOfPreviewSelectedImage = findViewById(R.id.imgv_hint_lines_of_preview_selected_image);
         spnSelectScaleType = findViewById(R.id.spn_select_scale_type);
         rdbSelectGamingModeSlidingPuzzle = findViewById(R.id.rdb_select_gaming_mode_sliding_puzzle);
         rdbSelectGamingModeTraditionalPuzzle = findViewById(R.id.rdb_select_gaming_mode_traditional_puzzle);
@@ -221,11 +228,17 @@ public class LevelSelectActivity extends AppCompatActivity {
         skbDifficultiesSelect.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean isFromUser) {
-                String valueString = String.valueOf(progress + PROGRESS_AND_REAL_DIFFICULTY_OFFSET);
+                // change the text of text-view for showing difficulty
+                int realDiff = progress + PROGRESS_AND_REAL_DIFFICULTY_OFFSET;
+                String valueString = String.valueOf(realDiff);
                 txtvSelectedDifficulty.setText(valueString + " × " + valueString);
 
                 // show/discover the recommendation for high difficulty
-                txtvShowScalingRecommendationBecauseOfHighDifiiculty.setVisibility(progress + PROGRESS_AND_REAL_DIFFICULTY_OFFSET >= 5 && imgvPreviewSelectedImage.getScaleType() != ImageView.ScaleType.FIT_XY ? View.VISIBLE : View.GONE);
+                txtvShowScalingRecommendationBecauseOfHighDifiiculty.setVisibility(realDiff >= 5 && imgvPreviewSelectedImage.getScaleType() != ImageView.ScaleType.FIT_XY ? View.VISIBLE : View.GONE);
+
+                // show hint lines on preview image-view
+                Bitmap linesBitmap = ImageProcessFactory.getHintLinesBitmap(imgvPreviewSelectedImage.getLayoutParams().width, imgvPreviewSelectedImage.getLayoutParams().height, realDiff);
+                imgvHintLinesOfPreviewSelectedImage.setImageBitmap(linesBitmap);
 
                 SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
             }
@@ -342,6 +355,14 @@ public class LevelSelectActivity extends AppCompatActivity {
 //                    .show();
             Toast.makeText(LevelSelectActivity.this, txtvSelectedImageFilename.getText().toString(), Toast.LENGTH_SHORT).show();
         });
+
+        // init the size of imgv-hint-lines-of-preview-selected-image
+        imgvHintLinesOfPreviewSelectedImage.getLayoutParams().width = imgvPreviewSelectedImage.getLayoutParams().width;
+        imgvHintLinesOfPreviewSelectedImage.getLayoutParams().height = imgvPreviewSelectedImage.getLayoutParams().height;
+
+        // show/hide hint lines on preview image-view
+        imgvHintLinesOfPreviewSelectedImage.setOnClickListener(view -> imgvHintLinesOfPreviewSelectedImage.setVisibility(View.GONE));
+        imgvPreviewSelectedImage.setOnClickListener(view -> imgvHintLinesOfPreviewSelectedImage.setVisibility(View.VISIBLE));
     }
 
     private void getImageFromExternalStorage() {

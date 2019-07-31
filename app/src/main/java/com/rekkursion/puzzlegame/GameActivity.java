@@ -28,6 +28,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.games.Game;
+
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -192,7 +194,8 @@ public class GameActivity extends AppCompatActivity {
         discoverUIsWhenProcessingImage();
 
         // draw lines of original scaled image
-        drawLinesOnOriginalScaledImage();
+        Bitmap hintLinesBitmap = ImageProcessFactory.getHintLinesBitmap(imgvShowOriginalScaledBitmap.getLayoutParams().width, imgvShowOriginalScaledBitmap.getLayoutParams().height, GameManager.getInstance().difficulty);
+        imgvShowLinesOfOriginalScaledBitmap.setImageBitmap(hintLinesBitmap);
 
         // initially image-view for showing original scaled image and its button are visually gone
         llyForShowingOriginalScaledImageAndItsUI.setVisibility(View.GONE);
@@ -212,12 +215,8 @@ public class GameActivity extends AppCompatActivity {
         });
 
         // show/hide hint lines on the original scaled bitmap
-        imgvShowLinesOfOriginalScaledBitmap.setOnClickListener(view -> {
-            imgvShowLinesOfOriginalScaledBitmap.setVisibility(View.GONE);
-        });
-        imgvShowOriginalScaledBitmap.setOnClickListener(view -> {
-            imgvShowLinesOfOriginalScaledBitmap.setVisibility(View.VISIBLE);
-        });
+        imgvShowLinesOfOriginalScaledBitmap.setOnClickListener(view -> imgvShowLinesOfOriginalScaledBitmap.setVisibility(View.GONE));
+        imgvShowOriginalScaledBitmap.setOnClickListener(view -> imgvShowLinesOfOriginalScaledBitmap.setVisibility(View.VISIBLE));
 
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -369,25 +368,6 @@ public class GameActivity extends AppCompatActivity {
                 imgvsSplittedBitmapsArray[r][c] = newImgView;
             }
         }
-    }
-
-    private void drawLinesOnOriginalScaledImage() {
-        int w = imgvShowOriginalScaledBitmap.getLayoutParams().width;
-        int h = imgvShowOriginalScaledBitmap.getLayoutParams().height;
-        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888) ;
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setStrokeWidth(4.731F);
-        for (int r = 1; r < GameManager.getInstance().difficulty; ++r) {
-            float y = (float) r * ((float) h / (float) GameManager.getInstance().difficulty);
-            canvas.drawLine(0.0F, y, (float) w, y, paint);
-        }
-        for (int c = 1; c < GameManager.getInstance().difficulty; ++c) {
-            float x = (float) c * ((float) w / (float) GameManager.getInstance().difficulty);
-            canvas.drawLine(x, 0.0F, x, (float) h, paint);
-        }
-        imgvShowLinesOfOriginalScaledBitmap.setImageBitmap(bitmap);
     }
 
     private void goToRankingActivity() {
