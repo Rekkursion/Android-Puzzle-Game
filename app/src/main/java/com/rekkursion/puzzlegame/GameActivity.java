@@ -211,6 +211,14 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        // show/hide hint lines on the original scaled bitmap
+        imgvShowLinesOfOriginalScaledBitmap.setOnClickListener(view -> {
+            imgvShowLinesOfOriginalScaledBitmap.setVisibility(View.GONE);
+        });
+        imgvShowOriginalScaledBitmap.setOnClickListener(view -> {
+            imgvShowLinesOfOriginalScaledBitmap.setVisibility(View.VISIBLE);
+        });
+
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -369,8 +377,8 @@ public class GameActivity extends AppCompatActivity {
         Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888) ;
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
-        paint.setColor(Color.LTGRAY);
-        paint.setStrokeWidth(5.6F);
+        paint.setColor(Color.WHITE);
+        paint.setStrokeWidth(4.731F);
         for (int r = 1; r < GameManager.getInstance().difficulty; ++r) {
             float y = (float) r * ((float) h / (float) GameManager.getInstance().difficulty);
             canvas.drawLine(0.0F, y, (float) w, y, paint);
