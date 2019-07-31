@@ -125,6 +125,14 @@
                         android:textColor="@android:color/holo_orange_dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/txtv_show_scaling_recommendation_because_of_high_difficulty"
+                        android:gravity="center"
+                        android:text="@string/str_scaling_recommendation_because_of_high_difficulty"
+                        android:textSize="@dimen/dim_warning_text_size"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <!-- linear-layout for selecting scale types of image -->
@@ -155,6 +163,7 @@
                 </LinearLayout>
 
                 <!-- radio-group for selecting gaming mode: sliding or traditional puzzle -->
+                <!-- gone -->
                 <RadioGroup
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dim_general_margin"

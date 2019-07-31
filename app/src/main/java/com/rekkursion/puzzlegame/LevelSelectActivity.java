@@ -55,6 +55,7 @@ public class LevelSelectActivity extends AppCompatActivity {
     private TextView txtvStartButtonShadowAtLevelSelect;
     private TextView txtvShowSizeOfOriginalSelectedImage;
     private TextView txtvShowImageTooBigWarning;
+    private TextView txtvShowScalingRecommendationBecauseOfHighDifiiculty;
     private ImageView imgvBackToMenuFromLevelSelect;
 
     private final int REQ_CODE_GET_IMAGE_FROM_EXTERNAL_STORAGE = 10037;
@@ -201,10 +202,12 @@ public class LevelSelectActivity extends AppCompatActivity {
         txtvStartButtonShadowAtLevelSelect = findViewById(R.id.txtv_start_button_shadow_at_level_select);
         txtvShowSizeOfOriginalSelectedImage = findViewById(R.id.txtv_show_size_of_original_selected_image);
         txtvShowImageTooBigWarning = findViewById(R.id.txtv_show_image_too_big_warning);
+        txtvShowScalingRecommendationBecauseOfHighDifiiculty = findViewById(R.id.txtv_show_scaling_recommendation_because_of_high_difficulty);
         imgvBackToMenuFromLevelSelect = findViewById(R.id.imgv_back_to_menu_from_level_select);
 
         // discover the warnings
         txtvShowImageTooBigWarning.setVisibility(View.GONE);
+        txtvShowScalingRecommendationBecauseOfHighDifiiculty.setVisibility(View.GONE);
 
         // disable shadow at first
         txtvStartButtonShadowAtLevelSelect.setEnabled(false);
@@ -219,6 +222,9 @@ public class LevelSelectActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean isFromUser) {
                 String valueString = String.valueOf(progress + PROGRESS_AND_REAL_DIFFICULTY_OFFSET);
                 txtvSelectedDifficulty.setText(valueString + " × " + valueString);
+
+                // show/discover the recommendation for high difficulty
+                txtvShowScalingRecommendationBecauseOfHighDifiiculty.setVisibility(progress + PROGRESS_AND_REAL_DIFFICULTY_OFFSET >= 5 && imgvPreviewSelectedImage.getScaleType() != ImageView.ScaleType.FIT_XY ? View.VISIBLE : View.GONE);
 
                 SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
             }
@@ -267,6 +273,16 @@ public class LevelSelectActivity extends AppCompatActivity {
 
                 String scaleTypeString = adapterView.getSelectedItem().toString();
                 imgvPreviewSelectedImage.setScaleType(scaleTypesDict.getOrDefault(scaleTypeString, ImageView.ScaleType.CENTER));
+
+                // show/discover the scaling recommendation because of high difficulty
+                if (scaleTypeString.equals("Scaling"))
+                    txtvShowScalingRecommendationBecauseOfHighDifiiculty.setVisibility(View.GONE);
+                else {
+                    if (skbDifficultiesSelect.getProgress() + PROGRESS_AND_REAL_DIFFICULTY_OFFSET >= 5)
+                        txtvShowScalingRecommendationBecauseOfHighDifiiculty.setVisibility(View.VISIBLE);
+                    else
+                        txtvShowScalingRecommendationBecauseOfHighDifiiculty.setVisibility(View.GONE);
+                }
 
                 if (!loading)
                     SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");

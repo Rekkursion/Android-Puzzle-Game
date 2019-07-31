@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Puzzle Game</string>
-    <string name="web_client_id">731587658196-tjqn0sdlp5dv1ejqpo2o1mltn1kk75gs.apps.googleusercontent.com</string>
     <string name="str_start">Start</string>
     <string name="str_difficulty">Difficulty</string>
     <string name="str_3x3">3 × 3</string>
@@ -16,6 +15,7 @@
     <string name="str_hint">Hint</string>
     <string name="str_tapped_0">Move: 0</string>
     <string name="str_if_the_image_is_too_large_image_processing_will_take_a_long_time">If the image is too large, image processing will take a long time.</string>
+    <string name="str_scaling_recommendation_because_of_high_difficulty">In high difficulty, it\'s highly recommended that you scale the image to avoid confusing pieces after the image processing, especially if the aspect ratio of your image is very large.</string>
     <string name="str_ranking_place">#</string>
     <string name="str_ranking_cost_time">Time</string>
     <string name="str_ranking_moved_count">Move</string>
