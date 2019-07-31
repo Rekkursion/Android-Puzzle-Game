@@ -6,6 +6,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -87,7 +88,6 @@ public class MenuActivity extends AppCompatActivity {
             }
 
             case R.id.txtv_credit_option_at_menu_activity: {
-                // TODO: enter credit activity
                 break;
             }
 
@@ -102,12 +102,12 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // set transition animations (entering menu)
-        getWindow().setEnterTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
-        getWindow().setReturnTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_end));
+        getWindow().setReturnTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_end));
 
         // set transition animations (returning back)
-        getWindow().setExitTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
-        getWindow().setReenterTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_start));
+        getWindow().setReenterTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_start));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);

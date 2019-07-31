@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -71,9 +72,9 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // set transition animations (entering ranking)
-        getWindow().setEnterTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
-        getWindow().setReturnTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+        // set transition animations (entering game)
+        getWindow().setEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_end));
+        getWindow().setReturnTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_end));
 
         // set transition animations (returning back)
 //        getWindow().setExitTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));

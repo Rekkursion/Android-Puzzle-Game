@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Puzzle Game</string>
+    <string name="web_client_id">731587658196-tjqn0sdlp5dv1ejqpo2o1mltn1kk75gs.apps.googleusercontent.com</string>
     <string name="str_start">Start</string>
     <string name="str_difficulty">Difficulty</string>
     <string name="str_3x3">3 × 3</string>
@@ -33,4 +34,6 @@
     <string name="str_press_again_to_leave">Press again to leave.</string>
     <string name="str_give_up">Give up</string>
     <string name="str_show_maoudamashii">BGM &amp; SE: 魔王魂 (maoudamashii)</string>
+    <string name="str_google_log_in">Google log in</string>
+    <string name="str_google_log_out">Google log out</string>
 </resources>

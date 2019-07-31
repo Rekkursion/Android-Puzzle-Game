@@ -52,11 +52,28 @@
         </FrameLayout>
     </LinearLayout>
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_google_log_in"
+            android:text="@string/str_google_log_in"
+            android:textAllCaps="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_google_log_out"
+            android:text="@string/str_google_log_out"
+            android:textAllCaps="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
+    <!-- showing the source of bgm's and se's: maoudamashii -->
     <TextView
         android:layout_alignParentBottom="true"
         android:text="@string/str_show_maoudamashii"

@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -96,13 +97,13 @@ public class LevelSelectActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // set transition animations (entering menu)
-        getWindow().setEnterTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
-        getWindow().setReturnTransition(new Slide(Gravity.END).setDuration(MainActivity.TRANS_ANIM_DURA));
+        // set transition animations (entering level-select)
+        getWindow().setEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_end));
+        getWindow().setReturnTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_end));
 
         // set transition animations (returning back)
-        getWindow().setExitTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
-        getWindow().setReenterTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_start));
+        getWindow().setReenterTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_start));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_select);

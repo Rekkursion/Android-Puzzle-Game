@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Source: https://codertw.com/android-%E9%96%8B%E7%99%BC/340792/ -->
+<!--slideEdge表示起始滑動的側邊位置，end表示右側，start表示左側，top表示頂部，bottom表示底側-->
+<slide xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="250"
+    android:slideEdge="end">
+    <!--去掉頂部狀態列，底部操作欄的滑動-->
+    <targets>
+        <target android:excludeId="@android:id/navigationBarBackground" />
+        <target android:excludeId="@android:id/statusBarBackground" />
+    </targets>
+</slide>

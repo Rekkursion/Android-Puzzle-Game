@@ -140,24 +140,25 @@ public class GameManager {
                 tagNumbersMap[r][c] = r * difficulty + c;
         }
 
-        int tmpNum = tagNumbersMap[difficulty - 2][difficulty - 1];
-        tagNumbersMap[difficulty - 2][difficulty - 1] = tagNumbersMap[difficulty - 1][difficulty - 1];
-        tagNumbersMap[difficulty - 1][difficulty - 1] = tmpNum;
-        return;
+//        fake shuffling
+//        int tmpNum = tagNumbersMap[difficulty - 2][difficulty - 1];
+//        tagNumbersMap[difficulty - 2][difficulty - 1] = tagNumbersMap[difficulty - 1][difficulty - 1];
+//        tagNumbersMap[difficulty - 1][difficulty - 1] = tmpNum;
+//        return;
 
-//        for (int r = 0; r < difficulty; ++r) {
-//            for (int c = 0; c < difficulty; ++c) {
-//                int _r = (int) Math.floor(Math.random() * difficulty);
-//                int _c = (int) Math.floor(Math.random() * difficulty);
-//
-//                if (_r >= difficulty) _r = difficulty - 1;
-//                if (_c >= difficulty) _c = difficulty - 1;
-//
-//                int tmp = tagNumbersMap[r][c];
-//                tagNumbersMap[r][c] = tagNumbersMap[_r][_c];
-//                tagNumbersMap[_r][_c] = tmp;
-//            }
-//        }
+        for (int r = 0; r < difficulty; ++r) {
+            for (int c = 0; c < difficulty; ++c) {
+                int _r = (int) Math.floor(Math.random() * difficulty);
+                int _c = (int) Math.floor(Math.random() * difficulty);
+
+                if (_r >= difficulty) _r = difficulty - 1;
+                if (_c >= difficulty) _c = difficulty - 1;
+
+                int tmp = tagNumbersMap[r][c];
+                tagNumbersMap[r][c] = tagNumbersMap[_r][_c];
+                tagNumbersMap[_r][_c] = tmp;
+            }
+        }
     }
 
     public boolean swapImageViews(ImageView view_a, ImageView view_b) {

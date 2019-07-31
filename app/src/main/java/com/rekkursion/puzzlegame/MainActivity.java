@@ -1,5 +1,6 @@
 package com.rekkursion.puzzlegame;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Animation;
@@ -18,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,6 +32,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -50,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtvStartButtonShadowAtMainActivity;
     private ImageView imgvPuzzleGameTitleAtMainActivity;
 
-    private SignInButton signInButton;
+    private Button signInButton;
+    private Button signOutButton;
     private GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInAccount mGoogleSignInAccount;
 
     private Animation animScaleLittleWithBouncing;
     private Animation animScaleLargeWithOvershooting;
@@ -60,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // set transition animations (returning back)
-        getWindow().setExitTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
-        getWindow().setReenterTransition(new Slide(Gravity.START).setDuration(MainActivity.TRANS_ANIM_DURA));
+        getWindow().setExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_start));
+        getWindow().setReenterTransition(TransitionInflater.from(this).inflateTransition(R.transition.slide_start));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -70,10 +79,11 @@ public class MainActivity extends AppCompatActivity {
         if (checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(new String[] { Manifest.permission.VIBRATE }, REQ_CODE_PERMISSION_VIBRATE);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestEmail()
+//                .requestServerAuthCode(getString(R.string.web_client_id))
+//                .build();
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         initAnimations();
         initViews();
@@ -148,7 +158,8 @@ public class MainActivity extends AppCompatActivity {
         txtvStartButtonAtMainActivity = findViewById(R.id.txtv_start_button_at_main_activity);
         txtvStartButtonShadowAtMainActivity = findViewById(R.id.txtv_start_button_shadow_at_main_activity);
         imgvPuzzleGameTitleAtMainActivity = findViewById(R.id.imgv_puzzle_game_title_at_main_activity);
-        signInButton = findViewById(R.id.sign_in_button);
+        signInButton = findViewById(R.id.btn_google_log_in);
+        signOutButton = findViewById(R.id.btn_google_log_out);
 
         txtvStartButtonAtMainActivity.setOnClickListener(view -> {
             Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale_animation_view_pressed);
@@ -187,6 +198,9 @@ public class MainActivity extends AppCompatActivity {
 
         // google sign in button
         signInButton.setOnClickListener(view -> googleSignIn());
+
+        // google sign out button
+        signOutButton.setOnClickListener(view -> googleSignOut());
     }
 
     private void initAnimations() {
@@ -229,16 +243,23 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, REQ_CODE_GOOGLE_SIGN_IN);
     }
 
+    private void googleSignOut() {
+        if (mGoogleSignInClient != null) {
+            mGoogleSignInClient.signOut();
+        }
+    }
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            mGoogleSignInAccount = completedTask.getResult(ApiException.class);
             Toast.makeText(this, "goodo", Toast.LENGTH_SHORT).show();
+
             // Signed in successfully, show authenticated UI.
             //updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w("sign-in", "signInResult:failed code=" + e.getStatusCode());
+            Log.e("sign-in", "signInResult:failed code=" + e.getStatusCode());
             Toast.makeText(this, "Google login failed.", Toast.LENGTH_SHORT).show();
             //updateUI(null);
         }
