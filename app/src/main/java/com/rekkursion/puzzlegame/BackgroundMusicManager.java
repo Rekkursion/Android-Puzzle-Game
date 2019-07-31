@@ -46,8 +46,8 @@ public class BackgroundMusicManager {
     }
 
     private void initData() {
-        mLeftVolume = 1.0F;
-        mRightVolume = 1.0F;
+        mLeftVolume = 0.5F;
+        mRightVolume = 0.5F;
         mBackgroundMediaPlayer = null;
         mIsPaused = false;
         mCurrentPath = null;

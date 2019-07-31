@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class SoundPoolManager {
     private static final int MAX_STREAMS = 100;
+    private static final float volume = 1.0F;
     public static final String SOUND_FILES_ROOT_PATH = "sounds";
 
     private SoundPool sp;
@@ -57,12 +58,12 @@ public class SoundPoolManager {
 
     // return stream-id of the sound-pool
     public int play(String filename, int times) throws NullPointerException {
-        return sp.play(getSoundIdByFilename(filename), 1.0F, 1.0F, 1, times, 1.0F);
+        return this.play(filename, times, 1.0F);
     }
 
     // return stream-id of the sound-pool
     public int play(String filename, int times, float rate) throws NullPointerException {
-        return sp.play(getSoundIdByFilename(filename), 1.0F, 1.0F, 1, times, rate);
+        return sp.play(getSoundIdByFilename(filename), volume, volume, 1, times, rate);
     }
 
     private int getSoundIdByFilename(String audioFilename) throws NullPointerException {
