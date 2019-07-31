@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -331,6 +332,15 @@ public class LevelSelectActivity extends AppCompatActivity {
             BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
             SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
             finishAfterTransition();
+        });
+
+        // show full filename of selected image
+        txtvSelectedImageFilename.setOnClickListener(view -> {
+//            new AlertDialog.Builder(LevelSelectActivity.this)
+//                    .setMessage(txtvSelectedImageFilename.getText().toString())
+//                    .setNeutralButton("OK", null)
+//                    .show();
+            Toast.makeText(LevelSelectActivity.this, txtvSelectedImageFilename.getText().toString(), Toast.LENGTH_SHORT).show();
         });
     }
 
