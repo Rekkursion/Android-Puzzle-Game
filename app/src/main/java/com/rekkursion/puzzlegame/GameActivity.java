@@ -56,6 +56,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView btnBackToMenuWhenShowingOriginalScaledBitmap;
     private TextView txtvTapCounter;
     private TextView txtvMillisecondTimer;
+    private TextView txtvShowIndicesSwitchButton;
 
     private ImageView[][] imgvsSplittedBitmapsArray;
 
@@ -187,6 +188,7 @@ public class GameActivity extends AppCompatActivity {
         btnBackToMenuWhenShowingOriginalScaledBitmap = findViewById(R.id.txtv_back_to_menu_button_when_showing_original_scaled_bitmap);
         txtvTapCounter = findViewById(R.id.txtv_tap_counter);
         txtvMillisecondTimer = findViewById(R.id.txtv_millisecond_timer);
+        txtvShowIndicesSwitchButton = findViewById(R.id.txtv_show_indices_switch_button);
 
         // adjust size of image-view which is used to show the original scaled bitmap
         imgvShowOriginalScaledBitmap.getLayoutParams().width = TOTAL_GAMING_IMAGE_VIEW_SIZE;
@@ -239,8 +241,15 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        // give up or back to menu
         btnGiveUpWhenShowingOriginalScaledBitmap.setOnClickListener(giveUpOrBackToMenuButtonOnClickListener);
         btnBackToMenuWhenShowingOriginalScaledBitmap.setOnClickListener(giveUpOrBackToMenuButtonOnClickListener);
+
+        // show indices on all pieces or not
+        txtvShowIndicesSwitchButton.setOnClickListener(view -> {
+            GameManager.getInstance().showOrHideIndices(imgvsSplittedBitmapsArray);
+            txtvShowIndicesSwitchButton.setText(GameManager.getInstance().isShowingIndices ? R.string.str_hide_indices : R.string.str_show_indices);
+        });
     }
 
     private void discoverUIsWhenProcessingImage() {
@@ -254,6 +263,9 @@ public class GameActivity extends AppCompatActivity {
 
         txtvMillisecondTimer.setVisibility(View.GONE);
         GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(txtvMillisecondTimer);
+
+        txtvShowIndicesSwitchButton.setVisibility(View.GONE);
+        GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(txtvShowIndicesSwitchButton);
     }
 
     private void createImageViewsForGaming() {

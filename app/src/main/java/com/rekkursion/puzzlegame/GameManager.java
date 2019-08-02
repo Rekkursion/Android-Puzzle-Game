@@ -1,6 +1,9 @@
 package com.rekkursion.puzzlegame;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -48,6 +51,10 @@ public class GameManager {
     private List<Object> UIList;
     public int movedCount;
     public GameStatus gameStatus;
+    public boolean isShowingIndices;
+
+    private Bitmap[][] bitmapBlocksArray;
+    private Bitmap[][] bitmapBlocksWithIndicesArray;
 
     private TextView txtvMillisecondTimer;
     private Timer puzzlePlayingTimer;
@@ -129,7 +136,7 @@ public class GameManager {
     }
 
     public void shuffle() {
-        final int SHUFFLE_TIMES = 75;
+        final int SHUFFLE_TIMES = 100 * difficulty;
 
         if (tagNumbersMap != null) {
             for (int r = 0; r < tagNumbersMap.length; ++r)
@@ -248,6 +255,54 @@ public class GameManager {
             }
         }
         return -1;
+    }
+
+    public void setImageViewBlocksArray(ImageView[][] arr) {
+        if (bitmapBlocksArray != null)
+            bitmapBlocksArray = null;
+        if (bitmapBlocksWithIndicesArray != null)
+            bitmapBlocksWithIndicesArray = null;
+
+        bitmapBlocksArray = new Bitmap[difficulty][difficulty];
+        bitmapBlocksWithIndicesArray = new Bitmap[difficulty][difficulty];
+
+        for (int r = 0; r < difficulty; ++r) {
+            for (int c = 0; c < difficulty; ++c) {
+                Bitmap origBitmap = ((BitmapDrawable) arr[r][c].getDrawable()).getBitmap();
+                int idx = (int) arr[r][c].getTag();
+
+                // draw indices on the original bitmap
+                Bitmap withIdxBitmap = Bitmap.createBitmap(origBitmap);
+                Canvas canvas = new Canvas(withIdxBitmap);
+                Paint paint = new Paint();
+                paint.setColor(Color.WHITE);
+                paint.setTextSize(31.62F);
+                String idxString = GameManager.getInstance().difficulty == 3 ? String.valueOf(idx + 1) : String.format("%02d", idx + 1);
+                canvas.drawText(idxString, 4.0F, 25.0F, paint);
+
+                // set image bitmaps
+                bitmapBlocksArray[r][c] = Bitmap.createBitmap(origBitmap);
+                bitmapBlocksWithIndicesArray[r][c] = Bitmap.createBitmap(withIdxBitmap);
+            }
+        }
+    }
+
+    public void showOrHideIndices(ImageView[][] imgvs) {
+        if (bitmapBlocksWithIndicesArray == null)
+            return;
+
+        for(int r = 0; r < difficulty; ++r) {
+            for (int c = 0; c < difficulty; ++c) {
+                // show -> hide
+                if (isShowingIndices)
+                    imgvs[r][c].setImageBitmap(bitmapBlocksArray[r][c]);
+                // hide -> show
+                else
+                    imgvs[r][c].setImageBitmap(bitmapBlocksWithIndicesArray[r][c]);
+            }
+        }
+
+        isShowingIndices = !isShowingIndices;
     }
 
     public static GameManager getInstance() { return instance; }

@@ -61,13 +61,13 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/btn_google_log_in"
-            android:text="@string/str_google_log_in"
+            android:text="log in"
             android:textAllCaps="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
             android:id="@+id/btn_google_log_out"
-            android:text="@string/str_google_log_out"
+            android:text="log out"
             android:textAllCaps="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

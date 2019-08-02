@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content" />
             </RelativeLayout>
 
-            <!-- relative-layout for timer and tap-counter -->
+            <!-- relative-layout for tap-counter -->
             <RelativeLayout
                 android:layout_alignBottom="@id/rly_small_uis_bar"
                 android:layout_width="match_parent"
@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content" />
             </RelativeLayout>
 
+            <!-- relative-layout for timer -->
             <RelativeLayout
                 android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/dim_general_margin"
@@ -67,15 +68,32 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <!-- grid-layout as a container for holding splitted image-views -->
-        <GridLayout
-            android:id="@+id/gly_splitted_image_views_container"
-            android:columnCount="3"
-            android:rowCount="3"
+        <!-- show/hide-indices text-view and grid-layout which is for putting blocks -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        </GridLayout>
+            <!-- grid-layout as a container for holding splitted image-views -->
+            <GridLayout
+                android:id="@+id/gly_splitted_image_views_container"
+                android:columnCount="3"
+                android:rowCount="3"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </GridLayout>
+            <!-- text-view as a switch button to let user shows/hides indices -->
+            <TextView
+                android:id="@+id/txtv_show_indices_switch_button"
+                android:text="@string/str_show_indices"
+                android:textColor="@android:color/white"
+                android:layout_margin="@dimen/dim_general_margin"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <!-- linear-layout for showing that it's progressing -->
         <LinearLayout

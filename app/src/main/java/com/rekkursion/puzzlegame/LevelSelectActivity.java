@@ -331,6 +331,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                 GameManager.getInstance().difficulty = selectedDifficulty;
                 GameManager.getInstance().gamingMode = gamingMode;
                 GameManager.getInstance().selectedScaleTypeString = spnSelectScaleType.getSelectedItem().toString();
+                GameManager.getInstance().isShowingIndices = false;
 
                 SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
 
