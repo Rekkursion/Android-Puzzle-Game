@@ -286,7 +286,7 @@ public class GameManager {
                     Bitmap bitmap = ((BitmapDrawable) imgvs[r][c].getDrawable()).getBitmap();
                     Canvas canvas = new Canvas(bitmap);
                     Paint paint = new Paint();
-                    paint.setTextSize(31.62F);
+                    paint.setTextSize(109.34F / (float) difficulty);
                     paint.setColor(Color.WHITE);
                     canvas.drawText(String.valueOf(tag + 1), 4.0F, 25.0F, paint);
 

@@ -8,10 +8,14 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.CancellationSignal;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
     private ProgressBar progressBar;
@@ -94,16 +98,29 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
     @Override
     protected Bitmap doInBackground(Context... contexts) {
         String scaleTypeStr = GameManager.getInstance().selectedScaleTypeString;
+        Bitmap ret;
+
+        long startTime = System.currentTimeMillis();
 
         if (scaleTypeStr.equals("Center"))
-            return ImageProcessFactory.scaleImage_fitCenter(originalBitmap);
+            ret = ImageProcessFactory.scaleImage_fitCenter(originalBitmap);
         else if (scaleTypeStr.equals("Scaling"))
-            return ImageProcessFactory.scaleImage_fitXY(originalBitmap);
+            ret = ImageProcessFactory.scaleImage_fitXY(originalBitmap);
         else if (scaleTypeStr.equals("Start"))
-            return ImageProcessFactory.scaleImage_fitStart(originalBitmap);
+            ret = ImageProcessFactory.scaleImage_fitStart(originalBitmap);
         else if (scaleTypeStr.equals("End"))
-            return ImageProcessFactory.scaleImage_fitEnd(originalBitmap);
+            ret = ImageProcessFactory.scaleImage_fitEnd(originalBitmap);
         else
-            return ImageProcessFactory.scaleImage_fitCenter(originalBitmap);
+            ret = ImageProcessFactory.scaleImage_fitCenter(originalBitmap);
+
+        long endTime = System.currentTimeMillis();
+        Log.e("do-in-background", String.valueOf(endTime - startTime) + "ms");
+        if (endTime - startTime < 300L)
+            try {
+                Thread.sleep(300L);
+                Log.e("do-in-background", "intentionally delay");
+            } catch (InterruptedException e) {}
+
+        return ret;
     }
 }
