@@ -52,9 +52,7 @@ public class GameManager {
     public int movedCount;
     public GameStatus gameStatus;
     public boolean isShowingIndices;
-
-    private Bitmap[][] bitmapBlocksArray;
-    private Bitmap[][] bitmapBlocksWithIndicesArray;
+    public Map<Integer, Bitmap> withoutIndicesBitmapsMap;
 
     private TextView txtvMillisecondTimer;
     private Timer puzzlePlayingTimer;
@@ -116,10 +114,20 @@ public class GameManager {
         tagAndIdDict.putIfAbsent(newTag, newId);
     }
 
+    public void addTagAndBitmapEntry(int newTag, Bitmap newBitmap) {
+        if (withoutIndicesBitmapsMap == null)
+            withoutIndicesBitmapsMap = new HashMap<>();
+        withoutIndicesBitmapsMap.putIfAbsent(newTag, Bitmap.createBitmap(newBitmap));
+    }
+
     public void clearTagAndIdDict() {
         if (tagAndIdDict != null)
             tagAndIdDict.clear();
         tagAndIdDict = null;
+
+        if (withoutIndicesBitmapsMap != null)
+            withoutIndicesBitmapsMap.clear();
+        withoutIndicesBitmapsMap = null;
     }
 
     public void clearUIList() {
@@ -143,8 +151,14 @@ public class GameManager {
                 tagNumbersMap[r] = null;
             tagNumbersMap = null;
         }
+        if (withoutIndicesBitmapsMap != null) {
+            withoutIndicesBitmapsMap.clear();
+            withoutIndicesBitmapsMap = null;
+        }
 
         tagNumbersMap = new int[difficulty][difficulty];
+        withoutIndicesBitmapsMap = new HashMap<>();
+
         for (int r = 0; r < difficulty; ++r) {
             for (int c = 0; c < difficulty; ++c)
                 tagNumbersMap[r][c] = r * difficulty + c;
@@ -156,6 +170,7 @@ public class GameManager {
 //        tagNumbersMap[difficulty - 1][difficulty - 1] = tmpNum;
 //        return;
 
+        // shuffle
         int currentBlankRow = getAbandonedTagNumber() / difficulty;
         int currentBlankCol = getAbandonedTagNumber() % difficulty;
         Random random = new Random();
@@ -257,48 +272,26 @@ public class GameManager {
         return -1;
     }
 
-    public void setImageViewBlocksArray(ImageView[][] arr) {
-        if (bitmapBlocksArray != null)
-            bitmapBlocksArray = null;
-        if (bitmapBlocksWithIndicesArray != null)
-            bitmapBlocksWithIndicesArray = null;
-
-        bitmapBlocksArray = new Bitmap[difficulty][difficulty];
-        bitmapBlocksWithIndicesArray = new Bitmap[difficulty][difficulty];
-
-        for (int r = 0; r < difficulty; ++r) {
-            for (int c = 0; c < difficulty; ++c) {
-                Bitmap origBitmap = ((BitmapDrawable) arr[r][c].getDrawable()).getBitmap();
-                int idx = (int) arr[r][c].getTag();
-
-                // draw indices on the original bitmap
-                Bitmap withIdxBitmap = Bitmap.createBitmap(origBitmap);
-                Canvas canvas = new Canvas(withIdxBitmap);
-                Paint paint = new Paint();
-                paint.setColor(Color.WHITE);
-                paint.setTextSize(31.62F);
-                String idxString = GameManager.getInstance().difficulty == 3 ? String.valueOf(idx + 1) : String.format("%02d", idx + 1);
-                canvas.drawText(idxString, 4.0F, 25.0F, paint);
-
-                // set image bitmaps
-                bitmapBlocksArray[r][c] = Bitmap.createBitmap(origBitmap);
-                bitmapBlocksWithIndicesArray[r][c] = Bitmap.createBitmap(withIdxBitmap);
-            }
-        }
-    }
-
     public void showOrHideIndices(ImageView[][] imgvs) {
-        if (bitmapBlocksWithIndicesArray == null)
-            return;
-
         for(int r = 0; r < difficulty; ++r) {
             for (int c = 0; c < difficulty; ++c) {
+                int tag = (int) imgvs[r][c].getTag();
+
                 // show -> hide
                 if (isShowingIndices)
-                    imgvs[r][c].setImageBitmap(bitmapBlocksArray[r][c]);
+                    imgvs[r][c].setImageBitmap(Bitmap.createBitmap(withoutIndicesBitmapsMap.get(tag)));
+
                 // hide -> show
-                else
-                    imgvs[r][c].setImageBitmap(bitmapBlocksWithIndicesArray[r][c]);
+                else {
+                    Bitmap bitmap = ((BitmapDrawable) imgvs[r][c].getDrawable()).getBitmap();
+                    Canvas canvas = new Canvas(bitmap);
+                    Paint paint = new Paint();
+                    paint.setTextSize(31.62F);
+                    paint.setColor(Color.WHITE);
+                    canvas.drawText(String.valueOf(tag + 1), 4.0F, 25.0F, paint);
+
+                    imgvs[r][c].setImageBitmap(bitmap);
+                }
             }
         }
 

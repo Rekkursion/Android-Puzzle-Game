@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.CancellationSignal;
 import android.view.View;
@@ -76,11 +77,12 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
 
                 int newImageViewId = View.generateViewId();
                 imageViews[r][c].setId(newImageViewId);
+
                 GameManager.getInstance().addTagAndIdEntry(idx, newImageViewId);
+                GameManager.getInstance().addTagAndBitmapEntry(idx, ((BitmapDrawable) imageViews[r][c].getDrawable()).getBitmap());
             }
         }
 
-        GameManager.getInstance().setImageViewBlocksArray(imageViews);
         GameManager.getInstance().initPuzzlePlayingTimerAndSetTask(txtvMillisecondTimer);
     }
 
