@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
@@ -128,6 +129,8 @@ public class GameManager {
     }
 
     public void shuffle() {
+        final int SHUFFLE_TIMES = 75;
+
         if (tagNumbersMap != null) {
             for (int r = 0; r < tagNumbersMap.length; ++r)
                 tagNumbersMap[r] = null;
@@ -146,19 +149,52 @@ public class GameManager {
 //        tagNumbersMap[difficulty - 1][difficulty - 1] = tmpNum;
 //        return;
 
-        for (int r = 0; r < difficulty; ++r) {
-            for (int c = 0; c < difficulty; ++c) {
-                int _r = (int) Math.floor(Math.random() * difficulty);
-                int _c = (int) Math.floor(Math.random() * difficulty);
+        int currentBlankRow = getAbandonedTagNumber() / difficulty;
+        int currentBlankCol = getAbandonedTagNumber() % difficulty;
+        Random random = new Random();
+        for (int k = 0; k < SHUFFLE_TIMES; ++k) {
+            int nextBlankRow, nextBlankCol;
+            int moveDirection = random.nextInt(4);
 
-                if (_r >= difficulty) _r = difficulty - 1;
-                if (_c >= difficulty) _c = difficulty - 1;
+            switch (moveDirection) {
+                // up
+                case 0: nextBlankRow = currentBlankRow - 1; nextBlankCol = currentBlankCol; break;
+                // right
+                case 1: nextBlankRow = currentBlankRow; nextBlankCol = currentBlankCol + 1; break;
+                // down
+                case 2: nextBlankRow = currentBlankRow + 1; nextBlankCol = currentBlankCol; break;
+                // left
+                case 3: nextBlankRow = currentBlankRow; nextBlankCol = currentBlankCol - 1; break;
+                // exception
+                default: nextBlankRow = currentBlankRow; nextBlankCol = currentBlankCol;
+            }
 
-                int tmp = tagNumbersMap[r][c];
-                tagNumbersMap[r][c] = tagNumbersMap[_r][_c];
-                tagNumbersMap[_r][_c] = tmp;
+            // the next position is valid (not out of range and not the same position as current one), swap
+            if (nextBlankRow >= 0 && nextBlankRow < difficulty && nextBlankCol >= 0 && nextBlankCol < difficulty &&
+                    (nextBlankRow != currentBlankRow || nextBlankCol != currentBlankCol)) {
+                int tmp = tagNumbersMap[currentBlankRow][currentBlankCol];
+                tagNumbersMap[currentBlankRow][currentBlankCol] = tagNumbersMap[nextBlankRow][nextBlankCol];
+                tagNumbersMap[nextBlankRow][nextBlankCol] = tmp;
+
+                currentBlankRow = nextBlankRow;
+                currentBlankCol = nextBlankCol;
             }
         }
+
+//        wrong shuffling
+//        for (int r = 0; r < difficulty; ++r) {
+//            for (int c = 0; c < difficulty; ++c) {
+//                int _r = (int) Math.floor(Math.random() * difficulty);
+//                int _c = (int) Math.floor(Math.random() * difficulty);
+//
+//                if (_r >= difficulty) _r = difficulty - 1;
+//                if (_c >= difficulty) _c = difficulty - 1;
+//
+//                int tmp = tagNumbersMap[r][c];
+//                tagNumbersMap[r][c] = tagNumbersMap[_r][_c];
+//                tagNumbersMap[_r][_c] = tmp;
+//            }
+//        }
     }
 
     public boolean swapImageViews(ImageView view_a, ImageView view_b) {
