@@ -162,7 +162,7 @@ public class GameManager {
     }
 
     public void shuffle() {
-        final int SHUFFLE_TIMES = 5 * difficulty;
+        final int SHUFFLE_TIMES = 35 * difficulty;
 
         if (tagNumbersMap != null) {
             for (int r = 0; r < tagNumbersMap.length; ++r)

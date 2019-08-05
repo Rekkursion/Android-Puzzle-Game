@@ -22,9 +22,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -264,8 +266,15 @@ public class GameActivity extends AppCompatActivity {
 
         // give up and see the answer
         txtvGiveUpButtonAndSeeTheAnswer.setOnClickListener(view -> {
-            List<Integer> moveLogList = GameManager.getInstance().getMoveLogListCopied();
-            // TODO: auto solve the puzzle
+            new AlertDialog.Builder(GameActivity.this)
+                    .setIcon(R.drawable.ic_warning_orange_24dp)
+                    .setMessage(R.string.str_user_check_before_give_up_the_game)
+                    .setPositiveButton(R.string.str_user_check_yes, (dialogInterface, i) -> {
+                        PuzzleSolvingAsyncTask puzzleSolvingAsyncTask = new PuzzleSolvingAsyncTask();
+                        puzzleSolvingAsyncTask.execute(imgvsSplittedBitmapsArray);
+                    })
+                    .setNegativeButton(R.string.str_user_check_no, null)
+                    .show();
         });
     }
 
