@@ -8,4 +8,5 @@
     <dimen name="dim_warning_text_size">12sp</dimen>
     <dimen name="dim_ranking_record_item_text_size">17sp</dimen>
     <dimen name="dim_ranking_record_item_margin">8sp</dimen>
+    <dimen name="dim_txtv_btn_beneath_puzzle_board_text_size">17sp</dimen>
 </resources>

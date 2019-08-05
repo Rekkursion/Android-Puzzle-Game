@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class GameActivity extends AppCompatActivity {
     private final int REQ_CODE_TO_RANKING_ACTIVITY = 13;
@@ -47,6 +49,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView txtvTapCounter;
     private TextView txtvMillisecondTimer;
     private TextView txtvShowIndicesSwitchButton;
+    private TextView txtvGiveUpButtonAndSeeTheAnswer;
 
     private ImageView[][] imgvsSplittedBitmapsArray;
 
@@ -180,6 +183,7 @@ public class GameActivity extends AppCompatActivity {
         txtvTapCounter = findViewById(R.id.txtv_tap_counter);
         txtvMillisecondTimer = findViewById(R.id.txtv_millisecond_timer);
         txtvShowIndicesSwitchButton = findViewById(R.id.txtv_show_indices_switch_button);
+        txtvGiveUpButtonAndSeeTheAnswer = findViewById(R.id.txtv_give_up_button_and_see_the_answer);
 
         // adjust size of image-view which is used to show the original scaled bitmap
         imgvShowOriginalScaledBitmap.getLayoutParams().width = TOTAL_GAMING_IMAGE_VIEW_SIZE;
@@ -257,6 +261,12 @@ public class GameActivity extends AppCompatActivity {
             GameManager.getInstance().showOrHideIndices(imgvsSplittedBitmapsArray);
             txtvShowIndicesSwitchButton.setText(GameManager.getInstance().isShowingIndices ? R.string.str_hide_indices : R.string.str_show_indices);
         });
+
+        // give up and see the answer
+        txtvGiveUpButtonAndSeeTheAnswer.setOnClickListener(view -> {
+            List<Integer> moveLogList = GameManager.getInstance().getMoveLogListCopied();
+            // TODO: auto solve the puzzle
+        });
     }
 
     private void discoverUIsWhenProcessingImage() {
@@ -273,6 +283,9 @@ public class GameActivity extends AppCompatActivity {
 
         txtvShowIndicesSwitchButton.setVisibility(View.GONE);
         GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(txtvShowIndicesSwitchButton);
+
+        txtvGiveUpButtonAndSeeTheAnswer.setVisibility(View.GONE);
+        GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(txtvGiveUpButtonAndSeeTheAnswer);
     }
 
     private void createImageViewsForGaming() {
@@ -344,6 +357,12 @@ public class GameActivity extends AppCompatActivity {
                             String tapped_0 = getString(R.string.str_tapped_0);
                             String tapped = tapped_0.substring(0, tapped_0.indexOf(" "));
                             txtvTapCounter.setText(tapped + " " + String.valueOf(newTappedCount));
+
+                            // add move-log for the answer
+                            int locationIdx = GameManager.getInstance().getLocationIndexByTag(viewTag);
+                            if (locationIdx >= 0)
+                                GameManager.getInstance().addMoveLog(locationIdx);
+//                            Log.e("move", String.valueOf(locationIdx));
 
                             SoundPoolManager.getInstance().play("se_maoudamashii_move_piece_successfully.mp3");
                         }

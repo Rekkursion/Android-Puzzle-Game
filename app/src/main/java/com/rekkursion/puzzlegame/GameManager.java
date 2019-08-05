@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,12 +147,22 @@ public class GameManager {
         return tagAndIdDict.getOrDefault(tag, -1);
     }
 
+    public int getLocationIndexByTag(int tag) {
+        for (int r = 0; r < difficulty; ++r) {
+            for (int c = 0; c < difficulty; ++c) {
+                if (tagNumbersMap[r][c] == tag)
+                    return r * difficulty + c;
+            }
+        }
+        return -1;
+    }
+
     public int getAbandonedTagNumber() {
         return difficulty * difficulty - 1;
     }
 
     public void shuffle() {
-        final int SHUFFLE_TIMES = 50 * difficulty;
+        final int SHUFFLE_TIMES = 5 * difficulty;
 
         if (tagNumbersMap != null) {
             for (int r = 0; r < tagNumbersMap.length; ++r)
@@ -312,10 +323,13 @@ public class GameManager {
 
                 // hide -> show
                 else {
+                    // TODO: add bg color under indices
                     Bitmap bitmap = ((BitmapDrawable) imgvs[r][c].getDrawable()).getBitmap();
                     Canvas canvas = new Canvas(bitmap);
                     Paint paint = new Paint();
                     paint.setTextSize(109.34F / (float) difficulty);
+                    paint.setColor(Color.BLACK);
+                    canvas.drawCircle(2.0F, 2.0F, 3.0F, paint);
                     paint.setColor(Color.WHITE);
                     canvas.drawText(String.valueOf(tag + 1), 4.0F, 25.0F, paint);
 
@@ -325,6 +339,18 @@ public class GameManager {
         }
 
         isShowingIndices = !isShowingIndices;
+    }
+
+    public void addMoveLog(int clickedLocationIndex) {
+        if (moveLogList == null)
+            moveLogList = new ArrayList<>();
+        moveLogList.add(clickedLocationIndex);
+    }
+
+    public List<Integer> getMoveLogListCopied() {
+        List<Integer> ret = new ArrayList<>();
+        moveLogList.forEach(ret::add);
+        return ret;
     }
 
     public static GameManager getInstance() { return instance; }
