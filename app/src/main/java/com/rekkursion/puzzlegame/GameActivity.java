@@ -50,8 +50,6 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageView[][] imgvsSplittedBitmapsArray;
 
-    private ImageScalingAsyncTask imageScalingAsyncTask;
-
     // on-click-listener for giving up or backing to menu
     private View.OnClickListener giveUpOrBackToMenuButtonOnClickListener = view -> {
         SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
@@ -105,10 +103,8 @@ public class GameActivity extends AppCompatActivity {
         GameManager.getInstance().gameStatus = GameManager.GameStatus.PRE;
 
         // start async task for image scaling
-        if (imageScalingAsyncTask == null) {
-            imageScalingAsyncTask = new ImageScalingAsyncTask();
-            imageScalingAsyncTask.execute(imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing, txtvMillisecondTimer);
-        }
+        ImageScalingAsyncTask imageScalingAsyncTask = new ImageScalingAsyncTask();
+        imageScalingAsyncTask.execute(imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing, txtvMillisecondTimer);
     }
 
     @Override
@@ -144,7 +140,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.STOPPED;
+        GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.PRE_START;
     }
 
     @Override
@@ -355,6 +351,10 @@ public class GameActivity extends AppCompatActivity {
                             SoundPoolManager.getInstance().play("se_maoudamashii_move_piece_failed.mp3");
 
                         if (hasFinished) {
+                            // hide the indices on all pieces
+                            if (GameManager.getInstance().isShowingIndices)
+                                GameManager.getInstance().showOrHideIndices(imgvsSplittedBitmapsArray);
+
                             // switch bgm
                             BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
                             BackgroundMusicManager.getInstance(GameActivity.this).stop();

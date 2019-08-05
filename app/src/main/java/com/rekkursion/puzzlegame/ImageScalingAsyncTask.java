@@ -15,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.games.Game;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
@@ -89,6 +91,15 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
                 GameManager.getInstance().addTagAndBitmapEntry(idx, ((BitmapDrawable) imageViews[r][c].getDrawable()).getBitmap());
             }
         }
+
+        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PRE_START)
+            Log.e("post-execute", "pre-start");
+        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.RUNNING)
+            Log.e("post-execute", "running");
+        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PAUSED)
+            Log.e("post-execute", "paused");
+        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.STOPPED)
+            Log.e("post-execute", "stopped");
 
         if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PRE_START)
             GameManager.getInstance().initPuzzlePlayingTimerAndSetTask(txtvMillisecondTimer);
