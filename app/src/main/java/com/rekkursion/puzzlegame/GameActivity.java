@@ -136,7 +136,8 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.PAUSED;
+        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.RUNNING)
+            GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.PAUSED;
         super.onStop();
     }
 
@@ -236,8 +237,12 @@ public class GameActivity extends AppCompatActivity {
 
                 GameManager.getInstance().setVisibilitiesOfUIs(View.VISIBLE);
 
+//                Log.e("timer-status", GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.STOPPED ? "STOPPED" : (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.RUNNING ? "RUNNING" : "PAUSED"));
+
                 if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PAUSED)
                     GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.RUNNING;
+                else if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PRE_START || GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.STOPPED)
+                    GameManager.getInstance().initPuzzlePlayingTimerAndSetTask(txtvMillisecondTimer);
             }
         });
 

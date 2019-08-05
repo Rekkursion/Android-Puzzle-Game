@@ -33,7 +33,7 @@ public class GameManager {
     }
 
     public enum TimerStatus {
-        RUNNING, PAUSED, STOPPED
+        PRE_START, RUNNING, PAUSED, STOPPED
     }
 
     public static final long IMAGE_TOO_BIG_WARNING_THRESHOLD = 1300L * 1300L;
@@ -53,6 +53,7 @@ public class GameManager {
     public GameStatus gameStatus;
     public boolean isShowingIndices;
     public Map<Integer, Bitmap> withoutIndicesBitmapsMap;
+    private List<Integer> moveLogList;
 
     private TextView txtvMillisecondTimer;
     private Timer puzzlePlayingTimer;
@@ -60,6 +61,7 @@ public class GameManager {
     public TimerStatus puzzerPlayingTimerStatus;
 
     public void initPuzzlePlayingTimerAndSetTask(final TextView txtvMillisecondTimer) {
+//        Log.e("game-manager", "init-timer");
         puzzerPlayingTimerStatus = TimerStatus.RUNNING;
 
         if (this.txtvMillisecondTimer != null)
@@ -130,6 +132,13 @@ public class GameManager {
         withoutIndicesBitmapsMap = null;
     }
 
+    public void clearMoveLogList() {
+        if (moveLogList != null) {
+            moveLogList.clear();
+            moveLogList = null;
+        }
+    }
+
     public void clearUIList() {
         if (UIList != null)
             UIList.clear();
@@ -155,6 +164,9 @@ public class GameManager {
             withoutIndicesBitmapsMap.clear();
             withoutIndicesBitmapsMap = null;
         }
+
+        clearMoveLogList();
+        moveLogList = new ArrayList<>();
 
         tagNumbersMap = new int[difficulty][difficulty];
         withoutIndicesBitmapsMap = new HashMap<>();
@@ -208,6 +220,9 @@ public class GameManager {
                 int tmp = tagNumbersMap[currentBlankRow][currentBlankCol];
                 tagNumbersMap[currentBlankRow][currentBlankCol] = tagNumbersMap[nextBlankRow][nextBlankCol];
                 tagNumbersMap[nextBlankRow][nextBlankCol] = tmp;
+
+                // add move-log into the list for the answer
+                moveLogList.add(currentBlankRow * difficulty + currentBlankCol);
 
                 currentBlankRow = nextBlankRow;
                 currentBlankCol = nextBlankCol;

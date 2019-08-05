@@ -52,6 +52,9 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
         txtvProgressBarInformation.setVisibility(View.VISIBLE);
 
         GameManager.getInstance().clearTagAndIdDict();
+        GameManager.getInstance().clearMoveLogList();
+
+        GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.PRE_START;
     }
 
     @Override
@@ -87,7 +90,8 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
             }
         }
 
-        GameManager.getInstance().initPuzzlePlayingTimerAndSetTask(txtvMillisecondTimer);
+        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PRE_START)
+            GameManager.getInstance().initPuzzlePlayingTimerAndSetTask(txtvMillisecondTimer);
     }
 
     @Override
