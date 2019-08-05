@@ -7,14 +7,9 @@ import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.transition.Slide;
 import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -26,11 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.games.Game;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.Calendar;
@@ -59,6 +49,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView txtvShowIndicesSwitchButton;
 
     private ImageView[][] imgvsSplittedBitmapsArray;
+
+    private ImageScalingAsyncTask imageScalingAsyncTask;
 
     // on-click-listener for giving up or backing to menu
     private View.OnClickListener giveUpOrBackToMenuButtonOnClickListener = view -> {
@@ -113,8 +105,10 @@ public class GameActivity extends AppCompatActivity {
         GameManager.getInstance().gameStatus = GameManager.GameStatus.PRE;
 
         // start async task for image scaling
-        ImageScalingAsyncTask imageScalingAsyncTask = new ImageScalingAsyncTask();
-        imageScalingAsyncTask.execute(imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing, txtvMillisecondTimer);
+        if (imageScalingAsyncTask == null) {
+            imageScalingAsyncTask = new ImageScalingAsyncTask();
+            imageScalingAsyncTask.execute(imgvsSplittedBitmapsArray, pgbWaitForImageProcessing, txtvWaitForImageProcessing, txtvMillisecondTimer);
+        }
     }
 
     @Override
@@ -236,6 +230,18 @@ public class GameActivity extends AppCompatActivity {
                 glySplittedImageViewsContainer.setVisibility(View.VISIBLE);
 
                 GameManager.getInstance().setVisibilitiesOfUIs(View.VISIBLE);
+
+                // for an unknown bug
+                pgbWaitForImageProcessing.setVisibility(View.GONE);
+                txtvWaitForImageProcessing.setVisibility(View.GONE);
+                for (int r = 0; r < GameManager.getInstance().difficulty; ++r) {
+                    for (int c = 0; c < GameManager.getInstance().difficulty; ++c) {
+                        if (((int) imgvsSplittedBitmapsArray[r][c].getTag()) == GameManager.getInstance().getAbandonedTagNumber()) {
+                            imgvsSplittedBitmapsArray[r][c].setVisibility(View.INVISIBLE);
+                            r = GameManager.getInstance().difficulty; break;
+                        }
+                    }
+                }
 
 //                Log.e("timer-status", GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.STOPPED ? "STOPPED" : (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.RUNNING ? "RUNNING" : "PAUSED"));
 
