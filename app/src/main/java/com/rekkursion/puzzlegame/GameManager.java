@@ -144,7 +144,7 @@ public class GameManager {
     }
 
     public void shuffle() {
-        final int SHUFFLE_TIMES = 100 * difficulty;
+        final int SHUFFLE_TIMES = 50 * difficulty;
 
         if (tagNumbersMap != null) {
             for (int r = 0; r < tagNumbersMap.length; ++r)
@@ -173,10 +173,20 @@ public class GameManager {
         // shuffle
         int currentBlankRow = getAbandonedTagNumber() / difficulty;
         int currentBlankCol = getAbandonedTagNumber() % difficulty;
+        int lastMoveDirection = -1;
         Random random = new Random();
         for (int k = 0; k < SHUFFLE_TIMES; ++k) {
             int nextBlankRow, nextBlankCol;
             int moveDirection = random.nextInt(4);
+
+            // to avoid useless swapping loops
+            if ((moveDirection == 0 && lastMoveDirection == 2) ||
+                    (moveDirection == 1 && lastMoveDirection == 3) ||
+                    (moveDirection == 2 && lastMoveDirection == 0) ||
+                    (moveDirection == 3 && lastMoveDirection == 1)) {
+                --k;
+                continue;
+            }
 
             switch (moveDirection) {
                 // up
@@ -194,13 +204,19 @@ public class GameManager {
             // the next position is valid (not out of range and not the same position as current one), swap
             if (nextBlankRow >= 0 && nextBlankRow < difficulty && nextBlankCol >= 0 && nextBlankCol < difficulty &&
                     (nextBlankRow != currentBlankRow || nextBlankCol != currentBlankCol)) {
+//                Log.e("swap " + String.format("%02d", k), String.format("(%d, %d) -> (%d, %d)", currentBlankRow, currentBlankCol, nextBlankRow, nextBlankCol));
                 int tmp = tagNumbersMap[currentBlankRow][currentBlankCol];
                 tagNumbersMap[currentBlankRow][currentBlankCol] = tagNumbersMap[nextBlankRow][nextBlankCol];
                 tagNumbersMap[nextBlankRow][nextBlankCol] = tmp;
 
                 currentBlankRow = nextBlankRow;
                 currentBlankCol = nextBlankCol;
+
+                lastMoveDirection = moveDirection;
             }
+            // invalid
+            else
+                --k;
         }
 
 //        wrong shuffling
