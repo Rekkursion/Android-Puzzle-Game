@@ -105,6 +105,18 @@
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <!-- text-view as a button to go back when the auto-solving has finished -->
+            <TextView
+                android:id="@+id/txtv_go_back_when_auto_solving_has_finished"
+                android:visibility="gone"
+                android:text="@string/str_back"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/dim_general_ui_text_size"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/dim_general_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <!-- linear-layout for showing that it's progressing -->

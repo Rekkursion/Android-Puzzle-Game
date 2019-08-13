@@ -3,7 +3,9 @@ package com.rekkursion.puzzlegame;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -17,8 +19,12 @@ public class PuzzleSolvingAsyncTask extends AsyncTask<Void, Void, Void> {
     private ImageView currentView;
     private ImageView nextView;
 
-    public void execute(ImageView[][] imgvs) {
+    private TextView txtvGoBackWhenAutoSolvingHasFinished;
+
+    public void execute(ImageView[][] imgvs, TextView txtvGoBackWhenAutoSolvingHasFinished) {
+        this.txtvGoBackWhenAutoSolvingHasFinished = txtvGoBackWhenAutoSolvingHasFinished;
         imageViews = imgvs;
+
         reversedMoveLogList = GameManager.getInstance().getMoveLogListCopied();
         Collections.reverse(reversedMoveLogList);
 
@@ -56,6 +62,13 @@ public class PuzzleSolvingAsyncTask extends AsyncTask<Void, Void, Void> {
         });
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        GameManager.getInstance().finishTheGame(imageViews[GameManager.getInstance().difficulty - 1][GameManager.getInstance().difficulty - 1], imageViews);
+        txtvGoBackWhenAutoSolvingHasFinished.setVisibility(View.VISIBLE);
     }
 
     private Handler doActionHandler = new Handler() {

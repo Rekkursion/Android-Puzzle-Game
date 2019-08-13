@@ -8,11 +8,15 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +32,7 @@ public class GameManager {
     }
 
     public enum GameStatus {
-        PRE, GAMING, POST
+        PRE, GAMING, AUTO_SOLVING, POST
     }
 
     public enum TimerStatus {
@@ -289,6 +293,15 @@ public class GameManager {
             }
         }
         return true;
+    }
+
+    public void finishTheGame(ImageView abandonedImgView, ImageView[][] imgvsSplittedBitmapsArray) {
+        // hide the indices on all pieces
+        if (GameManager.getInstance().isShowingIndices)
+            GameManager.getInstance().showOrHideIndices(imgvsSplittedBitmapsArray);
+
+        // find abandoned view and visualized it
+        abandonedImgView.setVisibility(View.VISIBLE);
     }
 
     public boolean isAbandonedTagNumber(int tag) {

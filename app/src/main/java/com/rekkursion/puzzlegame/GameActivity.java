@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
+import android.transition.Visibility;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,6 +53,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView txtvMillisecondTimer;
     private TextView txtvShowIndicesSwitchButton;
     private TextView txtvGiveUpButtonAndSeeTheAnswer;
+    private TextView txtvGoBackWhenAutoSolvingHasFinished;
 
     private ImageView[][] imgvsSplittedBitmapsArray;
 
@@ -117,6 +119,9 @@ public class GameActivity extends AppCompatActivity {
         if (BackgroundMusicManager.shouldStopPlayingWhenLeaving)
             BackgroundMusicManager.getInstance(this).pause();
 
+        pgbWaitForImageProcessing.setVisibility(View.GONE);
+        txtvWaitForImageProcessing.setVisibility(View.GONE);
+
         super.onPause();
     }
 
@@ -138,7 +143,8 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onRestart() {
-        imgbtnHelpCheckOriginalScaledBitmap.callOnClick();
+        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PAUSED)
+            imgbtnHelpCheckOriginalScaledBitmap.callOnClick();
         super.onRestart();
     }
 
@@ -146,6 +152,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.PRE_START;
+        txtvGoBackWhenAutoSolvingHasFinished.setVisibility(View.GONE);
     }
 
     @Override
@@ -186,6 +193,7 @@ public class GameActivity extends AppCompatActivity {
         txtvMillisecondTimer = findViewById(R.id.txtv_millisecond_timer);
         txtvShowIndicesSwitchButton = findViewById(R.id.txtv_show_indices_switch_button);
         txtvGiveUpButtonAndSeeTheAnswer = findViewById(R.id.txtv_give_up_button_and_see_the_answer);
+        txtvGoBackWhenAutoSolvingHasFinished = findViewById(R.id.txtv_go_back_when_auto_solving_has_finished);
 
         // adjust size of image-view which is used to show the original scaled bitmap
         imgvShowOriginalScaledBitmap.getLayoutParams().width = TOTAL_GAMING_IMAGE_VIEW_SIZE;
@@ -260,6 +268,8 @@ public class GameActivity extends AppCompatActivity {
 
         // show indices on all pieces or not
         txtvShowIndicesSwitchButton.setOnClickListener(view -> {
+            SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+
             GameManager.getInstance().showOrHideIndices(imgvsSplittedBitmapsArray);
             txtvShowIndicesSwitchButton.setText(GameManager.getInstance().isShowingIndices ? R.string.str_hide_indices : R.string.str_show_indices);
         });
@@ -270,11 +280,29 @@ public class GameActivity extends AppCompatActivity {
                     .setIcon(R.drawable.ic_warning_orange_24dp)
                     .setMessage(R.string.str_user_check_before_give_up_the_game)
                     .setPositiveButton(R.string.str_user_check_yes, (dialogInterface, i) -> {
+                        SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+
+                        GameManager.getInstance().setVisibilitiesOfUIs(View.GONE);
+                        GameManager.getInstance().gameStatus = GameManager.GameStatus.AUTO_SOLVING;
+                        GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.STOPPED;
+
                         PuzzleSolvingAsyncTask puzzleSolvingAsyncTask = new PuzzleSolvingAsyncTask();
-                        puzzleSolvingAsyncTask.execute(imgvsSplittedBitmapsArray);
+                        puzzleSolvingAsyncTask.execute(imgvsSplittedBitmapsArray, txtvGoBackWhenAutoSolvingHasFinished);
                     })
                     .setNegativeButton(R.string.str_user_check_no, null)
                     .show();
+        });
+
+        // go back when the auto-solving has finished
+        txtvGoBackWhenAutoSolvingHasFinished.setOnClickListener(view -> {
+            SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+
+            BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
+            BackgroundMusicManager.getInstance(GameActivity.this).stop();
+            BackgroundMusicManager.getInstance(GameActivity.this).play("musics" + File.separator + "game_maoudamashii_main_theme.mp3", true);
+
+            setResult(BackToWhere.BACK_TO_LEVEL_SELECT.ordinal());
+            finish();
         });
     }
 
@@ -379,18 +407,13 @@ public class GameActivity extends AppCompatActivity {
                             SoundPoolManager.getInstance().play("se_maoudamashii_move_piece_failed.mp3");
 
                         if (hasFinished) {
-                            // hide the indices on all pieces
-                            if (GameManager.getInstance().isShowingIndices)
-                                GameManager.getInstance().showOrHideIndices(imgvsSplittedBitmapsArray);
+                            ImageView abandonedView = findViewById(GameManager.getInstance().getImageViewIdByTag(GameManager.getInstance().getAbandonedTagNumber()));
+                            GameManager.getInstance().finishTheGame(abandonedView, imgvsSplittedBitmapsArray);
 
                             // switch bgm
                             BackgroundMusicManager.shouldStopPlayingWhenLeaving = false;
                             BackgroundMusicManager.getInstance(GameActivity.this).stop();
                             BackgroundMusicManager.getInstance(GameActivity.this).play("musics" + File.separator + "game_maoudamashii_ranking_theme.mp3", true);
-
-                            // find abandoned view and visualized it
-                            ImageView abandonedView = findViewById(GameManager.getInstance().getImageViewIdByTag(GameManager.getInstance().getAbandonedTagNumber()));
-                            abandonedView.setVisibility(View.VISIBLE);
 
                             // set animation
                             Animation finishAnim = AnimationUtils.loadAnimation(GameActivity.this, R.anim.fade_in);
