@@ -149,6 +149,8 @@ public class RankingBoardFragment extends Fragment {
                     Bitmap thisBitmap = BitmapFactory.decodeStream(fis);
 
                     ImageView image = new ImageView(RankingBoardFragment.this.getContext());
+                    image.setMaxWidth(500);
+                    image.setMaxHeight(500);
                     image.setImageBitmap(thisBitmap);
 
                     AlertDialog.Builder builder =
