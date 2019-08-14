@@ -1,6 +1,5 @@
 package com.rekkursion.puzzlegame;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,10 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.transition.Slide;
 import android.transition.TransitionInflater;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -29,13 +28,7 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.games.Games;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -56,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtvStartButtonAtMainActivity;
     private TextView txtvStartButtonShadowAtMainActivity;
     private ImageView imgvPuzzleGameTitleAtMainActivity;
+    private TextView txtvMaoudamashii;
 
     private Button signInButton;
     private Button signOutButton;
@@ -158,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         txtvStartButtonAtMainActivity = findViewById(R.id.txtv_start_button_at_main_activity);
         txtvStartButtonShadowAtMainActivity = findViewById(R.id.txtv_start_button_shadow_at_main_activity);
         imgvPuzzleGameTitleAtMainActivity = findViewById(R.id.imgv_puzzle_game_title_at_main_activity);
+        txtvMaoudamashii = findViewById(R.id.txtv_maoudamashii);
         signInButton = findViewById(R.id.btn_google_log_in);
         signOutButton = findViewById(R.id.btn_google_log_out);
 
@@ -193,6 +188,27 @@ public class MainActivity extends AppCompatActivity {
                 imgvPuzzleGameTitleAtMainActivity.startAnimation(animScaleLargeWithOvershooting);
                 puzzleGameTitleAnimationStatus = 0;
                 SoundPoolManager.getInstance().play("se_maoudamashii_onepoint09.mp3", 0, 1.2F);
+            }
+        });
+
+        // set on-touch-listener for maoudamashii
+        txtvMaoudamashii.setOnTouchListener(new View.OnTouchListener() {
+            float currentX = 0.0F, currentY = 0.0F;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        currentX = motionEvent.getX();
+                        currentY = motionEvent.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        view.setTranslationX(view.getTranslationX() + (motionEvent.getX() - currentX));
+                        view.setTranslationY(view.getTranslationY() + (motionEvent.getY() - currentY));
+                        break;
+                }
+
+                return true;
             }
         });
 

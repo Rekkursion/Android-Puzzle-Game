@@ -75,6 +75,7 @@
 
     <!-- showing the source of bgm's and se's: maoudamashii -->
     <TextView
+        android:id="@+id/txtv_maoudamashii"
         android:layout_alignParentBottom="true"
         android:text="@string/str_show_maoudamashii"
         android:layout_margin="@dimen/dim_general_margin"

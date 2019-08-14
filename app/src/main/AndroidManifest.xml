@@ -13,7 +13,6 @@
         android:roundIcon="@drawable/ic_blocks_orange_24dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".MenuActivity"
             android:screenOrientation="portrait" />

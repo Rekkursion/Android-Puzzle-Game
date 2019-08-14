@@ -157,7 +157,7 @@ public class RankingBoardFragment extends Fragment {
                             new AlertDialog.Builder(RankingBoardFragment.this.getContext())
                                     .setMessage("This is the image you have played." + "\n\n" +
                                             getRecordInfoString(position) + "\n")
-                                    .setPositiveButton("OK", (dialogInterface, i) -> {
+                                    .setPositiveButton("Close", (dialogInterface, i) -> {
                                         dialogInterface.dismiss();
                                     })
                                     .setView(image);
