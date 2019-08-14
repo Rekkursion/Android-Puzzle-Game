@@ -46,6 +46,7 @@ public class GameManager {
 
     public Bitmap originalImageBitmap;
     public Bitmap scaledImageBitmap;
+    public String scaledImageFilename;
     public int difficulty;
     public GamingModeEnum gamingMode;
     public int[][] tagNumbersMap;

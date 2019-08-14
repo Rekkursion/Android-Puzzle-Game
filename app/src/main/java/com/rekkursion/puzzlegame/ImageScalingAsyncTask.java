@@ -1,13 +1,18 @@
 package com.rekkursion.puzzlegame;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Picture;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.CancellationSignal;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,9 +22,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.games.Game;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
+    private Context mContext;
     private ProgressBar progressBar;
     private TextView txtvProgressBarInformation;
     private TextView txtvMillisecondTimer;
@@ -29,7 +42,9 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
     private Bitmap originalBitmap;
     private int imageHeight, imageWidth;
 
-    public void execute(ImageView[][] imageViews, ProgressBar progressBar, TextView textView, TextView txtvMillisecondTimer) {
+    public void execute(Context context, ImageView[][] imageViews, ProgressBar progressBar, TextView textView, TextView txtvMillisecondTimer) {
+        mContext = context;
+
         originalBitmap = GameManager.getInstance().originalImageBitmap;
         imageWidth = originalBitmap.getWidth();
         imageHeight = originalBitmap.getHeight();
@@ -68,6 +83,19 @@ public class ImageScalingAsyncTask extends AsyncTask<Context, Integer, Bitmap> {
         GameManager.getInstance().movedCount = 0;
         GameManager.getInstance().setVisibilitiesOfUIs(View.VISIBLE);
         GameManager.getInstance().gameStatus = GameManager.GameStatus.GAMING;
+        GameManager.getInstance().scaledImageFilename = UUID.randomUUID().toString() + ".jpg";
+
+        // save the scaled bitmap at the private directory
+        try {
+            FileOutputStream fos = mContext.openFileOutput(GameManager.getInstance().scaledImageFilename, Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         progressBar.setVisibility(View.GONE);
         txtvProgressBarInformation.setVisibility(View.GONE);

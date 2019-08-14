@@ -3,6 +3,8 @@ package com.rekkursion.puzzlegame;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,10 +28,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -136,6 +142,33 @@ public class RankingBoardFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 SoundPoolManager.getInstance().play("se_maoudamashii_click.mp3");
+
+                try {
+                    String scaledBitmapFilename = rankingRecordItemList.get(position).getScaledBitmapFilename();
+                    FileInputStream fis = RankingBoardFragment.this.getContext().openFileInput(scaledBitmapFilename);
+                    Bitmap thisBitmap = BitmapFactory.decodeStream(fis);
+
+                    ImageView image = new ImageView(RankingBoardFragment.this.getContext());
+                    image.setImageBitmap(thisBitmap);
+
+                    AlertDialog.Builder builder =
+                            new AlertDialog.Builder(RankingBoardFragment.this.getContext())
+                                    .setMessage("This is the image you have played." + "\n\n" +
+                                            getRecordInfoString(position) + "\n")
+                                    .setPositiveButton("OK", (dialogInterface, i) -> {
+                                        dialogInterface.dismiss();
+                                    })
+                                    .setView(image);
+                    builder.create().show();
+                    fis.close();
+                } catch (FileNotFoundException e) {
+                    Toast.makeText(RankingBoardFragment.this.getContext(), "File not found. It might be renamed or removed.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -151,12 +184,8 @@ public class RankingBoardFragment extends Fragment {
                 // show the dialog before the data deletion
                 new AlertDialog.Builder(RankingBoardFragment.this.getContext())
                         .setIcon(R.drawable.ic_warning_orange_24dp)
-                        .setMessage(getResources().getString(R.string.str_user_check_before_delete_the_record) + "\n" +
-                                "\n" +
-                                "Difficulty:  " + String.format("%d × %d", rankingRecordItemList.get(position).getGameDifficulty(), rankingRecordItemList.get(position).getGameDifficulty()) + "\n" +
-                                "Time:  " + String.format("%d.%02d", rankingRecordItemList.get(position).getCostTime() / 100, rankingRecordItemList.get(position).getCostTime() % 100) + "\n" +
-                                "Move Count:  " + String.valueOf(rankingRecordItemList.get(position).getMovedCount()) + "\n" +
-                                "Date:  " + rankingRecordItemList.get(position).getRecordDateStringByFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING))
+                        .setMessage(getResources().getString(R.string.str_user_check_before_delete_the_record) + "\n\n" +
+                                getRecordInfoString(position))
                         .setPositiveButton(R.string.str_user_check_yes, (dialogInterface, i) -> {
                             // delete data at sql
                             sqlHelper.deleteData(rankingRecordItemList.get(position));
@@ -171,6 +200,13 @@ public class RankingBoardFragment extends Fragment {
                         })
                         .setNegativeButton(R.string.str_user_check_no, null)
                         .show();
+            }
+
+            private String getRecordInfoString(int position) {
+                return "Difficulty:  " + String.format(Locale.CHINA, "%d × %d", rankingRecordItemList.get(position).getGameDifficulty(), rankingRecordItemList.get(position).getGameDifficulty()) + "\n" +
+                        "Time:  " + String.format(Locale.CHINA, "%d.%02d", rankingRecordItemList.get(position).getCostTime() / 100, rankingRecordItemList.get(position).getCostTime() % 100) + "\n" +
+                        "Move Count:  " + String.valueOf(rankingRecordItemList.get(position).getMovedCount()) + "\n" +
+                        "Date:  " + rankingRecordItemList.get(position).getRecordDateStringByFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING);
             }
         }));
     }

@@ -10,6 +10,7 @@ public class RankingRecordItemModel implements Comparable<RankingRecordItemModel
     private int movedCount;
     private int costTime;
     private Date recordDate;
+    private String scaledBitmapFilename;
 
     public int getGameDifficulty() {
         return gameDifficulty;
@@ -31,14 +32,19 @@ public class RankingRecordItemModel implements Comparable<RankingRecordItemModel
         return new SimpleDateFormat(format).format(recordDate);
     }
 
-    public RankingRecordItemModel(int gameDifficulty, int movedCount, int costTime) {
-        this(gameDifficulty, movedCount, costTime, null);
+    public String getScaledBitmapFilename() {
+        return scaledBitmapFilename;
     }
 
-    public RankingRecordItemModel(int gameDifficulty, int movedCount, int costTime, Date recordDate) {
+//    public RankingRecordItemModel(int gameDifficulty, int movedCount, int costTime, String scaledBitmapFilename) {
+//        this(gameDifficulty, movedCount, costTime, scaledBitmapFilename, null);
+//    }
+
+    public RankingRecordItemModel(int gameDifficulty, int movedCount, int costTime, String scaledBitmapFilename, Date recordDate) {
         this.gameDifficulty = gameDifficulty;
         this.movedCount = movedCount;
         this.costTime = costTime;
+        this.scaledBitmapFilename = scaledBitmapFilename;
         this.recordDate = recordDate == null ? Calendar.getInstance().getTime() : recordDate;
     }
 

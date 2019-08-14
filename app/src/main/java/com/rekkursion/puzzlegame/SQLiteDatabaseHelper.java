@@ -24,6 +24,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
     public static final String RANKING_TABLE_COL_COST_TIME = "_cost_time";
     public static final String RANKING_TABLE_COL_MOVED_COUNT = "_moved_count";
     public static final String RANKING_TABLE_COL_DATE = "_date";
+    public static final String RANKING_TABLE_COL_SCALED_BITMAP_FILENAME = "_scaled_bitmap_filename";
     private final Context context;
 
     // constructor
@@ -39,7 +40,8 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
                 RANKING_TABLE_COL_COST_TIME + " INTEGER, " +
                 RANKING_TABLE_COL_MOVED_COUNT + " INTEGER, " +
                 RANKING_TABLE_COL_DATE + " VARCHAR(10), " +
-                RANKING_TABLE_COL_DIFFICULTY + " INTEGER" +
+                RANKING_TABLE_COL_DIFFICULTY + " INTEGER," +
+                RANKING_TABLE_COL_SCALED_BITMAP_FILENAME + " VARCHAR(20)" +
                 ");";
         sqLiteDatabase.execSQL(sqlCreateTableString);
     }
@@ -61,6 +63,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         cv.put(RANKING_TABLE_COL_COST_TIME, rr.getCostTime());
         cv.put(RANKING_TABLE_COL_MOVED_COUNT, rr.getMovedCount());
         cv.put(RANKING_TABLE_COL_DATE, rr.getRecordDateStringByFormat(GameManager.RECORD_DATE_AND_TIME_FORMAT_STRING));
+        cv.put(RANKING_TABLE_COL_SCALED_BITMAP_FILENAME, rr.getScaledBitmapFilename());
         final long result = db.insert(RANKING_TABLE_NAME, null, cv);
 
         if(result == -1L)
@@ -102,6 +105,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
                 final int _costTime = cursor.getInt(cursor.getColumnIndex(RANKING_TABLE_COL_COST_TIME));
                 final int _movedCount = cursor.getInt(cursor.getColumnIndex(RANKING_TABLE_COL_MOVED_COUNT));
                 final String _dateString = cursor.getString(cursor.getColumnIndex(RANKING_TABLE_COL_DATE));
+                final String _scaledBitmapFilename = cursor.getString(cursor.getColumnIndex(RANKING_TABLE_COL_SCALED_BITMAP_FILENAME));
 
                 Date _date;
                 try {
@@ -111,7 +115,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
                     _date = Calendar.getInstance().getTime();
                 }
 
-                retList.add(new RankingRecordItemModel(_difficulty, _movedCount, _costTime, _date));
+                retList.add(new RankingRecordItemModel(_difficulty, _movedCount, _costTime, _scaledBitmapFilename, _date));
             } while (cursor.moveToNext());
         }
 

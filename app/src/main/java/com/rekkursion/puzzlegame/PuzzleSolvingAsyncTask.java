@@ -75,6 +75,7 @@ public class PuzzleSolvingAsyncTask extends AsyncTask<Void, Void, Void> {
         for (int k = 0; k < reversedMoveLogList.size(); ++k) {
             int integer = reversedMoveLogList.get(k);
 
+            // update the progress of the notification
             notificationBuilder.setProgress(reversedMoveLogList.size(), k, false);
             notificationManager.notify(AUTO_SOLVING_NOTIFICATION_ID, notificationBuilder.build());
 
