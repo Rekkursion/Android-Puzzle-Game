@@ -1,10 +1,11 @@
 package com.rekkursion.puzzlegame;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class RankingRecordItemModel implements Comparable<RankingRecordItemModel> {
+public class RankingRecordItemModel implements Comparable<RankingRecordItemModel>, Serializable {
     private int gameDifficulty;
     private int movedCount;
     private int costTime;

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
+import java.net.Socket;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -103,6 +104,7 @@ public class RankingActivity extends AppCompatActivity {
         sqlHelper = new SQLiteDatabaseHelper(this);
         if (newRankingRecord != null)
             sqlHelper.insertData(newRankingRecord);
+
         initViews();
     }
 

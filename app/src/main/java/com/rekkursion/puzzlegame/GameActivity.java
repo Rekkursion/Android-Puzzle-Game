@@ -2,11 +2,17 @@ package com.rekkursion.puzzlegame;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.transition.Visibility;
@@ -24,6 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.games.Game;
 
 import java.io.File;
 import java.util.Calendar;
@@ -56,6 +64,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView txtvGoBackWhenAutoSolvingHasFinished;
 
     private ImageView[][] imgvsSplittedBitmapsArray;
+
+    private PuzzleSolvingAsyncTask puzzleSolvingAsyncTask;
 
     // on-click-listener for giving up or backing to menu
     private View.OnClickListener giveUpOrBackToMenuButtonOnClickListener = view -> {
@@ -143,16 +153,22 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onRestart() {
-        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PAUSED)
+        if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.PAUSED) {
             imgbtnHelpCheckOriginalScaledBitmap.callOnClick();
+
+            pgbWaitForImageProcessing.setVisibility(View.GONE);
+            txtvWaitForImageProcessing.setVisibility(View.GONE);
+        }
+
         super.onRestart();
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.PRE_START;
         txtvGoBackWhenAutoSolvingHasFinished.setVisibility(View.GONE);
+
+        super.onDestroy();
     }
 
     @Override
@@ -163,6 +179,11 @@ public class GameActivity extends AppCompatActivity {
             btnTurnBackToGamingWhenShowingOriginalScaledBitmap.callOnClick();
         else if (GameManager.getInstance().puzzerPlayingTimerStatus == GameManager.TimerStatus.RUNNING)
             imgbtnHelpCheckOriginalScaledBitmap.callOnClick();
+
+        if (GameManager.getInstance().gameStatus == GameManager.GameStatus.PRE) {
+            pgbWaitForImageProcessing.setVisibility(View.VISIBLE);
+            txtvWaitForImageProcessing.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -286,8 +307,10 @@ public class GameActivity extends AppCompatActivity {
                         GameManager.getInstance().gameStatus = GameManager.GameStatus.AUTO_SOLVING;
                         GameManager.getInstance().puzzerPlayingTimerStatus = GameManager.TimerStatus.STOPPED;
 
-                        PuzzleSolvingAsyncTask puzzleSolvingAsyncTask = new PuzzleSolvingAsyncTask();
-                        puzzleSolvingAsyncTask.execute(imgvsSplittedBitmapsArray, txtvGoBackWhenAutoSolvingHasFinished);
+                        if (puzzleSolvingAsyncTask == null) {
+                            puzzleSolvingAsyncTask = new PuzzleSolvingAsyncTask();
+                            puzzleSolvingAsyncTask.execute(GameActivity.this, imgvsSplittedBitmapsArray, txtvGoBackWhenAutoSolvingHasFinished);
+                        }
                     })
                     .setNegativeButton(R.string.str_user_check_no, null)
                     .show();
