@@ -24,6 +24,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <!-- pause -->
                 <ImageButton
                     android:id="@+id/imgbtn_help_check_original_scaled_bitmap"
                     android:src="@drawable/ic_info_outline_orange_24dp"
@@ -90,16 +92,6 @@
                 android:text="@string/str_show_indices"
                 android:textColor="@android:color/white"
                 android:layout_margin="@dimen/dim_general_margin"
-                android:textSize="@dimen/dim_txtv_btn_beneath_puzzle_board_text_size"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <!-- text-view as a button to let user give up and see the answer -->
-            <TextView
-                android:id="@+id/txtv_give_up_button_and_see_the_answer"
-                android:text="@string/str_give_up_and_see_the_answer"
-                android:textColor="@android:color/white"
                 android:textSize="@dimen/dim_txtv_btn_beneath_puzzle_board_text_size"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -188,6 +180,19 @@
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <!-- text-view as a button to let user give up and see the answer -->
+            <TextView
+                android:id="@+id/txtv_give_up_button_and_see_the_answer_when_showing_original_scaled_bitmap"
+                android:layout_marginBottom="@dimen/dim_general_margin"
+                android:text="@string/str_give_up_and_see_the_answer"
+                android:textSize="@dimen/dim_general_ui_text_size"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/txtv_back_to_menu_button_when_showing_original_scaled_bitmap"
                 android:layout_marginBottom="@dimen/dim_general_margin"

@@ -2,24 +2,14 @@ package com.rekkursion.puzzlegame;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
-import android.Manifest;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
-import android.transition.Visibility;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -31,15 +21,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.games.Game;
 
 import java.io.File;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 public class GameActivity extends AppCompatActivity {
     private final int REQ_CODE_TO_RANKING_ACTIVITY = 13;
@@ -59,10 +44,10 @@ public class GameActivity extends AppCompatActivity {
     private Button btnTurnBackToGamingWhenShowingOriginalScaledBitmap;
     private TextView btnGiveUpWhenShowingOriginalScaledBitmap;
     private TextView btnBackToMenuWhenShowingOriginalScaledBitmap;
+    private TextView txtvGiveUpButtonAndSeeTheAnswerWhenShowingOriginalScaledBitmap;
     private TextView txtvTapCounter;
     private TextView txtvMillisecondTimer;
     private TextView txtvShowIndicesSwitchButton;
-    private TextView txtvGiveUpButtonAndSeeTheAnswer;
     private TextView txtvGoBackWhenAutoSolvingHasFinished;
 
     private ImageView[][] imgvsSplittedBitmapsArray;
@@ -211,11 +196,11 @@ public class GameActivity extends AppCompatActivity {
         llyForShowingOriginalScaledImageAndItsUI = findViewById(R.id.lly_for_showing_original_scaled_image_and_its_ui);
         btnTurnBackToGamingWhenShowingOriginalScaledBitmap = findViewById(R.id.btn_turn_back_to_gaming_when_showing_original_scaled_bitmap);
         btnGiveUpWhenShowingOriginalScaledBitmap = findViewById(R.id.txtv_give_up_button_when_showing_original_scaled_bitmap);
+        txtvGiveUpButtonAndSeeTheAnswerWhenShowingOriginalScaledBitmap = findViewById(R.id.txtv_give_up_button_and_see_the_answer_when_showing_original_scaled_bitmap);
         btnBackToMenuWhenShowingOriginalScaledBitmap = findViewById(R.id.txtv_back_to_menu_button_when_showing_original_scaled_bitmap);
         txtvTapCounter = findViewById(R.id.txtv_tap_counter);
         txtvMillisecondTimer = findViewById(R.id.txtv_millisecond_timer);
         txtvShowIndicesSwitchButton = findViewById(R.id.txtv_show_indices_switch_button);
-        txtvGiveUpButtonAndSeeTheAnswer = findViewById(R.id.txtv_give_up_button_and_see_the_answer);
         txtvGoBackWhenAutoSolvingHasFinished = findViewById(R.id.txtv_go_back_when_auto_solving_has_finished);
 
         // adjust size of image-view which is used to show the original scaled bitmap
@@ -291,19 +276,27 @@ public class GameActivity extends AppCompatActivity {
 
         // show indices on all pieces or not
         txtvShowIndicesSwitchButton.setOnClickListener(view -> {
-            SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+            if (GameManager.getInstance().isShowingIndices)
+                SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+            else
+                SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
 
             GameManager.getInstance().showOrHideIndices(imgvsSplittedBitmapsArray);
             txtvShowIndicesSwitchButton.setText(GameManager.getInstance().isShowingIndices ? R.string.str_hide_indices : R.string.str_show_indices);
         });
 
         // give up and see the answer
-        txtvGiveUpButtonAndSeeTheAnswer.setOnClickListener(view -> {
+        txtvGiveUpButtonAndSeeTheAnswerWhenShowingOriginalScaledBitmap.setOnClickListener(view -> {
+            SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+
             new AlertDialog.Builder(GameActivity.this)
                     .setIcon(R.drawable.ic_warning_orange_24dp)
                     .setMessage(R.string.str_user_check_before_give_up_the_game)
                     .setPositiveButton(R.string.str_user_check_yes, (dialogInterface, i) -> {
-                        SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3");
+                        SoundPoolManager.getInstance().play("se_maoudamashii_click_entering.mp3");
+
+                        // turn back to gaming because we are at paused page currently
+                        btnTurnBackToGamingWhenShowingOriginalScaledBitmap.performClick();
 
                         GameManager.getInstance().setVisibilitiesOfUIs(View.GONE);
                         GameManager.getInstance().gameStatus = GameManager.GameStatus.AUTO_SOLVING;
@@ -314,7 +307,7 @@ public class GameActivity extends AppCompatActivity {
                             puzzleSolvingAsyncTask.execute(GameActivity.this, imgvsSplittedBitmapsArray, txtvGoBackWhenAutoSolvingHasFinished);
                         }
                     })
-                    .setNegativeButton(R.string.str_user_check_no, null)
+                    .setNegativeButton(R.string.str_user_check_no, (dialogInterface, i) -> SoundPoolManager.getInstance().play("se_maoudamashii_click_leaving.mp3"))
                     .show();
         });
 
@@ -345,9 +338,6 @@ public class GameActivity extends AppCompatActivity {
 
         txtvShowIndicesSwitchButton.setVisibility(View.GONE);
         GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(txtvShowIndicesSwitchButton);
-
-        txtvGiveUpButtonAndSeeTheAnswer.setVisibility(View.GONE);
-        GameManager.getInstance().addUIWhichShouldBeDiscoveredWhenProcessingImage(txtvGiveUpButtonAndSeeTheAnswer);
     }
 
     private void createImageViewsForGaming() {
